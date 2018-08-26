@@ -36,12 +36,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:background="@android:color/transparent"
-            android:padding="10dp"
             android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:padding="10dp"
             android:src="@mipmap/icon_set"
-            android:visibility="gone"
-            android:contentDescription="@null" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/toolbarRightBtn"
@@ -50,7 +50,10 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="5dp"
             android:background="@drawable/white_corner"
-            android:padding="10dp"
+            android:paddingBottom="5dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:visibility="gone" />

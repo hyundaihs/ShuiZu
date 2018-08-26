@@ -34,9 +34,14 @@ import kotlinx.android.synthetic.main.layout_yg_list_item.view.*
 class DeviceFragment : BaseFragment() {
 
     val ygInfoList = ArrayList<YGInfo>()
-    private val ygAdapter = GroupAdapter(ygInfoList)
     val myDeviceList = ArrayList<MyDevice>()
+    private val ygAdapter = GroupAdapter(ygInfoList)
     private val deviceAdapter = DeviceAdapter(myDeviceList)
+    var isFirst = false
+
+    companion object {
+        var checkedId = 0
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_device, container, false)
@@ -47,6 +52,16 @@ class DeviceFragment : BaseFragment() {
         initViews()
         getYGList()
         getMyDeviceList(0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirst) {
+            getYGList()
+            getMyDeviceList(0)
+        } else {
+            isFirst = true
+        }
     }
 
     private fun initViews() {
@@ -60,14 +75,16 @@ class DeviceFragment : BaseFragment() {
         ygAdapter.onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             oftenCheck.isChecked = false
             if (isChecked) {
-                getMyDeviceList(ygAdapter.getCheck().id)
+                checkedId = ygAdapter.getCheck().id
+                getMyDeviceList(checkedId)
             }
         }
 
         oftenCheck.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 ygAdapter.cleanCheck()
-                getMyDeviceList(0)
+                checkedId = 0
+                getMyDeviceList(checkedId)
             }
         }
 
@@ -79,10 +96,10 @@ class DeviceFragment : BaseFragment() {
         deviceDevices.isNestedScrollingEnabled = false
         deviceAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
-                if (position == parent.itemCount - 1) {
+                if (position == parent.itemCount - 1 && checkedId != 0) {
                     val intent = Intent(activity, AddDeviceActivity::class.java)
-                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, myDeviceList[position].id)
-                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_TITLE, myDeviceList[position].title)
+                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, ygAdapter.getCheck().id)
+                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_TITLE, ygAdapter.getCheck().title)
                     startActivity(intent)
                 } else {
                     val intent = Intent(activity, WaterMonitorActivity::class.java)
@@ -138,9 +155,8 @@ class DeviceFragment : BaseFragment() {
 
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
             val device = data[position]
-            if (position == itemCount - 1) {
+            if (position == itemCount - 1 && checkedId != 0) {
                 holder.itemView.deviceTitle.visibility = View.GONE
                 holder.itemView.deviceImage.setImageResource(R.mipmap.add_device)
             } else {
@@ -193,7 +209,9 @@ class DeviceFragment : BaseFragment() {
                 val myDeviceListRes = Gson().fromJson(result, MyDeviceListRes::class.java)
                 myDeviceList.clear()
                 myDeviceList.addAll(myDeviceListRes.retRes)
-                myDeviceList.add(MyDevice(0, 0, DeviceType.HT, "", 0, 0))
+                if (checkedId != 0) {
+                    myDeviceList.add(MyDevice(0, 0, DeviceType.HT, "", 0, 0))
+                }
                 deviceAdapter.notifyDataSetChanged()
             }
 

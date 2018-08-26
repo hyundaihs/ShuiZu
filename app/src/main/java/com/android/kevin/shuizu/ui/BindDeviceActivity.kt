@@ -10,7 +10,7 @@ import com.android.kevin.shuizu.R
 import com.android.shuizu.myutillibrary.E
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
-import kotlinx.android.synthetic.main.activity_add_device.*
+import kotlinx.android.synthetic.main.activity_bind_device.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.*
@@ -47,7 +47,7 @@ class BindDeviceActivity : MyBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_device)
+        setContentView(R.layout.activity_bind_device)
         initActionBar(this, "添加新设备", rightBtn = "添加", rightClick = View.OnClickListener {
             dealResult()
         })
