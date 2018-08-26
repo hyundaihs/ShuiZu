@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">水族</string>
+    <string name="login">登 录</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="registration">立即注册</string>
+    <string name="input_password">请输入密码</string>
+    <string name="input_phone">请输入手机号码</string>
+    <string name="submit">提 交</string>
+    <string name="hasAccount">已有账号?点击登录</string>
+    <string name="agree">我已经阅读并同意《水族》协议</string>
+    <string name="getVerifyCode">获取验证码</string>
+    <string name="inputVerifyCode">请输入验证码</string>
+    <string name="inputPswdAgain">请重复输入密码</string>
+    <string name="device">设备</string>
+    <string name="intelligence">智能</string>
+    <string name="store">商城</string>
+    <string name="mine">我的</string>
+</resources>

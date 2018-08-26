@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_corner"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/waterLevelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前水质"
+                app:layout_constraintBottom_toTopOf="@id/waterLevel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/waterLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/waterLevelTitle"
+                app:layout_constraintRight_toRightOf="@id/waterLevelTitle"
+                app:layout_constraintTop_toBottomOf="@id/waterLevelTitle" />
+
+            <TextView
+                android:id="@+id/waterTempTip"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="50dp"
+                android:background="@drawable/red_tip"
+                app:layout_constraintBottom_toBottomOf="@id/waterTemp"
+                app:layout_constraintLeft_toRightOf="@id/waterLevelTitle"
+                app:layout_constraintTop_toTopOf="@id/waterTemp" />
+
+
+            <TextView
+                android:id="@+id/waterPHTip"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@drawable/yellow_tip"
+                app:layout_constraintBottom_toBottomOf="@id/waterPH"
+                app:layout_constraintLeft_toLeftOf="@id/waterTempTip"
+                app:layout_constraintTop_toTopOf="@id/waterPH" />
+
+            <TextView
+                android:id="@+id/waterTDSTip"
+                android:layout_width="5dp"
+                android:layout_height="0dp"
+                android:background="@drawable/blue_tip"
+                app:layout_constraintBottom_toBottomOf="@id/waterTDS"
+                app:layout_constraintLeft_toLeftOf="@id/waterTempTip"
+                app:layout_constraintTop_toTopOf="@id/waterTDS" />
+
+            <TextView
+                android:id="@+id/waterTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                app:layout_constraintLeft_toRightOf="@id/waterTempTip"
+                app:layout_constraintTop_toTopOf="@id/waterLevelTitle" />
+
+            <TextView
+                android:id="@+id/waterPH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/waterTDS"
+                app:layout_constraintLeft_toLeftOf="@id/waterTemp"
+                app:layout_constraintTop_toBottomOf="@id/waterTemp" />
+
+            <TextView
+                android:id="@+id/waterTDS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/waterLevel"
+                app:layout_constraintLeft_toLeftOf="@id/waterTemp" />
+
+            <TextView
+                android:id="@+id/high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/high"
+                android:text="偏高"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/waterLevelTitle" />
+
+            <TextView
+                android:id="@+id/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/px"
+                android:text="正常"
+                app:layout_constraintBottom_toTopOf="@id/low"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/high" />
+
+            <TextView
+                android:id="@+id/low"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/low"
+                android:text="偏低"
+                app:layout_constraintBottom_toBottomOf="@id/waterLevel"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/tempMonitorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/white_corner"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintDimensionRatio="4:2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/red_rect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:text="水温监测"
+                            android:textColor="@color/tip_red" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tempHistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|end"
+                            android:drawableEnd="@mipmap/more"
+                            android:drawablePadding="5dp"
+                            android:text="历史记录"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/tempMonitor"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/phMonitorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/white_corner"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintDimensionRatio="4:2"
+                    app:layout_constraintTop_toBottomOf="@id/tempMonitorLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/yellow_rect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|start"
+                            android:layout_marginStart="5dp"
+                            android:text="PH值监测"
+                            android:textColor="@color/tip_yellow" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/phHistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|end"
+                            android:drawableEnd="@mipmap/more"
+                            android:drawablePadding="5dp"
+                            android:text="历史记录"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/phMonitor"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/white_corner"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintDimensionRatio="4:2"
+                    app:layout_constraintTop_toBottomOf="@id/phMonitorLayout">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/blue_rect" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|start"
+                            android:text="TDS值监测"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/tip_blue" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/tdsHistory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|end"
+                            android:drawableEnd="@mipmap/more"
+                            android:drawablePadding="5dp"
+                            android:text="历史记录"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/tdsMonitor"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        app:layout_constraintDimensionRatio="2:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageButton
+        android:id="@+id/deviceHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:paddingBottom="10dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="5dp"
+        android:paddingTop="10dp"
+        android:src="@mipmap/help"
+        app:layout_constraintRight_toRightOf="@id/warnLayout" />
+
+    <ImageButton
+        android:id="@+id/bindNewDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:padding="10dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="10dp"
+        android:src="@mipmap/add"
+        app:layout_constraintRight_toLeftOf="@id/deviceHelp" />
+
+    <TextView
+        android:id="@+id/deviceTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="今天是 2018年7月18日 星期三 农历六月初二"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@id/warnLayout"
+        app:layout_constraintTop_toBottomOf="@id/deviceHelp" />
+
+    <TextView
+        android:id="@+id/deviceTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="28"
+        android:textColor="@color/white"
+        android:textSize="52sp"
+        app:layout_constraintLeft_toLeftOf="@id/warnLayout"
+        app:layout_constraintTop_toBottomOf="@id/deviceTime" />
+
+    <TextView
+        android:id="@+id/deviceUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="℃"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/deviceTemperature"
+        app:layout_constraintLeft_toRightOf="@id/deviceTemperature" />
+
+    <TextView
+        android:id="@+id/deviceAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="武汉·洪山"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/deviceWeather"
+        app:layout_constraintLeft_toRightOf="@id/deviceUnit" />
+
+    <TextView
+        android:id="@+id/deviceWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="多云转中雨"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/deviceTemperature"
+        app:layout_constraintLeft_toLeftOf="@id/deviceAddress"
+        app:layout_constraintTop_toTopOf="@id/deviceTemperature" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/bg_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleLayout" />
+
+    <LinearLayout
+        android:id="@+id/deviceGroupLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_corner"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/deviceLayout"
+        app:layout_constraintTop_toBottomOf="@id/warnLayout">
+
+        <RadioButton
+            android:id="@+id/oftenCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@null"
+            android:checked="true"
+            android:contentDescription="@null"
+            android:drawableTop="@drawable/often"
+            android:padding="5dp"
+            android:text="常用"
+            android:textColor="@drawable/text_gray_to_green"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/deviceGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:padding="5dp"
+            android:src="@mipmap/icon_set" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/deviceLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_corner"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/deviceGroupLayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/warnLayout">
+
+        <TextView
+            android:id="@+id/groupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_corner_half"
+            android:padding="20dp"
+            android:text="鱼缸001"
+            android:textColor="@color/text_332c2b"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/deviceDevices"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="5dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/warnLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@mipmap/warning_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/titleLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/warning" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@null"
+            android:src="@mipmap/line" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="暂无预警信息"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
