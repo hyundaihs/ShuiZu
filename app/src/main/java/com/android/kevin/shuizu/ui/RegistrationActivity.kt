@@ -1,11 +1,18 @@
 package com.android.kevin.shuizu.ui
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.android.kevin.shuizu.R
+import com.android.kevin.shuizu.entities.*
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
+import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.toast
+import com.android.shuizu.myutillibrary.utils.LoginErrDialog
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_registration.*
 
 /**
@@ -68,7 +75,7 @@ class RegistrationActivity : MyBaseActivity() {
         } else if (verifyPassword.text.isEmpty()) {
             verifyPassword.setError("验证密码不能为空")
             return false
-        } else if (password.text.trim() == verifyPassword.text.trim()) {
+        } else if (password.text.trim() != verifyPassword.text.trim()) {
             password.setError("两次输入的密码不一致")
             return false
         } else if (verifyCode.text.isEmpty()) {
@@ -83,10 +90,46 @@ class RegistrationActivity : MyBaseActivity() {
     }
 
     private fun getVerifyCode() {
+        val map = mapOf(Pair("phone", phone.text.toString()))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+            }
 
+            override fun onError(context: Context, error: String) {
+                toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(this, getInterface(SEND_VERF), map)
     }
 
     private fun submit() {
+        val map = mapOf(Pair("account", phone.text.toString()),
+                Pair("verf", verifyCode.text.toString()),
+                Pair("password", password.text.toString()))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                toast("注册成功")
+                finish()
+            }
 
+            override fun onError(context: Context, error: String) {
+                toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(this, getInterface(REG), map)
     }
 }

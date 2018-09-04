@@ -60,6 +60,60 @@ data_type:类型（wd：温度，ph:PH，tds：TDS）
 days：日期（20180507）*/
 const val SZJC_TJTSJ = "szjctjtsj" //水质监测统计图数据
 
+/*acccardtype_id：分组id（0为常用设备）
+ids：设备id数组（[1,2,3]）*/
+const val TJSB_DYG = "tjsbdyg" //水质监测统计图数据
+
+/*id：鱼缸id*/
+const val SCYG = "scyg" //删除鱼缸
+
+/*title:名称*/
+const val TJYG = "tjyg" //添加鱼缸
+
+/*id：鱼缸id
+title:名称*/
+const val XGYG = "xgyg" //修改鱼缸
+
+/*id：设备id
+ph_value：PH值（大于等于2并且小于等于12  保留2位小数）
+num：次数（1：第一次，2：第二次  第一次校准成功后发送第二次校准，两次校准的值不能相等）*/
+const val PHJZ = "phjz" //发送ph校准
+
+/*id：设备id*/
+const val PHJZ_INFO = "phjzinfo" //当前PH校准状态
+
+/*id：设备id*/
+const val BJWD_INFO = "bjwdinfo" //温度报警详情
+
+/*id：设备id
+v_1：极度低温值,
+v_2：低温值,
+v_3：高温值,
+v_4：极度高温值*/
+const val SZ_BJWD = "szbjwd" //设置报警温度
+
+/*id：设备id*/
+const val PH_INFO = "phinfo" //PH报警详情
+
+/*id：设备id
+v_1：低,
+v_2：高*/
+const val SZ_BJPH = "szbjph" //设置报警PH值
+
+/*id：设备id*/
+const val TDS_INFO = "tdsinfo" //TDS报警详情
+
+/*id：设备id
+v_1：报警值*/
+const val SZ_BJTDS = "szbjtds" //设置报警TDS值
+
+const val NEW_LOG = "newlog" //最新日志（5分钟内)
+
+/*page:页数
+page_size：每页条数(默认20)
+type_id:类型（1:报警，2：操作）*/
+const val BJ_LOG = "bjlog" //设备日志
+
 
 
 

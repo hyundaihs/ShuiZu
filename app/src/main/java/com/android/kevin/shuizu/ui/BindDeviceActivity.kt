@@ -25,7 +25,7 @@ import java.util.*
 class BindDeviceActivity : MyBaseActivity() {
 
     companion object {
-        val WIFI_SSID = "JIASONG"
+//        val WIFI_SSID = "JIASONG"
     }
 
     private var socket: Socket? = null
@@ -51,7 +51,7 @@ class BindDeviceActivity : MyBaseActivity() {
         initActionBar(this, "添加新设备", rightBtn = "添加", rightClick = View.OnClickListener {
             dealResult()
         })
-        dealResult()
+//        dealResult()
         sendWifi.setOnClickListener {
             sendData(createMsg(wifiAccount.text.toString(), wifiPassword.text.toString()))
         }
@@ -122,7 +122,7 @@ class BindDeviceActivity : MyBaseActivity() {
             val list = mWifiMangaer.scanResults
             var isFined = false
             for (i in 0 until list.size) {
-                if (list[i].SSID == WIFI_SSID) {
+                if (list[i].SSID == deviceWifiAccount.text.toString()) {
                     isFined = true
                     uiThread {
                         appendInfo("已找到设备")
@@ -151,7 +151,7 @@ class BindDeviceActivity : MyBaseActivity() {
                             if (currSSID != null)
                                 currSSID = currSSID.replace("\"", "")
                             val currIp = mWifiMangaer.connectionInfo.ipAddress
-                            if (currSSID != null && currSSID == WIFI_SSID && currIp != 0) {
+                            if (currSSID != null && currSSID == deviceWifiAccount.text.toString() && currIp != 0) {
                                 isSuccess = true
                                 uiThread {
                                     appendInfo("设备连接成功")

@@ -30,11 +30,11 @@
     </LinearLayout>
 
 
-    <CheckBox
+    <ImageView
         android:id="@+id/checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/circle_check_box"
+        android:background="@android:color/transparent"
         app:layout_constraintRight_toRightOf="@id/centerLayout"
         app:layout_constraintTop_toTopOf="@id/centerLayout"/>
 

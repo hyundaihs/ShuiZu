@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/warnLogTime"
+        android:layout_width="match_parent"
+        android:textSize="16sp"
+        android:drawableStart="@mipmap/ds"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:padding="10dp"
+        android:textColor="@color/text_gray_dark"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/line_gray"/>
+
+    <TextView
+        android:id="@+id/warnLogContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/text_332c2b"/>
+
+
+</LinearLayout>

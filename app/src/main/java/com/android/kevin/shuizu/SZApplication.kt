@@ -1,6 +1,7 @@
 package com.android.kevin.shuizu
 
 import android.app.Application
+import cn.jpush.android.api.JPushInterface
 import kotlin.properties.Delegates
 
 /**
@@ -21,6 +22,8 @@ class SZApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        JPushInterface.setDebugMode(true)
+        JPushInterface.init(this)
     }
 }
 

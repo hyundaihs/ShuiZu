@@ -149,6 +149,7 @@
             android:background="@color/line_gray" />
 
         <ImageButton
+            android:id="@+id/groupSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -224,7 +225,8 @@
             android:contentDescription="@null"
             android:src="@mipmap/line" />
 
-        <TextView
+        <com.paradoxie.autoscrolltextview.VerticalTextview
+            android:id="@+id/verticalTextview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

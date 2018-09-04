@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.ChartDataType
-import com.android.kevin.shuizu.entities.DeviceType
 import com.android.kevin.shuizu.entities.WaterHistoryData
 import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.E
@@ -74,7 +73,7 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart, 
 
                 val rightXIndex = lineChart.highestVisibleX  //获取可视区域中，显示在x轴最右边的index
                 val size = values.size
-                context.toast("    size = $size")
+//                context.toast("    size = $size")
 //                if (lastPerformedGesture == ChartTouchListener.ChartGesture.DRAG) {
 //                    mIsCanLoad = true
 //                    if (rightXIndex == size - 1 || rightXIndex == size) {

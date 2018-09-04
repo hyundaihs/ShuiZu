@@ -15,6 +15,7 @@ import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
 import com.android.shuizu.myutillibrary.utils.CalendarUtil.YYYYMMDD
+import com.github.mikephil.charting.data.DataSet
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_water_monitor.*
 import org.jetbrains.anko.doAsync
@@ -55,18 +56,24 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_water_monitor)
         initActionBar(this, "水质监测器", rightClick = View.OnClickListener {
-
+            val inten = Intent(this@WaterMonitorActivity, DataSetActivity::class.java)
+            inten.putExtra(KEYWORD_WATER_MONITOR_ID, deviceId)
+            startActivity(inten)
         })
         deviceId = intent.getIntExtra(KEYWORD_WATER_MONITOR_ID, 0)
-        getDatas(deviceId)
         getHistoryData(deviceId)
         tempHistory.setOnClickListener(this)
         phHistory.setOnClickListener(this)
         tdsHistory.setOnClickListener(this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onResume() {
+        super.onResume()
+        getDatas(deviceId)
+    }
+
+    override fun onStop() {
+        super.onStop()
         flag = false
     }
 

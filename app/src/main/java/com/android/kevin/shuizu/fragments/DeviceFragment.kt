@@ -3,6 +3,7 @@ package com.android.kevin.shuizu.fragments
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.*
 import android.view.LayoutInflater
@@ -11,10 +12,9 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
-import com.android.kevin.shuizu.ui.AddDeviceActivity
-import com.android.kevin.shuizu.ui.BindDeviceActivity
-import com.android.kevin.shuizu.ui.LoginActivity
-import com.android.kevin.shuizu.ui.WaterMonitorActivity
+import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD
+import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_EDIT_GROUP
+import com.android.kevin.shuizu.ui.*
 import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.LineDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
@@ -26,6 +26,11 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_device.*
 import kotlinx.android.synthetic.main.layout_device_list_item.view.*
 import kotlinx.android.synthetic.main.layout_yg_list_item.view.*
+import com.android.kevin.shuizu.MainActivity
+import com.android.shuizu.myutillibrary.D
+import com.paradoxie.autoscrolltextview.VerticalTextview
+import org.jetbrains.anko.doAsync
+
 
 /**
  * ChaYin
@@ -35,9 +40,11 @@ class DeviceFragment : BaseFragment() {
 
     val ygInfoList = ArrayList<YGInfo>()
     val myDeviceList = ArrayList<MyDevice>()
+    val warnLogList = ArrayList<WarnLog>()
     private val ygAdapter = GroupAdapter(ygInfoList)
     private val deviceAdapter = DeviceAdapter(myDeviceList)
-    var isFirst = false
+    var isFirst = true
+    var isFlag = false
 
     companion object {
         var checkedId = 0
@@ -52,16 +59,27 @@ class DeviceFragment : BaseFragment() {
         initViews()
         getYGList()
         getMyDeviceList(0)
+
     }
 
     override fun onResume() {
         super.onResume()
-        if (isFirst) {
+        if (!isFirst) {
+            oftenCheck.isChecked = true
             getYGList()
             getMyDeviceList(0)
         } else {
-            isFirst = true
+            isFirst = false
         }
+        isFlag = true
+        getWarnLog()
+        verticalTextview.startAutoScroll()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        verticalTextview.stopAutoScroll()
+        isFlag = false
     }
 
     private fun initViews() {
@@ -76,6 +94,7 @@ class DeviceFragment : BaseFragment() {
             oftenCheck.isChecked = false
             if (isChecked) {
                 checkedId = ygAdapter.getCheck().id
+                groupName.text = ygAdapter.getCheck().title
                 getMyDeviceList(checkedId)
             }
         }
@@ -84,6 +103,7 @@ class DeviceFragment : BaseFragment() {
             if (isChecked) {
                 ygAdapter.cleanCheck()
                 checkedId = 0
+                groupName.text = "常用"
                 getMyDeviceList(checkedId)
             }
         }
@@ -100,6 +120,7 @@ class DeviceFragment : BaseFragment() {
                     val intent = Intent(activity, AddDeviceActivity::class.java)
                     intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, ygAdapter.getCheck().id)
                     intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_TITLE, ygAdapter.getCheck().title)
+                    intent.putExtra(KEYWORD, KEYWORD_EDIT_GROUP)
                     startActivity(intent)
                 } else {
                     val intent = Intent(activity, WaterMonitorActivity::class.java)
@@ -111,6 +132,15 @@ class DeviceFragment : BaseFragment() {
         bindNewDevice.setOnClickListener {
             startActivity(Intent(activity, BindDeviceActivity::class.java))
         }
+        groupSet.setOnClickListener {
+            startActivity(Intent(activity, GroupActivity::class.java))
+        }
+
+        verticalTextview.setTextStillTime(3000)//设置停留时长间隔
+        verticalTextview.setAnimTime(300)//设置进入和退出的时间间隔
+        verticalTextview.setOnItemClickListener(VerticalTextview.OnItemClickListener { position ->
+            activity!!.toast("点击了 : " )
+        })
     }
 
     private class GroupAdapter(val data: ArrayList<YGInfo>) : MyBaseAdapter(R.layout.layout_yg_list_item) {
@@ -164,9 +194,7 @@ class DeviceFragment : BaseFragment() {
                 holder.itemView.deviceTitle.visibility = View.VISIBLE
                 when (device.card_type) {
                     DeviceType.TR -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_monitor)
-                    DeviceType.HT -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
-                    DeviceType.WP -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
-                    DeviceType.PF -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
+                    else -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
                 }
             }
             holder.itemView.setOnClickListener {
@@ -177,6 +205,46 @@ class DeviceFragment : BaseFragment() {
         override fun getItemCount(): Int = data.size
     }
 
+    private fun getWarnLog() {
+        val map = if (warnLogList.size > 0) {
+            mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
+        } else {
+            mapOf(Pair("", ""))
+        }
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
+                warnLogList.clear()
+                warnLogList.addAll(warnLogListRes.retRes)
+                val titleList = ArrayList<String>()
+                if(warnLogList.size>0){
+                    warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
+                }else{
+                    titleList.add("暂无预警消息")
+                }
+                verticalTextview.setTextList(titleList)
+//                verticalTextview.setText(26, 5, Color.RED)//设置属性
+                if (isFlag) {
+                    doAsync {
+                        Thread.sleep(10000)
+                        getWarnLog()
+                    }
+                }
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(activity as Context, getInterface(NEW_LOG), map)
+    }
 
     private fun getYGList() {
         val map = mapOf(Pair("", ""))
