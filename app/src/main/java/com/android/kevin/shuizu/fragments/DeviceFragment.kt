@@ -3,9 +3,11 @@ package com.android.kevin.shuizu.fragments
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.widget.*
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.OrientationHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,16 +22,15 @@ import com.android.shuizu.myutillibrary.adapter.LineDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.toast
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
+import com.paradoxie.autoscrolltextview.VerticalTextview
 import kotlinx.android.synthetic.main.fragment_device.*
 import kotlinx.android.synthetic.main.layout_device_list_item.view.*
 import kotlinx.android.synthetic.main.layout_yg_list_item.view.*
-import com.android.kevin.shuizu.MainActivity
-import com.android.shuizu.myutillibrary.D
-import com.paradoxie.autoscrolltextview.VerticalTextview
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 
 /**
@@ -59,7 +60,6 @@ class DeviceFragment : BaseFragment() {
         initViews()
         getYGList()
         getMyDeviceList(0)
-
     }
 
     override fun onResume() {
@@ -139,7 +139,7 @@ class DeviceFragment : BaseFragment() {
         verticalTextview.setTextStillTime(3000)//设置停留时长间隔
         verticalTextview.setAnimTime(300)//设置进入和退出的时间间隔
         verticalTextview.setOnItemClickListener(VerticalTextview.OnItemClickListener { position ->
-            activity!!.toast("点击了 : " )
+            activity!!.toast("点击了 : ")
         })
     }
 
@@ -206,44 +206,43 @@ class DeviceFragment : BaseFragment() {
     }
 
     private fun getWarnLog() {
-        val map = if (warnLogList.size > 0) {
-            mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
-        } else {
-            mapOf(Pair("", ""))
-        }
-        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(context: Context, result: String) {
-                val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
-                warnLogList.clear()
-                warnLogList.addAll(warnLogListRes.retRes)
-                val titleList = ArrayList<String>()
-                if(warnLogList.size>0){
-                    warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
-                }else{
-                    titleList.add("暂无预警消息")
+        doAsync {
+            while (isFlag) {
+                val map = if (warnLogList.size > 0) {
+                    mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
+                } else {
+                    mapOf(Pair("", ""))
                 }
-                verticalTextview.setTextList(titleList)
+                MySimpleRequest().postRequest(getInterface(NEW_LOG), map, object : MySimpleRequest.RequestCallBackWithOutContext {
+                    override fun onSuccess(result: String) {
+                        val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
+                        warnLogList.clear()
+                        warnLogList.addAll(warnLogListRes.retRes)
+                        val titleList = ArrayList<String>()
+                        if (warnLogList.size > 0) {
+                            warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
+                        } else {
+                            titleList.add("暂无预警消息")
+                        }
+                        uiThread {
+                            verticalTextview.setTextList(titleList)
+                        }
 //                verticalTextview.setText(26, 5, Color.RED)//设置属性
-                if (isFlag) {
-                    doAsync {
-                        Thread.sleep(10000)
-                        getWarnLog()
                     }
-                }
-            }
 
-            override fun onError(context: Context, error: String) {
-                context.toast(error)
-            }
+                    override fun onError(error: String) {
+                        uiThread {
+                            activity?.toast(error)
+                        }
+                    }
 
-            override fun onLoginErr(context: Context) {
-                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
+                    override fun onLoginErr() {
+                    }
+
                 })
+                Thread.sleep(10000)
             }
-
-        }).postRequest(activity as Context, getInterface(NEW_LOG), map)
+        }
     }
 
     private fun getYGList() {

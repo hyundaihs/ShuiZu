@@ -17,17 +17,15 @@ import com.android.kevin.shuizu.entities.WarnLog
 import com.android.kevin.shuizu.entities.WarnLogListRes
 import com.android.kevin.shuizu.entities.getInterface
 import com.android.kevin.shuizu.ui.LoginActivity
-import com.android.shuizu.myutillibrary.adapter.LineDecoration
-import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.toast
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.widget.SwipeRefreshAndLoadLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_action_log.*
 import kotlinx.android.synthetic.main.layout_warn_log_list_item.view.*
+import org.jetbrains.anko.toast
 
 /**
  * Created by kevin on 2018/9/2.
@@ -51,7 +49,7 @@ class ActionLogFragment : BaseFragment() {
         val layoutManager = LinearLayoutManager(activity)
         actionRecycler.layoutManager = layoutManager
         layoutManager.orientation = OrientationHelper.VERTICAL
-        actionRecycler.addItemDecoration(LineDecoration(activity, LineDecoration.VERTICAL))
+//        actionRecycler.addItemDecoration(LineDecoration(activity, LineDecoration.VERTICAL))
         actionRecycler.itemAnimator = DefaultItemAnimator()
         actionRecycler.isNestedScrollingEnabled = false
         actionSwipe.setOnRefreshListener(object : SwipeRefreshAndLoadLayout.OnRefreshListener {
@@ -63,10 +61,11 @@ class ActionLogFragment : BaseFragment() {
                 getLog(currPage)
             }
         })
+        actionRecycler.adapter = mAdapter
         getLog(actionSwipe.currPage, true)
     }
 
-    private class MyAdapter(val data: ArrayList<WarnLog>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+    private class MyAdapter(val data: ArrayList<WarnLog>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
 
         override fun onBindViewHolder(holder: MyAdapter.MyViewHolder, position: Int) {
@@ -99,7 +98,7 @@ class ActionLogFragment : BaseFragment() {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
-                actionSwipe.totalPages = warnLogListRes.retCounts
+                actionSwipe.totalPages = if (warnLogListRes.retCounts % 20 == 0) warnLogListRes.retCounts / 20 else warnLogListRes.retCounts / 20 + 1
                 if (isRefresh) {
                     myData.clear()
                 }

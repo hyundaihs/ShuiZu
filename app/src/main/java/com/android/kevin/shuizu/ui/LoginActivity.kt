@@ -19,6 +19,7 @@ import cn.jpush.android.api.JPushInterface
 import cn.jpush.android.e.a.b.showToast
 import com.android.shuizu.myutillibrary.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 
 
 /**

@@ -20,6 +20,7 @@ import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.layout_toolbar.*
+import org.jetbrains.anko.toast
 
 
 /**
@@ -52,10 +53,6 @@ val mPermissions = arrayOf(Permission.READ_EXTERNAL_STORAGE,
         Permission.ACCESS_COARSE_LOCATION,
         Permission.ACCESS_FINE_LOCATION
 )
-
-fun Context.toast(string: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(this, string, duration).show()
-}
 
 fun AppCompatActivity.initActionBar(act: AppCompatActivity, title: String, showBack: Boolean = true, rightBtn: String? = null, isAdd: Boolean = false,
                                     rightClick: View.OnClickListener? = null, leftBtn: String? = null,

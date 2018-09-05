@@ -7,9 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.android.kevin.shuizu.R
+import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.E
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
+import com.android.shuizu.myutillibrary.utils.charToHexInt
+import com.android.shuizu.myutillibrary.utils.charToHexStr
+import com.android.shuizu.myutillibrary.utils.makeChecksum
 import kotlinx.android.synthetic.main.activity_bind_device.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -55,57 +59,48 @@ class BindDeviceActivity : MyBaseActivity() {
         sendWifi.setOnClickListener {
             sendData(createMsg(wifiAccount.text.toString(), wifiPassword.text.toString()))
         }
-    }
-
-    /**发送数据 */
-    fun senddata(senddata: ByteArray) {
-        socket = Socket("192.168.4.1", 8899)
-        try {
-            val byteArrayinputstream = ByteArrayInputStream(senddata)
-            socket!!.getOutputStream()!!.write(senddata)
-            val istream = socket!!.getInputStream()
-            val datalength = istream?.available()
-            if (datalength!! > 0) {
-                val acceptdata1 = ByteArray(datalength)
-                istream.read(acceptdata1)
-                Log.i("Data", "the lastresult=$acceptdata1")
-            }
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
+        dealResult()
     }
 
     private fun sendData(byteArray: ByteArray) {
         loadLayout.visibility = View.VISIBLE
         doAsync {
-            socket = Socket("192.168.4.1", 8899)
-            uiThread {
-                bind_info.text = "向设备发送信息"
-            }
-            //向服务器发送数据
-            val send = PrintWriter(BufferedWriter(OutputStreamWriter(socket!!.getOutputStream(), "utf-8")))
-            send.println(byteArray)
-            send.flush()
-            uiThread {
-                appendInfo("向设备发送信息成功")
-                bind_info.text = "等待服务器返回数据"
-            }
-            //接受服务端数据
-            val recv = BufferedReader(InputStreamReader(socket!!.getInputStream()))
-            val recvMsg = recv.readLine()
-            uiThread {
-                loadLayout.visibility = View.GONE
-                if (recvMsg != null) {
-                    appendInfo("接收到服务器数据$recvMsg")
-                } else {
-                    appendInfo("Cannot receive data correctly")
+            var socket: Socket? = null
+            var os: OutputStream? = null
+            var _is: InputStream? = null
+
+            try {
+                //对服务端发起连接请求
+                socket = Socket("192.168.4.1", 8899)
+
+                uiThread {
+                    bind_info.text = "向设备发送信息"
                 }
+
+                //给服务端发送响应信息
+                os = socket.getOutputStream()
+                os.write(byteArray)
+                uiThread {
+                    appendInfo("向设备发送信息成功")
+                    bind_info.text = "等待服务器返回数据"
+                }
+                //接受服务端消息并打印
+                _is = socket.getInputStream()
+                val b = ByteArray(1024)
+                _is.read(b)
+                uiThread {
+                    loadLayout.visibility = View.GONE
+                    appendInfo("接收到服务器数据$String(b)")
+                }
+                println(String(b))
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+                os?.close()
+                _is?.close()
+                socket?.close()
             }
-            send.close()
-            recv.close()
-            socket!!.close()
         }
     }
 
@@ -179,63 +174,25 @@ class BindDeviceActivity : MyBaseActivity() {
         }
     }
 
+
     private fun createMsg(wifiAccount: String, wifiPassword: String): ByteArray {
-        var index = 0
-        val msg = ByteArray(7 + wifiAccount.length + wifiPassword.length)
-        msg[index++] = 'T'.toByte()
-        msg[index++] = 'R'.toByte()
-        msg[index++] = '-'.toByte()
-        msg[index++] = '0'.toByte()
+        val sb = StringBuffer()
+        sb.append(charToHexStr('T'))
+        sb.append(charToHexStr('R'))
+        sb.append(charToHexStr('-'))
+        sb.append(charToHexStr('0'))
         for (i in 0 until wifiAccount.length) {
-            msg[index++] = wifiAccount[i].toByte()
+            sb.append(charToHexStr(wifiAccount[i]))
         }
-        msg[index++] = 0x0d
+        sb.append("0d")
         for (i in 0 until wifiPassword.length) {
-            msg[index++] = wifiPassword[i].toByte()
+            sb.append(charToHexStr(wifiPassword[i]))
         }
-        msg[index++] = 0x0d
-        val msg2 = makeChecksum(msg, 1)
-        msg[index] = msg2[0]
-        for (i in msg.indices) {
-            bind_device_info.append("${msg[i]}_")
-        }
-        bind_device_info.append("\n")
-        appendInfo(String(msg) + "/")
-        return msg
+        sb.append("0d")
+        sb.append(makeChecksum(sb.toString()))
+        appendInfo(sb.toString() + "?")
+        return sb.toString().toByteArray()
     }
-
-    /**
-     * 校验和
-     *
-     * @param msg
-     * 需要计算校验和的byte数组
-     * @param length
-     * 校验和位数
-     * @return 计算出的校验和数组
-     */
-    fun makeChecksum(msg: ByteArray, length: Int): ByteArray {
-        var mSum: Long = 0
-        val mByte = ByteArray(length)
-
-        /** 逐Byte添加位数和  */
-        for (byteMsg in msg) {
-            val mNum = if (byteMsg.toLong() >= 0)
-                byteMsg.toLong()
-            else
-                byteMsg.toLong() + 256
-            mSum += mNum
-        }
-        /** end of for (byte byteMsg : msg)  */
-
-        /** 位数和转化为Byte数组  */
-        for (liv_Count in 0 until length) {
-            mByte[length - liv_Count - 1] = (mSum shr liv_Count * 8 and 0xff).toByte()
-        }
-        /** end of for (int liv_Count = 0; liv_Count < length; liv_Count++)  */
-
-        return mByte
-    }
-
 
     // 查看以前是否也配置过这个网络
     private fun isExsits(SSID: String): WifiConfiguration? {

@@ -10,7 +10,7 @@ import com.android.kevin.shuizu.entities.*
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.toast
+import org.jetbrains.anko.toast
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_registration.*

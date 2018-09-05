@@ -28,7 +28,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.components.Legend
 import android.view.MotionEvent
 import com.android.shuizu.myutillibrary.I
-import com.android.shuizu.myutillibrary.toast
+import org.jetbrains.anko.toast
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 
