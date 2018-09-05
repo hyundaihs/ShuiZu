@@ -27,6 +27,8 @@ class App_Keyword {
         const val KEYWORD_WATER_MONITOR_ID = "water_monitor_id"
         const val KEYWORD_WATER_MONITOR_TITLE = "water_monitor_title"
         const val KEYWORD_CHART_DATA_TYPE = "chart_data_type"
+        const val KEYWORD_START_DATE = "start_date"
+        const val KEYWORD_END_DATE = "end_date"
 
         const val KEYWORD = "key_word"
         const val KEYWORD_EDIT_GROUP = "edit_group"
@@ -46,7 +48,8 @@ class App_Keyword {
         const val KEYWORD_CIRCLE_SELECTOR_PH_HIGH_REQUEST = 15 //PH基准值设置
         const val KEYWORD_CIRCLE_SELECTOR_PH_LOW_REQUEST = 16 //PH基准值设置
         const val KEYWORD_CIRCLE_SELECTOR_TDS_REQUEST = 17 //TDS基准值设置
-        const val KEYWORD_CIRCLE_SELECTOR_RESULT = 9
+        const val KEYWORD_TIME_DATE_CHOOSER_REQUEST = 18 //TDS基准值设置
+        const val KEYWORD_RESULT_OK = 9
     }
 }
 

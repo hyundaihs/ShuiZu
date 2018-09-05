@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/white_corner" />
+
+        <TextView
+            android:id="@+id/addOrTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:drawableStart="@mipmap/add_gray"
+            android:text="添加便捷设置"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <com.android.shuizu.myutillibrary.widget.SwipeRefreshAndLoadLayout
         android:id="@+id/quickSwipe"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/quickRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </com.android.shuizu.myutillibrary.widget.SwipeRefreshAndLoadLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

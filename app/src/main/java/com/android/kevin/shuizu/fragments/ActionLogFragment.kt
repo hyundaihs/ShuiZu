@@ -12,10 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.android.kevin.shuizu.R
-import com.android.kevin.shuizu.entities.BJ_LOG
-import com.android.kevin.shuizu.entities.WarnLog
-import com.android.kevin.shuizu.entities.WarnLogListRes
-import com.android.kevin.shuizu.entities.getInterface
+import com.android.kevin.shuizu.entities.*
+import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_RESULT_OK
+import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_TIME_DATE_CHOOSER_REQUEST
+import com.android.kevin.shuizu.ui.DateChooseActivity
 import com.android.kevin.shuizu.ui.LoginActivity
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
@@ -26,6 +26,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_action_log.*
 import kotlinx.android.synthetic.main.layout_warn_log_list_item.view.*
 import org.jetbrains.anko.toast
+import java.util.*
+
 
 /**
  * Created by kevin on 2018/9/2.
@@ -35,6 +37,8 @@ class ActionLogFragment : BaseFragment() {
 
     val myData = ArrayList<WarnLog>()
     private val mAdapter = MyAdapter(myData)
+    var startDate = ""
+    var endDate = ""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_action_log, container, false)
     }
@@ -63,6 +67,22 @@ class ActionLogFragment : BaseFragment() {
         })
         actionRecycler.adapter = mAdapter
         getLog(actionSwipe.currPage, true)
+        addOrTime.setOnClickListener {
+            val intent = Intent(activity, DateChooseActivity::class.java)
+            intent.putExtra(App_Keyword.KEYWORD_START_DATE, startDate)
+            intent.putExtra(App_Keyword.KEYWORD_END_DATE, endDate)
+            startActivityForResult(intent, KEYWORD_TIME_DATE_CHOOSER_REQUEST)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == KEYWORD_TIME_DATE_CHOOSER_REQUEST && resultCode == KEYWORD_RESULT_OK && data != null) {
+            startDate = data.getStringExtra(App_Keyword.KEYWORD_START_DATE)
+            endDate = data.getStringExtra(App_Keyword.KEYWORD_END_DATE)
+            actionSwipe.currPage = 1
+            getLog(actionSwipe.currPage, true)
+        }
     }
 
     private class MyAdapter(val data: ArrayList<WarnLog>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
@@ -94,7 +114,11 @@ class ActionLogFragment : BaseFragment() {
     }
 
     private fun getLog(page: Int, isRefresh: Boolean = false) {
-        val map = mapOf(Pair("page", page.toString()), Pair("page_size", "20"), Pair("type_id", "2"))
+        val map = mapOf(Pair("page", page.toString()),
+                Pair("page_size", "20"),
+                Pair("type_id", "2"),
+                Pair("start_date", startDate.replace("_","")),
+                Pair("end_date", endDate.replace("_","")))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)

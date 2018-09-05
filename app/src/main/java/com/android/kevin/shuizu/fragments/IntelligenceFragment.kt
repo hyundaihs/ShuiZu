@@ -49,10 +49,7 @@ class IntelligenceFragment : BaseFragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                when(position){
-                    0 or 1->{addOrTime.text = "点击按日期筛选"}
-                    2->{addOrTime.text = "添加便捷设置"}
-                }
+
             }
         })
     }

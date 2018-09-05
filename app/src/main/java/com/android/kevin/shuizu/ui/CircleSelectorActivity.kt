@@ -27,7 +27,7 @@ class CircleSelectorActivity : MyBaseActivity() {
             val value = values.text.toString().toFloat()
             intent = Intent()
             intent.putExtra("data", value)
-            setResult(App_Keyword.KEYWORD_CIRCLE_SELECTOR_RESULT, intent)
+            setResult(App_Keyword.KEYWORD_RESULT_OK, intent)
             finish()
         })
         selector.maxProcess = max.toFloat()

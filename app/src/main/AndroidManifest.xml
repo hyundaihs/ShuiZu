@@ -49,6 +49,7 @@
         <activity android:name=".ui.GroupActivity"/>
         <activity android:name=".ui.DataSetActivity"/>
         <activity android:name=".ui.CircleSelectorActivity"/>
+        <activity android:name=".ui.DateChooseActivity" />
 
         <service android:name=".MonitorService" />
     </application>

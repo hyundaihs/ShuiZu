@@ -72,4 +72,5 @@ dependencies {
     implementation project(':circleselector')
     implementation 'com.github.paradoxie:AutoVerticalTextview:0.1'
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
 }

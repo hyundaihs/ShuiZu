@@ -16,9 +16,7 @@ import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SE
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_ISFLOAT
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_MAX
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_MIN
-import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_TDS_REQUEST
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_TITLE
-import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
@@ -118,7 +116,7 @@ class DataSetActivity : MyBaseActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == App_Keyword.KEYWORD_CIRCLE_SELECTOR_RESULT && data != null) {
+        if (resultCode == App_Keyword.KEYWORD_RESULT_OK && data != null) {
             val value = data.getFloatExtra("data", 0f)
             when (requestCode) {
                 App_Keyword.KEYWORD_CIRCLE_SELECTOR_SW_H_HIGH_REQUEST -> {
