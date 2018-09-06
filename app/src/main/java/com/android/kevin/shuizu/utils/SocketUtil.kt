@@ -2,6 +2,7 @@ package com.android.kevin.shuizu.utils
 
 import com.android.shuizu.myutillibrary.D
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.InputStream
 import java.io.OutputStream
 import java.net.Socket
@@ -14,6 +15,8 @@ class SocketUtil(host: String, port: Int) {
     var socket: Socket? = null
     var mBufferedReaderClient: InputStream? = null
     var mPrintWriterClient: OutputStream? = null
+    var flag = true
+    var onMsgComing: OnMsgComing? = null
 
     init {
         doAsync {
@@ -26,19 +29,35 @@ class SocketUtil(host: String, port: Int) {
         }
     }
 
-    public fun sendMsg(byteArray: ByteArray) {
+    fun sendMsg(byteArray: ByteArray) {
         doAsync {
             mPrintWriterClient!!.write(byteArray)//发送数据
             mPrintWriterClient!!.flush()//清空数据缓冲区
         }
     }
 
-    public fun openReceiver() {
+    fun openReceiver() {
         doAsync {
-            val byteArray = ByteArray(256)
-            mBufferedReaderClient!!.read(byteArray)//将接收到的数据存放在buffer数组中
-            D(String(byteArray))
+            while (flag) {
+                val byteArray = ByteArray(256)
+                mBufferedReaderClient!!.read(byteArray)//将接收到的数据存放在buffer数组中
+                D(String(byteArray))
+                uiThread {
+                    onMsgComing?.onMsgCome(byteArray)
+                }
+            }
+            mBufferedReaderClient!!.close()
+            mPrintWriterClient!!.close()
+            socket!!.close()
         }
+    }
+
+    fun release() {
+        flag = false
+    }
+
+    interface OnMsgComing {
+        fun onMsgCome(byteArray: ByteArray)
     }
 
 }

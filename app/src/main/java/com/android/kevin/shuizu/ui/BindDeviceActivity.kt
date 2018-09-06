@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.utils.SocketUtil
+import com.android.kevin.shuizu.utils.SocketUtil.OnMsgComing
 import com.android.shuizu.myutillibrary.E
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
@@ -14,6 +15,7 @@ import com.android.shuizu.myutillibrary.utils.charToHexStr
 import com.android.shuizu.myutillibrary.utils.makeChecksum
 import kotlinx.android.synthetic.main.activity_bind_device.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.*
 import java.net.Socket
@@ -65,6 +67,17 @@ class BindDeviceActivity : MyBaseActivity() {
     private fun sendData(byteArray: ByteArray) {
         loadLayout.visibility = View.VISIBLE
         socketUtil!!.openReceiver()
+        socketUtil!!.onMsgComing = object : OnMsgComing {
+            override fun onMsgCome(byteArray: ByteArray) {
+                val sb = StringBuffer()
+                for (i in byteArray.indices) {
+                    sb.append(byteArray[i].toInt())
+                }
+                appendInfo("服务器返回数据")
+                appendInfo(sb.toString())
+                socketUtil!!.release()
+            }
+        }
         socketUtil!!.sendMsg(byteArray)
     }
 
