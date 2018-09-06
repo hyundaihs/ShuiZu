@@ -2,6 +2,7 @@ package com.android.kevin.shuizu.utils
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Matrix
 import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
 import com.android.kevin.shuizu.R
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.Utils
+import com.github.mikephil.charting.charts.Chart
 
 
 /**
@@ -32,7 +34,7 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart,
      */
 //    lateinit var dataSet: LineDataSet
     private var canLoad: Boolean = false//K线图手指交互已停止，正在惯性滑动
-    var lineData = LineData()
+
 
     init {
         lineChart.setNoDataText("没有数据哦")//没有数据时显示的文字
@@ -41,14 +43,8 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart,
         lineChart.setDrawBorders(false)//禁止绘制图表边框的线
         lineChart.setVisibleXRangeMaximum(10f)
         lineChart.animateXY(1000, 1000)
-        lineChart.setMaxVisibleValueCount(10)
+        val lineData = LineData()
         lineChart.data = lineData
-        //lineChart.setBorderColor() //设置 chart 边框线的颜色。
-        //lineChart.setBorderWidth() //设置 chart 边界线的宽度，单位 dp。
-        //lineChart.setLogEnabled(true)//打印日志
-        //lineChart.notifyDataSetChanged()//刷新数据
-        //invalidate()//重绘
-
         lineChart.onChartGestureListener = object : OnChartGestureListener {
             override fun onChartGestureStart(me: MotionEvent, lastPerformedGesture: ChartTouchListener.ChartGesture) {
                 canLoad = false
@@ -105,63 +101,56 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart,
         setStyle()
     }
 
-//    fun setData(resData: ArrayList<WaterHistoryData>) {
-//        for (i in 0 until resData.size) {
-//            values.add(Entry(resData[i].x.toFloat(), resData[i].y))
-//        }
-//    }
-
-//    fun notifyDataSetChanged() {
-//        D("noti = $values")
-//        //获取数据1
-//        dataSet = lineChart.data.getDataSetByIndex(0) as LineDataSet
-//        //刷新数据
-//        dataSet.values = values
-//        //通知数据已经改变
-//        lineChart.data.notifyDataChanged()
-//        lineChart.notifyDataSetChanged()
-////        //设置在曲线图中显示的最大数量
-////        lineChart.setVisibleXRangeMaximum(10f)
-////        //移到某个位置
-////        lineChart.moveViewToX((lineChart.data.entryCount - 5).toFloat())
-//    }
-
-
-    fun setTitle(title:String){
+    fun setTitle(title: String) {
         val description = Description()
-        description.isEnabled = false
+        description.isEnabled = true
         description.text = title
         description.textColor = Color.RED
-        description.textSize = 20f
+        description.textSize = 16f
         lineChart.description = description//设置图表描述信息
     }
 
-    fun show(values: ArrayList<Entry>) {
-
-        val data = lineChart.getData()
+    fun addData(values: ArrayList<Entry>) {
+        val lineData = lineChart.data
         // 每一个LineDataSet代表一条线，每张统计图表可以同时存在若干个统计折线，这些折线像数组一样从0开始下标。
         // 本例只有一个，那么就是第0条折线
-        var set: LineDataSet? = data.getDataSetByIndex(0) as LineDataSet?
-
-        // 如果该统计折线图还没有数据集，则创建一条出来，如果有则跳过此处代码。
-        if (set == null) {
+        for (i in 0 until lineData.dataSetCount) {
+            lineData.removeDataSet(i)
+        }
+        val set: LineDataSet
+        if (lineData.dataSetCount > 0) {
+            set = lineData.dataSets[0] as LineDataSet
+        } else {
             set = createLineDataSet(values)
-            data.addDataSet(set)
+            lineData.addDataSet(set)
         }
         for (i in values.indices) {
-            data.addEntry(values[i], 0)
+            set.addEntry(values[i])
         }
-
-////        // 像ListView那样的通知数据更新
-//        data.notifyDataChanged()
-
-        // y坐标轴线最大值
-        // mChart.setVisibleYRange(30, AxisDependency.LEFT)
+        lineData.notifyDataChanged()
         lineChart.notifyDataSetChanged()
         lineChart.invalidate()
-//        // 将坐标移动到最新
-//        // 此代码将刷新图表的绘图
-//        lineChart.moveViewToX(data.getDataSetCount() - 50f)
+    }
+
+    fun setData(values: ArrayList<Entry>) {
+
+        val lineData = lineChart.data
+        // 每一个LineDataSet代表一条线，每张统计图表可以同时存在若干个统计折线，这些折线像数组一样从0开始下标。
+        // 本例只有一个，那么就是第0条折线
+        for (i in 0 until lineData.dataSetCount) {
+            lineData.removeDataSet(i)
+        }
+        val set: LineDataSet
+        if (lineData.dataSetCount > 0) {
+            set = lineData.dataSets[0] as LineDataSet
+        } else {
+            set = createLineDataSet(values)
+            lineData.addDataSet(set)
+        }
+        set.values = values
+        lineData.notifyDataChanged()
+        lineChart.notifyDataSetChanged()
+        lineChart.invalidate()
     }
 
     private fun createLineDataSet(values: ArrayList<Entry>): LineDataSet {

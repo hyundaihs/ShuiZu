@@ -4,14 +4,12 @@ import android.content.Context
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.android.kevin.shuizu.R
-import com.android.shuizu.myutillibrary.D
+import com.android.kevin.shuizu.utils.SocketUtil
 import com.android.shuizu.myutillibrary.E
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
-import com.android.shuizu.myutillibrary.utils.charToHexInt
 import com.android.shuizu.myutillibrary.utils.charToHexStr
 import com.android.shuizu.myutillibrary.utils.makeChecksum
 import kotlinx.android.synthetic.main.activity_bind_device.*
@@ -29,13 +27,8 @@ import java.util.*
 class BindDeviceActivity : MyBaseActivity() {
 
     companion object {
-//        val WIFI_SSID = "JIASONG"
+        val WIFI_SSID = "JIASONG"
     }
-
-    private var socket: Socket? = null
-    private val _strIp: String? = null
-    private val _nPort: Int = 0
-    private var _os: OutputStream? = null
 
     enum class InfoType {
         SUCCESS, FAILED, PROGRESS
@@ -48,6 +41,8 @@ class BindDeviceActivity : MyBaseActivity() {
     val mWifiMangaer: WifiManager by lazy {
         application.getSystemService(Context.WIFI_SERVICE) as WifiManager
     }
+
+    var socketUtil: SocketUtil? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,46 +57,15 @@ class BindDeviceActivity : MyBaseActivity() {
         dealResult()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+
     private fun sendData(byteArray: ByteArray) {
         loadLayout.visibility = View.VISIBLE
-        doAsync {
-            var socket: Socket? = null
-            var os: OutputStream? = null
-            var _is: InputStream? = null
-
-            try {
-                //对服务端发起连接请求
-                socket = Socket("192.168.4.1", 8899)
-
-                uiThread {
-                    bind_info.text = "向设备发送信息"
-                }
-
-                //给服务端发送响应信息
-                os = socket.getOutputStream()
-                os.write(byteArray)
-                uiThread {
-                    appendInfo("向设备发送信息成功")
-                    bind_info.text = "等待服务器返回数据"
-                }
-                //接受服务端消息并打印
-                _is = socket.getInputStream()
-                val b = ByteArray(1024)
-                _is.read(b)
-                uiThread {
-                    loadLayout.visibility = View.GONE
-                    appendInfo("接收到服务器数据$String(b)")
-                }
-                println(String(b))
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-            } finally {
-                os?.close()
-                _is?.close()
-                socket?.close()
-            }
-        }
+        socketUtil!!.openReceiver()
+        socketUtil!!.sendMsg(byteArray)
     }
 
     private fun appendInfo(string: String) {
@@ -112,25 +76,35 @@ class BindDeviceActivity : MyBaseActivity() {
         loadLayout.visibility = View.VISIBLE
         bind_device_info.text = ""
         bind_info.text = "正在搜索设备"
+
+        if (checkConnectWifiSSID()) {
+            appendInfo("设备连接成功")
+            loadLayout.visibility = View.GONE
+            sendWifiLayout.visibility = View.VISIBLE
+            return
+        }
         mWifiMangaer.startScan()
         doAsync {
             val list = mWifiMangaer.scanResults
             var isFined = false
             for (i in 0 until list.size) {
-                if (list[i].SSID == deviceWifiAccount.text.toString()) {
+                if (list[i].SSID == WIFI_SSID) {
                     isFined = true
                     uiThread {
                         appendInfo("已找到设备")
                         bind_info.text = "正在连接设备"
                     }
-                    mWifiMangaer.disconnect()
-                    val netWorkId = mWifiMangaer.addNetwork(createWifiInfo(list[i].SSID, "", 1))
+                    var netWorkId = checkSavedWifiSSID()
+                    if (netWorkId == -1) {
+                        netWorkId = mWifiMangaer.addNetwork(createWifiInfo(list[i].SSID, "", 1))
+                    }
                     var isSuccess = false
                     var flag = false
                     uiThread {
                         bind_info.text = "正在添加设备信息"
                     }
                     if (netWorkId >= 0) {
+                        mWifiMangaer.disconnect()
                         uiThread {
                             appendInfo("设备信息添加成功")
                             bind_info.text = "正在连接设备"
@@ -146,12 +120,14 @@ class BindDeviceActivity : MyBaseActivity() {
                             if (currSSID != null)
                                 currSSID = currSSID.replace("\"", "")
                             val currIp = mWifiMangaer.connectionInfo.ipAddress
-                            if (currSSID != null && currSSID == deviceWifiAccount.text.toString() && currIp != 0) {
+                            if (currSSID != null && currSSID == WIFI_SSID && currIp != 0) {
                                 isSuccess = true
+                                Thread.sleep(2000)
                                 uiThread {
                                     appendInfo("设备连接成功")
                                     loadLayout.visibility = View.GONE
                                     sendWifiLayout.visibility = View.VISIBLE
+                                    socketUtil = SocketUtil("192.168.4.1", 8899)
                                 }
                             } else {
                                 flag = true
@@ -174,8 +150,43 @@ class BindDeviceActivity : MyBaseActivity() {
         }
     }
 
+    private fun checkSavedWifiSSID(): Int {
+        // 获取已保存wifi配置链表
+        val configs = mWifiMangaer.configuredNetworks
+        // 显示输出
+        for (config in configs) {
+            if (config.SSID == WIFI_SSID) {
+                return config.networkId
+            }
+        }
+        return -1
+    }
+
+    private fun checkConnectWifiSSID(): Boolean {
+        val wifiInfo = mWifiMangaer.connectionInfo
+        return wifiInfo.ssid == WIFI_SSID
+    }
+
 
     private fun createMsg(wifiAccount: String, wifiPassword: String): ByteArray {
+        val sb = StringBuffer()
+        sb.append('T')
+        sb.append('R')
+        sb.append('-')
+        sb.append('0')
+        for (i in 0 until wifiAccount.length) {
+            sb.append(wifiAccount[i])
+        }
+        sb.append(13.toChar())
+        for (i in 0 until wifiPassword.length) {
+            sb.append(wifiPassword[i])
+        }
+        sb.append(13.toChar())
+        sb.append(Integer.valueOf(getCheckSum(wifiAccount, wifiPassword), 16).toChar())
+        return sb.toString().toByteArray()
+    }
+
+    private fun getCheckSum(wifiAccount: String, wifiPassword: String): String {
         val sb = StringBuffer()
         sb.append(charToHexStr('T'))
         sb.append(charToHexStr('R'))
@@ -188,10 +199,8 @@ class BindDeviceActivity : MyBaseActivity() {
         for (i in 0 until wifiPassword.length) {
             sb.append(charToHexStr(wifiPassword[i]))
         }
-        sb.append("0d")
-        sb.append(makeChecksum(sb.toString()))
-        appendInfo(sb.toString() + "?")
-        return sb.toString().toByteArray()
+        sb.append("0d" + " ")
+        return makeChecksum(sb.toString())
     }
 
     // 查看以前是否也配置过这个网络

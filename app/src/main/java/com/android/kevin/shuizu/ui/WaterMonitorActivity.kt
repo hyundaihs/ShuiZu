@@ -9,13 +9,11 @@ import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CHART_DATA_TYPE
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_WATER_MONITOR_ID
 import com.android.kevin.shuizu.utils.ChartUtil
-import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
 import com.android.shuizu.myutillibrary.utils.CalendarUtil.YYYYMMDD
-import com.github.mikephil.charting.data.DataSet
 import com.github.mikephil.charting.data.Entry
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_water_monitor.*
@@ -137,7 +135,8 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
                 val chartUtil = ChartUtil(this@WaterMonitorActivity, tempMonitor, ChartDataType.WD)
-                chartUtil.show(values)
+                chartUtil.setTitle("")
+                chartUtil.setData(values)
             }
 
             override fun onError(context: Context, error: String) {
@@ -165,7 +164,8 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
                 val chartUtil = ChartUtil(this@WaterMonitorActivity, phMonitor, ChartDataType.PH)
-                chartUtil.show(values)
+                chartUtil.setTitle("")
+                chartUtil.setData(values)
             }
 
             override fun onError(context: Context, error: String) {
@@ -193,7 +193,8 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
                 val chartUtil = ChartUtil(this@WaterMonitorActivity, tdsMonitor, ChartDataType.TDS)
-                chartUtil.show(values)
+                chartUtil.setTitle("")
+                chartUtil.setData(values)
             }
 
             override fun onError(context: Context, error: String) {

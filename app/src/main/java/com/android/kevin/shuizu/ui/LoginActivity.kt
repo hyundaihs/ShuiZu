@@ -102,11 +102,12 @@ class LoginActivity : MyBaseActivity() {
     private fun setAlias(str: String) {
 //        if (isSetAlias == 0) {
         JPushInterface.setAlias(this, 0, str)
-        D("id = ${JPushInterface.getRegistrationID(this)}")
     }
 
     private fun login() {
-        val map = mapOf(Pair("account", account.text.toString()), Pair("password", password.text.toString()))
+        val map = mapOf(Pair("account", account.text.toString()),
+                Pair("password", password.text.toString()),
+                Pair("jpush_id", JPushInterface.getRegistrationID(this)))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val loginInfoRes = Gson().fromJson(result, LoginInfoRes::class.java)

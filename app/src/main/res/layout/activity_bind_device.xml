@@ -12,6 +12,7 @@
         android:id="@+id/deviceWifiAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="JIASONG"
         android:hint="设备热点账号"/>
 
     <LinearLayout
@@ -25,12 +26,14 @@
             android:id="@+id/wifiAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="kevin"
             android:hint="Wifi账号"/>
 
         <EditText
             android:id="@+id/wifiPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="kevin558600"
             android:hint="Wifi密码"/>
 
         <Button

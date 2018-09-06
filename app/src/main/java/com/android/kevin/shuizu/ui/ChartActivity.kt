@@ -28,8 +28,7 @@ class ChartActivity : MyBaseActivity() {
     var endDate = ""
     var chartUtil: ChartUtil? = null
     private var currPage = 0
-    private var isMax = true
-    val values: ArrayList<Entry> = ArrayList<Entry>()
+    private var isMax = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart)
@@ -58,14 +57,7 @@ class ChartActivity : MyBaseActivity() {
 
         chartUtil = ChartUtil(this@ChartActivity, chartMonitor, type, object : ChartUtil.OnEdgeListener {
             override fun edgeLoad(x: Float, left: Boolean) {
-                if (left) {
-                    if (currPage <= 0) {
-                        toast("前方没有更多了")
-                    } else {
-                        currPage--
-                        getChartData(deviceId)
-                    }
-                } else {
+                if(!left){
                     if (isMax) {
                         toast("后方没有更多了")
                     } else {
@@ -77,6 +69,7 @@ class ChartActivity : MyBaseActivity() {
         })
 
         startDate = CalendarUtil(System.currentTimeMillis()).format(CalendarUtil.YYYY_MM_DD)
+        endDate = startDate
         getChartData(deviceId)
     }
 
@@ -86,6 +79,7 @@ class ChartActivity : MyBaseActivity() {
             startDate = data.getStringExtra(App_Keyword.KEYWORD_START_DATE)
             endDate = data.getStringExtra(App_Keyword.KEYWORD_END_DATE)
             currPage = 0
+            isMax = false
             getChartData(deviceId)
         }
     }
@@ -94,6 +88,7 @@ class ChartActivity : MyBaseActivity() {
         var date = ""
         if (currPage == 0) {
             date = startDate
+            isMax = startDate == endDate
         } else {
             val c = CalendarUtil(CalendarUtil(startDate).timeInMillis + (24 * 60 * 60 * 1000 * currPage))
             val temp = c.format(CalendarUtil.YYYY_MM_DD)
@@ -122,10 +117,15 @@ class ChartActivity : MyBaseActivity() {
                     chartData.clear()
                 }
                 chartData.addAll(waterHistoryDataRes.retRes)
+                val values= ArrayList<Entry>()
                 for (i in 0 until chartData.size) {
                     values.add(Entry(chartData[i].x.toFloat(), chartData[i].y))
                 }
-                chartUtil?.show(values)
+                if(currPage == 0){
+                    chartUtil?.setData(values)
+                }else{
+                    chartUtil?.addData(values)
+                }
             }
 
             override fun onError(context: Context, error: String) {
