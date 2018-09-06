@@ -16,6 +16,7 @@ import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
 import com.android.shuizu.myutillibrary.utils.CalendarUtil.YYYYMMDD
 import com.github.mikephil.charting.data.DataSet
+import com.github.mikephil.charting.data.Entry
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_water_monitor.*
 import org.jetbrains.anko.doAsync
@@ -47,9 +48,6 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
     }
 
     var flag = false
-    var waterTempData = ArrayList<WaterHistoryData>()
-    var waterPHData = ArrayList<WaterHistoryData>()
-    var waterTDSData = ArrayList<WaterHistoryData>()
     private var deviceId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,10 +132,12 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val waterHistoryDataRes = Gson().fromJson(result, WaterHistoryDataRes::class.java)
-                waterTempData.clear()
-                waterTempData.addAll(waterHistoryDataRes.retRes)
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, tempMonitor, waterTempData, ChartDataType.WD)
-                chartUtil.show()
+                val values = ArrayList<Entry>()
+                for (i in 0 until waterHistoryDataRes.retRes.size) {
+                    values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
+                }
+                val chartUtil = ChartUtil(this@WaterMonitorActivity, tempMonitor, ChartDataType.WD)
+                chartUtil.show(values)
             }
 
             override fun onError(context: Context, error: String) {
@@ -160,10 +160,12 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val waterHistoryDataRes = Gson().fromJson(result, WaterHistoryDataRes::class.java)
-                waterPHData.clear()
-                waterPHData.addAll(waterHistoryDataRes.retRes)
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, phMonitor, waterPHData, ChartDataType.PH)
-                chartUtil.show()
+                val values = ArrayList<Entry>()
+                for (i in 0 until waterHistoryDataRes.retRes.size) {
+                    values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
+                }
+                val chartUtil = ChartUtil(this@WaterMonitorActivity, phMonitor, ChartDataType.PH)
+                chartUtil.show(values)
             }
 
             override fun onError(context: Context, error: String) {
@@ -186,10 +188,12 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val waterHistoryDataRes = Gson().fromJson(result, WaterHistoryDataRes::class.java)
-                waterTDSData.clear()
-                waterTDSData.addAll(waterHistoryDataRes.retRes)
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, tdsMonitor, waterTDSData, ChartDataType.TDS)
-                chartUtil.show()
+                val values = ArrayList<Entry>()
+                for (i in 0 until waterHistoryDataRes.retRes.size) {
+                    values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
+                }
+                val chartUtil = ChartUtil(this@WaterMonitorActivity, tdsMonitor, ChartDataType.TDS)
+                chartUtil.show(values)
             }
 
             override fun onError(context: Context, error: String) {

@@ -7,15 +7,13 @@ import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.utils.ChartUtil
-import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
+import com.github.mikephil.charting.data.Entry
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chart.*
-import kotlinx.android.synthetic.main.activity_water_monitor.*
-import kotlinx.android.synthetic.main.fragment_action_log.*
 import org.jetbrains.anko.toast
 
 /**
@@ -31,6 +29,7 @@ class ChartActivity : MyBaseActivity() {
     var chartUtil: ChartUtil? = null
     private var currPage = 0
     private var isMax = true
+    val values: ArrayList<Entry> = ArrayList<Entry>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart)
@@ -56,6 +55,27 @@ class ChartActivity : MyBaseActivity() {
             intent.putExtra(App_Keyword.KEYWORD_END_DATE, endDate)
             startActivityForResult(intent, App_Keyword.KEYWORD_TIME_DATE_CHOOSER_REQUEST)
         })
+
+        chartUtil = ChartUtil(this@ChartActivity, chartMonitor, type, object : ChartUtil.OnEdgeListener {
+            override fun edgeLoad(x: Float, left: Boolean) {
+                if (left) {
+                    if (currPage <= 0) {
+                        toast("前方没有更多了")
+                    } else {
+                        currPage--
+                        getChartData(deviceId)
+                    }
+                } else {
+                    if (isMax) {
+                        toast("后方没有更多了")
+                    } else {
+                        currPage++
+                        getChartData(deviceId)
+                    }
+                }
+            }
+        })
+
         startDate = CalendarUtil(System.currentTimeMillis()).format(CalendarUtil.YYYY_MM_DD)
         getChartData(deviceId)
     }
@@ -65,6 +85,7 @@ class ChartActivity : MyBaseActivity() {
         if (requestCode == App_Keyword.KEYWORD_TIME_DATE_CHOOSER_REQUEST && resultCode == App_Keyword.KEYWORD_RESULT_OK && data != null) {
             startDate = data.getStringExtra(App_Keyword.KEYWORD_START_DATE)
             endDate = data.getStringExtra(App_Keyword.KEYWORD_END_DATE)
+            currPage = 0
             getChartData(deviceId)
         }
     }
@@ -79,6 +100,7 @@ class ChartActivity : MyBaseActivity() {
             isMax = temp == endDate
             date = temp
         }
+        chartUtil?.setTitle("$startDate - $endDate")
         val map = when (type) {
             ChartDataType.WD -> {
                 mapOf(Pair("id", id.toString()), Pair("data_type", "wd"), Pair("days", date.replace("_", "")), Pair("time_limit", 20.toString()))
@@ -100,31 +122,10 @@ class ChartActivity : MyBaseActivity() {
                     chartData.clear()
                 }
                 chartData.addAll(waterHistoryDataRes.retRes)
-                if (null == chartUtil) {
-                    chartUtil = ChartUtil(this@ChartActivity, chartMonitor, chartData, type, object : ChartUtil.OnEdgeListener {
-                        override fun edgeLoad(x: Float, left: Boolean) {
-                            if (left) {
-                                if (currPage <= 0) {
-                                    toast("前方没有更多了")
-                                } else {
-                                    currPage--
-                                    getChartData(deviceId)
-                                }
-                            } else {
-                                if (isMax) {
-                                    toast("后方没有更多了")
-                                } else {
-                                    currPage++
-                                    getChartData(deviceId)
-                                }
-                            }
-                        }
-                    })
-                    chartUtil?.show()
-                } else {
-                    chartUtil?.setData(chartData)
-                    chartUtil?.notifyDataSetChanged()
+                for (i in 0 until chartData.size) {
+                    values.add(Entry(chartData[i].x.toFloat(), chartData[i].y))
                 }
+                chartUtil?.show(values)
             }
 
             override fun onError(context: Context, error: String) {

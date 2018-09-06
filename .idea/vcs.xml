@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <!--<mapping directory="$PROJECT_DIR$/app" vcs="svn" />-->
-    <!--<mapping directory="$PROJECT_DIR$/circleselector" vcs="svn" />-->
-    <!--<mapping directory="$PROJECT_DIR$/myutillibrary" vcs="svn" />-->
   </component>
 </project>
