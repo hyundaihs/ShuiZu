@@ -6,6 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="text_gray">#7F7F7F</color>
+    <color name="text_gray_dark">#666666</color>
     <color name="line_gray">#9F9F9F</color>
     <color name="bg_gray">#E0E0E0</color>
     <color name="half_corner_gray">#EFEFEF</color>
@@ -14,4 +15,7 @@
     <color name="tip_red">#FA576E</color>
     <color name="tip_blue">#37B1FF</color>
     <color name="tip_yellow">#FFC320</color>
+    <color name="text_green">#00B063</color>
+    <color name="tip_green">#20D146</color>
+    <color name="text_gray_light">#b0b0b0</color>
 </resources>

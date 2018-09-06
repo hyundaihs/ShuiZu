@@ -7,6 +7,20 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
+    <!--允许应用程序改变WIFI连接状态-->
+
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+    <!--允许应用程序访问有关的网络信息-->
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!--允许应用程序访问WIFI网卡的网络信息-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+
     <application
         android:name=".SZApplication"
         android:allowBackup="false"
@@ -15,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
@@ -31,6 +46,10 @@
             android:screenOrientation="landscape" />
         <activity android:name=".ui.BindDeviceActivity" />
         <activity android:name=".ui.AddDeviceActivity" />
+        <activity android:name=".ui.GroupActivity"/>
+        <activity android:name=".ui.DataSetActivity"/>
+        <activity android:name=".ui.CircleSelectorActivity"/>
+        <activity android:name=".ui.DateChooseActivity" />
 
         <service android:name=".MonitorService" />
     </application>

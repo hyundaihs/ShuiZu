@@ -7,15 +7,20 @@ import android.os.Bundle
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.SZApplication
 import com.android.kevin.shuizu.entities.*
-import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.requestPermission
-import com.android.shuizu.myutillibrary.toast
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.utils.MyProgressDialog
 import com.android.shuizu.myutillibrary.utils.PreferenceUtil
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
+import cn.jpush.android.api.TagAliasCallback
+import android.R.attr.label
+import cn.jpush.android.api.JPushInterface
+import cn.jpush.android.e.a.b.showToast
+import com.android.shuizu.myutillibrary.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+
 
 /**
  * ChaYin
@@ -24,6 +29,8 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : MyBaseActivity() {
 
     var login_verf: String by PreferenceUtil(SZApplication.instance, App_Keyword.LOGIN_VERF, "")
+    var login_account: String by PreferenceUtil(SZApplication.instance, App_Keyword.LOGIN_ACCOUNT, "")
+    var isSetAlias: Int by PreferenceUtil(SZApplication.instance, App_Keyword.IS_SET_ALIAS, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +67,8 @@ class LoginActivity : MyBaseActivity() {
                     val loginInfoRes = Gson().fromJson(result, LoginInfoRes::class.java)
                     val loginInfo = loginInfoRes.retRes
                     login_verf = loginInfo.login_verf
-                    startActivity(Intent(context, HomeActivity::class.java))
+                    setAlias(login_account)
+                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                 }
 
                 override fun onError(context: Context, error: String) {
@@ -91,6 +99,12 @@ class LoginActivity : MyBaseActivity() {
         }
     }
 
+    private fun setAlias(str: String) {
+//        if (isSetAlias == 0) {
+        JPushInterface.setAlias(this, 0, str)
+        D("id = ${JPushInterface.getRegistrationID(this)}")
+    }
+
     private fun login() {
         val map = mapOf(Pair("account", account.text.toString()), Pair("password", password.text.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
@@ -98,7 +112,8 @@ class LoginActivity : MyBaseActivity() {
                 val loginInfoRes = Gson().fromJson(result, LoginInfoRes::class.java)
                 val loginInfo = loginInfoRes.retRes
                 login_verf = loginInfo.login_verf
-                startActivity(Intent(context, HomeActivity::class.java))
+                setAlias(account.text.toString())
+                startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
             }
 
             override fun onError(context: Context, error: String) {

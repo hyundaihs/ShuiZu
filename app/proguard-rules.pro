@@ -30,3 +30,10 @@
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+
+-keepclasseswithmembers class android.support.v7.widget.RecyclerView$ViewHolder {
+   public final View *;
+}
+
+-dontwarn com.yanzhenjie.recyclerview.swipe.**
+-keep class com.yanzhenjie.recyclerview.swipe.** {*;}

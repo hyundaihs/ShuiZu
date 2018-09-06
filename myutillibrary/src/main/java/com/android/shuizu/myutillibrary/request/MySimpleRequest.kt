@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  * Created by 蔡雨峰 on 2018/3/26.
  */
 
-public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boolean = true) {
+public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgress: Boolean = true) {
 
 
     private val mOkHttpClient: OkHttpClient by lazy {
@@ -62,7 +62,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                        callback.onSuccess(context, string)
+                        callback?.onSuccess(context, string)
                     }
                 } else {
                     if (res.retErr == LOGINERR) {
@@ -70,14 +70,14 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                            callback.onLoginErr(context)
+                           callback?.onLoginErr(context)
                         }
                     } else {
                         uiThread {
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                            callback.onError(context, res.retErr)
+                           callback?.onError(context, res.retErr)
                         }
                     }
                 }
@@ -86,17 +86,47 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                    callback.onError(context, response.message())
+                   callback?.onError(context, response.message())
                 }
             }
         }
     }
+
+    fun postRequest(url: String, map: Map<String, String>, callback: RequestCallBackWithOutContext) {
+        D(Gson().toJson(map).toString())
+        val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
+        val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
+        try {
+            val response = mOkHttpClient.newCall(request).execute()
+            if (response.isSuccessful) {
+                val string = response.body().string()
+                getSession(response)
+                val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
+                D("requestResult = $string")
+                if (res.retInt == 1) {
+                   callback.onSuccess(string)
+                } else {
+                    if (res.retErr == LOGINERR) {
+                       callback.onLoginErr()
+                    } else {
+                       callback.onError(res.retErr)
+                    }
+                }
+            } else {
+               callback.onError(response.message())
+            }
+        } catch (e: Exception) {
+           callback.onError(e.toString())
+        }
+    }
+
 
     fun postRequest(context: Context, url: String, map: Map<String, String>) {
         var dialog: AlertDialog? = null
         if (getProgress) {
             dialog = MyProgressDialog(context)
         }
+        D(Gson().toJson(map).toString())
         context.doAsync {
             val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
             val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
@@ -112,7 +142,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                            callback.onSuccess(context, string)
+                           callback?.onSuccess(context, string)
                         }
                     } else {
                         if (res.retErr == LOGINERR) {
@@ -120,14 +150,14 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                                callback.onLoginErr(context)
+                               callback?.onLoginErr(context)
                             }
                         } else {
                             uiThread {
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                                callback.onError(context, res.retErr)
+                               callback?.onError(context, res.retErr)
                             }
                         }
                     }
@@ -136,7 +166,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                        callback.onError(context, response.message())
+                       callback?.onError(context, response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -144,7 +174,66 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                    callback.onError(context, e.toString())
+                   callback?.onError(context, e.toString())
+                }
+            }
+        }
+    }
+
+    fun postRequest(context: Context, url: String, str: String) {
+        var dialog: AlertDialog? = null
+        if (getProgress) {
+            dialog = MyProgressDialog(context)
+        }
+        D(str)
+        context.doAsync {
+            val requestBody = RequestBody.create(MEDIA_TYPE_JSON, str)
+            val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
+            try {
+                val response = mOkHttpClient.newCall(request).execute()
+                if (response.isSuccessful) {
+                    val string = response.body().string()
+                    getSession(response)
+                    val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
+                    D("requestResult = $string")
+                    if (res.retInt == 1) {
+                        uiThread {
+                            if (getProgress) {
+                                dialog?.dismiss()
+                            }
+                           callback?.onSuccess(context, string)
+                        }
+                    } else {
+                        if (res.retErr == LOGINERR) {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                               callback?.onLoginErr(context)
+                            }
+                        } else {
+                            uiThread {
+                                if (getProgress) {
+                                    dialog?.dismiss()
+                                }
+                               callback?.onError(context, res.retErr)
+                            }
+                        }
+                    }
+                } else {
+                    uiThread {
+                        if (getProgress) {
+                            dialog?.dismiss()
+                        }
+                       callback?.onError(context, response.message())
+                    }
+                }
+            } catch (e: Exception) {
+                uiThread {
+                    if (getProgress) {
+                        dialog?.dismiss()
+                    }
+                   callback?.onError(context, e.toString())
                 }
             }
         }
@@ -178,7 +267,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                            callback.onSuccess(context, string)
+                           callback?.onSuccess(context, string)
                         }
                     } else {
                         if (res.retErr == LOGINERR) {
@@ -186,14 +275,14 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                                callback.onLoginErr(context)
+                               callback?.onLoginErr(context)
                             }
                         } else {
                             uiThread {
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                                callback.onError(context, res.retErr)
+                               callback?.onError(context, res.retErr)
                             }
                         }
                     }
@@ -202,7 +291,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                        callback.onError(context, response.message())
+                       callback?.onError(context, response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -210,7 +299,7 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                    callback.onError(context, e.toString())
+                   callback?.onError(context, e.toString())
                 }
             }
         }
@@ -361,6 +450,12 @@ public class MySimpleRequest(var callback: RequestCallBack, val getProgress: Boo
         fun onSuccess(context: Context, result: String)
         fun onError(context: Context, error: String)
         fun onLoginErr(context: Context)
+    }
+
+    interface RequestCallBackWithOutContext {
+        fun onSuccess(result: String)
+        fun onError(error: String)
+        fun onLoginErr()
     }
 
     interface ReqProgressCallBack {

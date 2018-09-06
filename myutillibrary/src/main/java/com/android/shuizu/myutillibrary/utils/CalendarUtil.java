@@ -2,8 +2,10 @@ package com.android.shuizu.myutillibrary.utils;
 
 import android.text.format.Time;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -58,6 +60,19 @@ public class CalendarUtil {
     public CalendarUtil(int year, int month, int date, int hourOfDay, int minute, int second) {
         this();
         c.set(year, month, date, hourOfDay, minute, second);
+    }
+
+    public CalendarUtil(String dateStr) {
+        this();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+
+        Date date = null;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.setTime(date);
     }
 
     public void set(int year, int month, int day) {
@@ -179,4 +194,11 @@ public class CalendarUtil {
         }
     }
 
+    public Calendar getC() {
+        return c;
+    }
+
+    public void setC(Calendar c) {
+        this.c = c;
+    }
 }
