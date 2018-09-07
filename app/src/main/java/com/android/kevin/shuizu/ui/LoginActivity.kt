@@ -69,6 +69,7 @@ class LoginActivity : MyBaseActivity() {
                     login_verf = loginInfo.login_verf
                     setAlias(login_account)
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                    finish()
                 }
 
                 override fun onError(context: Context, error: String) {
@@ -78,6 +79,7 @@ class LoginActivity : MyBaseActivity() {
                     LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     })
                 }
 
@@ -115,6 +117,7 @@ class LoginActivity : MyBaseActivity() {
                 login_verf = loginInfo.login_verf
                 setAlias(account.text.toString())
                 startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                finish()
             }
 
             override fun onError(context: Context, error: String) {
@@ -125,6 +128,7 @@ class LoginActivity : MyBaseActivity() {
                 context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
                     val intent = Intent(context, LoginActivity::class.java)
                     startActivity(intent)
+                    finish()
                 })
             }
 

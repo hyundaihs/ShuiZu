@@ -11,20 +11,27 @@ import java.net.Socket
  * ChaYin
  * Created by ${蔡雨峰} on 2018/9/6/006.
  */
-class SocketUtil(host: String, port: Int) {
+class SocketUtil(host: String, port: Int, val onMsgComing: OnMsgComing) {
     var socket: Socket? = null
     var mBufferedReaderClient: InputStream? = null
     var mPrintWriterClient: OutputStream? = null
-    var flag = true
-    var onMsgComing: OnMsgComing? = null
+    var isOpened = false
 
     init {
         doAsync {
             socket = Socket(host, port)
+            Thread.sleep(500)
             if (socket!!.isConnected) {
                 mBufferedReaderClient = socket!!.getInputStream()
                 mPrintWriterClient = socket!!.getOutputStream()
-                D("socket is connected")
+                openReceiver()
+                uiThread {
+                    onMsgComing.onInitSocket(true)
+                }
+            } else {
+               uiThread {
+                   onMsgComing.onInitSocket(false)
+               }
             }
         }
     }
@@ -37,13 +44,14 @@ class SocketUtil(host: String, port: Int) {
     }
 
     fun openReceiver() {
+        isOpened = true
         doAsync {
-            while (flag) {
+            while (isOpened) {
                 val byteArray = ByteArray(256)
                 mBufferedReaderClient!!.read(byteArray)//将接收到的数据存放在buffer数组中
                 D(String(byteArray))
                 uiThread {
-                    onMsgComing?.onMsgCome(byteArray)
+                    onMsgComing.onMsgCome(byteArray)
                 }
             }
             mBufferedReaderClient!!.close()
@@ -53,10 +61,11 @@ class SocketUtil(host: String, port: Int) {
     }
 
     fun release() {
-        flag = false
+        isOpened = false
     }
 
     interface OnMsgComing {
+        fun onInitSocket(isSuccess: Boolean)
         fun onMsgCome(byteArray: ByteArray)
     }
 

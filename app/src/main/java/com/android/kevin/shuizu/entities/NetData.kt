@@ -114,6 +114,10 @@ page_size：每页条数(默认20)
 type_id:类型（1:报警，2：操作）*/
 const val BJ_LOG = "bjlog" //设备日志
 
+/*acccardtype_id：分组id（0为常用设备）
+card_id：设备编号*/
+const val BDSB = "bdsb" //绑定设备
+
 
 
 

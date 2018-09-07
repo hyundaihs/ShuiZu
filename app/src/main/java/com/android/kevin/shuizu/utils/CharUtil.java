@@ -5,70 +5,75 @@ package com.android.kevin.shuizu.utils;
  * Created by ${蔡雨峰} on 2018/9/6/006.
  */
 public class CharUtil {
-    public static String bytesToString(byte[] buffer) {
-        return Integer.valueOf(Integer.toHexString((buffer[3] << 8) + (buffer[4] & 0x00ff)), 16).toString();
-    }
 
-    /* Convert byte[] to hex string.这里我们可以将byte转换成int，然后利用Integer.toHexString(int)来转换成16进制字符串。
-     * @param src byte[] data
-     * @return hex string
+    /**
+     * 把字符串去空格后转换成byte数组。如"37   5a"转成[0x37][0x5A]
+     * @param s
+     * @return
      */
-    public static String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder("");
-        if (src == null || src.length <= 0) {
-            return null;
+    public static byte[] string2bytes(String s){
+        String ss = s.replace(" ", "");
+        int string_len = ss.length();
+        int len = string_len/2;
+        if(string_len%2 ==1){
+            ss = "0"+ss;
+            string_len++;
+            len++;
         }
-        for (byte aSrc : src) {
-            int v = aSrc & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hv);
+        byte[] a = new byte[len];
+        for(int i=0;i<len;i++){
+            a[i] = (byte)Integer.parseInt(ss.substring(2*i,2*i+2), 16);
         }
-        return stringBuilder.toString();
+        return a;
     }
 
     /**
-     * Convert hex string to byte[]
-     *
-     * @param hexString the hex string
-     * @return byte[]
+     * 16进制数组转化成字符串(大写字母)，比如[0x03][0x3f]转化成"33F"
+     * @param b
+     * @return
      */
-    public static byte[] hexStringToBytes(String hexString) {
-        if (hexString == null || hexString.equals("")) {
-            return null;
+    public static String hex2HexString(byte[] b) {
+        int len = b.length;
+        int[] x = new int[len];
+        String[] y = new String[len];
+        StringBuilder str = new StringBuilder();
+        // 转换成Int数组,然后转换成String数组
+        for (int j = 0; j < len; j++) {
+            x[j] = b[j] & 0xff;
+            y[j] = Integer.toHexString(x[j]);
+            while (y[j].length() < 2) {
+                y[j] = "0" + y[j];
+            }
+            str.append(y[j]);
         }
-        hexString = hexString.toUpperCase();
-        int length = hexString.length() / 2;
-        char[] hexChars = hexString.toCharArray();
-        byte[] d = new byte[length];
-        for (int i = 0; i < length; i++) {
-            int pos = i * 2;
-            d[i] = (byte) (charToByte(hexChars[pos]) << 4 | charToByte(hexChars[pos + 1]));
+        //如果是以"0"开头，则弃掉"0"
+        while(str.indexOf("0")==0){
+            str = str.delete(0, 1);
         }
-        return d;
+        return new String(str).toUpperCase();//toUpperCase()方法  转化成大写
     }
 
     /**
-     * Convert char to byte
-     *
-     * @param c char
-     * @return byte
+     * 16进制数组转化成调试用字符串(大写字母)，比如[0x03][0x3f]转化成"03 3F"
+     * @param b
+     * @return
      */
-    private static byte charToByte(char c) {
-        return (byte) "0123456789ABCDEF".indexOf(c);
-    }
-
-    //将指定byte数组以16进制的形式打印到控制台
-    public static void printHexString(byte[] b) {
-        for (int i = 0; i < b.length; i++) {
-            String hex = Integer.toHexString(b[i] & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
+    public static String hex2DebugHexString(byte[] b) {
+        int len = b.length;
+        int[] x = new int[len];
+        String[] y = new String[len];
+        StringBuilder str = new StringBuilder();
+        // 转换成Int数组,然后转换成String数组
+        int j = 0;
+        for (; j < len; j++) {
+            x[j] = b[j] & 0xff;
+            y[j] = Integer.toHexString(x[j]);
+            while (y[j].length() < 2) {
+                y[j] = "0" + y[j];
             }
-            System.out.print(hex.toUpperCase());
+            str.append(y[j]);
+            str.append(" ");
         }
-
+        return new String(str).toUpperCase();//toUpperCase()方法  转化成大写
     }
 }
