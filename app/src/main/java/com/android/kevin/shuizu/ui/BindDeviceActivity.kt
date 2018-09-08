@@ -1,9 +1,12 @@
 package com.android.kevin.shuizu.ui
 
 import android.content.*
+import android.net.NetworkInfo
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiConfiguration
+import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
+import android.net.wifi.WifiManager.WIFI_STATE_ENABLED
 import android.os.Bundle
 import android.view.View
 import com.android.kevin.shuizu.R
@@ -49,7 +52,8 @@ class BindDeviceActivity : MyBaseActivity() {
 
     var socketUtil: SocketUtil? = null
     val options1Items = arrayListOf<String>("水质监测器", "加热棒", "水泵", "断电报警器", "水位报警")
-    var checkDevice: String = "TR"
+    var checkDevice: String = ""
+    var flag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,14 +74,13 @@ class BindDeviceActivity : MyBaseActivity() {
                             4 -> DeviceType.WL.toString()
                             else -> DeviceType.TR.toString()
                         }
-                        D("选中$checkDevice")
                         search.visibility = View.VISIBLE
                     }).build<String>()
             pvOptions.setPicker(options1Items)
             pvOptions.show()
         }
         search.setOnClickListener {
-            search()
+            searchWifi()
         }
         connect.setOnClickListener {
             sendData(createMsg(wifiAccount.text.toString(), wifiPassword.text.toString()))
@@ -104,13 +107,12 @@ class BindDeviceActivity : MyBaseActivity() {
     }
 
     override fun onDestroy() {
-        socketUtil?.release()
         super.onDestroy()
+        flag = false
     }
 
 
     private fun sendData(byteArray: ByteArray) {
-        setLoadText("正在注册设备信息")
         if (socketUtil!!.isOpened) {
             socketUtil!!.sendMsg(byteArray)
         }
@@ -118,7 +120,11 @@ class BindDeviceActivity : MyBaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        val intentFilter = IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)//是否可用
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)//搜索结果
+        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)//连接状态改变
+        intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)//连接中各种状态
         registerReceiver(receiver, intentFilter)
     }
 
@@ -127,20 +133,98 @@ class BindDeviceActivity : MyBaseActivity() {
         unregisterReceiver(receiver)
     }
 
-    var isFind = false
+    var isWifiFind = false
 
-    val receiver = object : BroadcastReceiver() {
+    private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action
-            if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION) && !isFind) {
-                val scanResults = mWifiMangaer.scanResults
-                val rel = isFind(scanResults)
-                if (rel >= 0) {
-                    isFind = true
-                    dealSearchResult(scanResults[rel].SSID)
+            when (action) {
+                WifiManager.WIFI_STATE_CHANGED_ACTION -> {
+                    val wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0)
+                    if (wifiState == WIFI_STATE_ENABLED && checkDevice != "" && !isWifiFind) {
+                        mWifiMangaer.startScan()
+                    }
+                }
+                WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> {
+                    if (!isWifiFind) {
+                        isWifiFind = true
+                        val scanResults = mWifiMangaer.scanResults
+                        val rel = isFind(scanResults)
+                        if (rel >= 0) {
+                            dealSearchResult(scanResults[rel].SSID)
+                        } else {
+                            isWifiFind = false
+                        }
+                    }
+                }
+                WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
+                    //拿到NetworkInfo
+                    val networkInfo = intent.getParcelableExtra<NetworkInfo>(WifiManager.EXTRA_NETWORK_INFO)
+                    //判断连接上了哈
+                    if (null != networkInfo && networkInfo.isConnected) {
+                        //连接上了,就把wifi的信息传出去
+                        val wifiInfo = intent.getParcelableExtra<WifiInfo>(WifiManager.EXTRA_WIFI_INFO)
+                        if (wifiInfo != null && wifiInfo.ssid.replace("\"", "") == WIFI_SSID) {
+                            //把结果回传出去
+                            connectDevice()
+                            waitRegister = false
+                        } else {
+                            if (waitRegister) {
+                                setLoadText("注册信息 ${wifiInfo.ssid}")
+                                socketUtil?.release()
+                                registerDevice(deviceIDS)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private var connectCount = 0
+    private var waitRegister = false
+    private var deviceIDS = ""
+
+    private var isCallConnect = false
+
+    private fun connectDevice() {
+        if (isCallConnect) {
+            return
+        } else {
+            isCallConnect = true
+        }
+        setLoadText("正在连接设备")
+        if (null == socketUtil) {
+            socketUtil = SocketUtil("192.168.4.1", 8899, object : OnMsgComing {
+                override fun onInitSocket(isSuccess: Boolean) {
+                    if (isSuccess) {
+                        toast("设备连接成功,请输入Wifi信息")
+                        showWifiLayout()
+                        hideLoading()
+                        connectCount = 0
+                    } else {
+                        toast("设备连接失败,请重新搜索")
+                        isWifiFind = false
+                    }
+                }
+
+                override fun onMsgCome(byteArray: ByteArray) {
+                    setLoadText("发送关闭热点信息")
+                    doAsync {
+                        uiThread {
+                            sendData(getCloseWifiMsg())
+                        }
+                        waitRegister = true
+                        val temp = String(byteArray)
+                        deviceIDS = temp.substring(0, 3) + temp.substring(4, temp.lastIndex)
+                    }
+                }
+            })
+        }
+        if (!socketUtil!!.isOpened) {
+            socketUtil!!.init()
+        }
+        isCallConnect = false
     }
 
     private fun isFind(scanResults: List<ScanResult>): Int {
@@ -152,76 +236,54 @@ class BindDeviceActivity : MyBaseActivity() {
         return -1
     }
 
+    private var isCall = false
+
     private fun dealSearchResult(SSID: String) {
+        if (isCall) {
+            return
+        } else {
+            isCall = true
+        }
         doAsync {
             uiThread {
-                setLoadText("正在连接设备")
+                setLoadText("正在连接设备热点")
             }
-            val netWorkId = mWifiMangaer.addNetwork(createWifiInfo(SSID, "", 1))
-            var isSuccess = false
-            var flag = false
+            var netWorkId = checkSavedWifiSSID()
+            if (netWorkId == -1) {
+                netWorkId = mWifiMangaer.addNetwork(createWifiInfo(SSID, "", 1))
+            }
             if (netWorkId >= 0) {
                 mWifiMangaer.disconnect()
-                while (!flag && !isSuccess) {
-                    mWifiMangaer.enableNetwork(netWorkId, true)
-                    try {
-                        Thread.sleep(2000)
-                    } catch (e1: InterruptedException) {
-                        e1.printStackTrace()
-                    }
-                    var currSSID = mWifiMangaer.connectionInfo.ssid
-                    if (currSSID != null)
-                        currSSID = currSSID.replace("\"", "")
-                    val currIp = mWifiMangaer.connectionInfo.ipAddress
-                    if (currSSID != null && currSSID == WIFI_SSID && currIp != 0) {
-                        isSuccess = true
-                        Thread.sleep(2000)
-                        uiThread {
-                            socketUtil = SocketUtil("192.168.4.1", 8899, object : OnMsgComing {
-                                override fun onInitSocket(isSuccess: Boolean) {
-                                    if (isSuccess) {
-                                        toast("设备连接成功,请输入Wifi信息")
-                                        showWifiLayout()
-                                        hideLoading()
-                                    } else {
-                                        toast("设备连接失败,请重新搜索")
-                                        hideWifiLayout()
-                                        hideLoading()
-                                    }
-                                }
-
-                                override fun onMsgCome(byteArray: ByteArray) {
-                                    sendData(getCloseWifiMsg())
-                                    doAsync {
-                                        Thread.sleep(500)
-                                        socketUtil?.release()
-                                        mWifiMangaer.disconnect()
-                                        uiThread {
-                                            registeDevice(String(byteArray))
-                                        }
-                                    }
-                                }
-                            })
-                        }
-                    } else {
-                        flag = true
+                Thread.sleep(500)
+                if (!mWifiMangaer.enableNetwork(netWorkId, true)) {
+                    uiThread {
+                        toast("设备连接失败,请手动连接wifi")
+                        hideLoading()
+                        hideWifiLayout()
+                        isWifiFind = false
+                        isCall = false
                     }
                 }
+                isCall = false
             } else {
                 uiThread {
                     toast("设备连接失败,请重新搜索")
                     hideLoading()
                     hideWifiLayout()
+                    isWifiFind = false
+                    isCall = false
                 }
             }
         }
     }
 
-    private fun registeDevice(id: String) {
+
+    fun registerDevice(id: String) {
         doAsync {
-            var flag = true
-            while (true) {
-                Thread.sleep(2000)
+            flag = true
+            var count = 0
+            while (flag) {
+                Thread.sleep(5000)
                 val map = mapOf(Pair("acccardtype_id", 0.toString()),
                         Pair("card_id", id))
                 MySimpleRequest(object : MySimpleRequest.RequestCallBack {
@@ -232,36 +294,24 @@ class BindDeviceActivity : MyBaseActivity() {
                     }
 
                     override fun onError(context: Context, error: String) {
-                        context.toast(error)
+                        if (count >= 10) {
+                            flag = false
+                            context.toast(error)
+                            finish()
+                        }
                     }
 
                     override fun onLoginErr(context: Context) {
+                        flag = false
                         context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
-                            flag = false
                             val intent = Intent(context, LoginActivity::class.java)
                             startActivity(intent)
                         })
                     }
 
                 }, false).postRequest(this@BindDeviceActivity, getInterface(BDSB), map)
+                count++
             }
-        }
-    }
-
-    private fun search() {
-        setLoadText("正在搜索设备")
-        if (checkConnectWifiSSID()) {
-            hideLoading()
-            showWifiLayout()
-            return
-        }
-        doAsync {
-            if (!mWifiMangaer.isWifiEnabled) {
-                //开启wifi
-                mWifiMangaer.isWifiEnabled = true
-                Thread.sleep(1000)
-            }
-            mWifiMangaer.startScan()
         }
     }
 
@@ -270,16 +320,21 @@ class BindDeviceActivity : MyBaseActivity() {
         val configs = mWifiMangaer.configuredNetworks
         // 显示输出
         for (config in configs) {
-            if (config.SSID == WIFI_SSID) {
+            if (config.SSID.replace("\"", "") == WIFI_SSID) {
                 return config.networkId
             }
         }
         return -1
     }
 
-    private fun checkConnectWifiSSID(): Boolean {
-        val wifiInfo = mWifiMangaer.connectionInfo
-        return wifiInfo.ssid == WIFI_SSID
+    private fun searchWifi() {
+        setLoadText("正在搜索设备")
+        if (mWifiMangaer.isWifiEnabled) {
+            mWifiMangaer.startScan()
+        } else {
+            //开启wifi
+            mWifiMangaer.isWifiEnabled = true
+        }
     }
 
     private fun getCloseWifiMsg(): ByteArray {
@@ -287,8 +342,9 @@ class BindDeviceActivity : MyBaseActivity() {
         sb.append(charToHexStr(checkDevice[0]))
         sb.append(charToHexStr(checkDevice[1]))
         sb.append(charToHexStr('-'))
-        sb.append(charToHexStr('0'))
-        sb.append("04")
+        sb.append(charToHexStr('1'))
+        sb.append(makeChecksum(sb.toString()))
+        D("closeWifi = $sb")
         return CharUtil.string2bytes(sb.toString())
     }
 
@@ -308,13 +364,14 @@ class BindDeviceActivity : MyBaseActivity() {
         }
         sb.append("0d")
         sb.append(getCheckSum(wifiAccount, wifiPassword))
+        D("createMsg = $sb")
         return CharUtil.string2bytes(sb.toString())
     }
 
     private fun getCheckSum(wifiAccount: String, wifiPassword: String): String {
         val sb = StringBuffer()
-        sb.append(charToHexStr('T'))
-        sb.append(charToHexStr('R'))
+        sb.append(charToHexStr(checkDevice[0]))
+        sb.append(charToHexStr(checkDevice[1]))
         sb.append(charToHexStr('-'))
         sb.append(charToHexStr('0'))
         for (i in 0 until wifiAccount.length) {

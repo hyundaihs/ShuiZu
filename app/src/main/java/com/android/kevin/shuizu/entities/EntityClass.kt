@@ -49,6 +49,8 @@ class App_Keyword {
         const val KEYWORD_CIRCLE_SELECTOR_PH_LOW_REQUEST = 16 //PH基准值设置
         const val KEYWORD_CIRCLE_SELECTOR_TDS_REQUEST = 17 //TDS基准值设置
         const val KEYWORD_TIME_DATE_CHOOSER_REQUEST = 18 //TDS基准值设置
+        const val KEYWORD_CIRCLE_SELECTOR_PH_FIRST_REQUEST = 19 //TDS基准值设置
+        const val KEYWORD_CIRCLE_SELECTOR_PH_SECOND_REQUEST = 20 //TDS基准值设置
         const val KEYWORD_RESULT_OK = 9
     }
 }

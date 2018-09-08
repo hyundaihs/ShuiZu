@@ -107,6 +107,13 @@ const val TDS_INFO = "tdsinfo" //TDS报警详情
 v_1：报警值*/
 const val SZ_BJTDS = "szbjtds" //设置报警TDS值
 
+/*id：设备id*/
+const val KG_INFO = "kginfo" //报警开关详情
+
+/*id：设备id
+v_1：开关值（0：关，1：开）*/
+const val SZ_BJKG = "szbjkg" //设置报警开关
+
 const val NEW_LOG = "newlog" //最新日志（5分钟内)
 
 /*page:页数

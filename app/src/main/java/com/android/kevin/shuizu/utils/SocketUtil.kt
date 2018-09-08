@@ -5,33 +5,41 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.ConnectException
 import java.net.Socket
 
 /**
  * ChaYin
  * Created by ${蔡雨峰} on 2018/9/6/006.
  */
-class SocketUtil(host: String, port: Int, val onMsgComing: OnMsgComing) {
+class SocketUtil(val host: String, private val port: Int, private val onMsgComing: OnMsgComing) {
     var socket: Socket? = null
     var mBufferedReaderClient: InputStream? = null
     var mPrintWriterClient: OutputStream? = null
     var isOpened = false
 
-    init {
+    fun init() {
         doAsync {
-            socket = Socket(host, port)
-            Thread.sleep(500)
-            if (socket!!.isConnected) {
-                mBufferedReaderClient = socket!!.getInputStream()
-                mPrintWriterClient = socket!!.getOutputStream()
-                openReceiver()
-                uiThread {
-                    onMsgComing.onInitSocket(true)
+            try {
+                Thread.sleep(2000)
+                socket = Socket(host, port)
+                Thread.sleep(2000)
+                if (socket!!.isConnected) {
+                    mBufferedReaderClient = socket!!.getInputStream()
+                    mPrintWriterClient = socket!!.getOutputStream()
+                    uiThread {
+                        onMsgComing.onInitSocket(true)
+                    }
+                    openReceiver()
+                } else {
+                    uiThread {
+                        onMsgComing.onInitSocket(false)
+                    }
                 }
-            } else {
-               uiThread {
-                   onMsgComing.onInitSocket(false)
-               }
+            } catch (e: ConnectException) {
+                uiThread {
+                    onMsgComing.onInitSocket(false)
+                }
             }
         }
     }
@@ -43,25 +51,24 @@ class SocketUtil(host: String, port: Int, val onMsgComing: OnMsgComing) {
         }
     }
 
-    fun openReceiver() {
+    private fun openReceiver() {
         isOpened = true
         doAsync {
-            while (isOpened) {
-                val byteArray = ByteArray(256)
-                mBufferedReaderClient!!.read(byteArray)//将接收到的数据存放在buffer数组中
-                D(String(byteArray))
-                uiThread {
-                    onMsgComing.onMsgCome(byteArray)
-                }
+            val temp = ByteArray(256)
+            val length = mBufferedReaderClient!!.read(temp)//将接收到的数据存放在buffer数组中
+            val rel = ByteArray(length)
+            System.arraycopy(temp, 0, rel, 0, length)
+            D("服务器返回数据 = ${String(rel)}")
+            uiThread {
+                onMsgComing.onMsgCome(rel)
             }
-            mBufferedReaderClient!!.close()
-            mPrintWriterClient!!.close()
-            socket!!.close()
         }
     }
 
     fun release() {
-        isOpened = false
+        mBufferedReaderClient!!.close()
+        mPrintWriterClient!!.close()
+        socket!!.close()
     }
 
     interface OnMsgComing {

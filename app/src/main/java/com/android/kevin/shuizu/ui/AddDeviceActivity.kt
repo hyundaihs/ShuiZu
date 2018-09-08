@@ -183,9 +183,6 @@ class AddDeviceActivity : MyBaseActivity() {
     private fun initView() {
         if (isEdit) {
             group_Name.setText(groupName)
-            group_Name.isFocusable = false
-            group_Name.isFocusableInTouchMode = false
-            group_Name.hint = ""
         }
         val gridLayoutManager = GridLayoutManager(this, 2)
         deviceList.layoutManager = gridLayoutManager
