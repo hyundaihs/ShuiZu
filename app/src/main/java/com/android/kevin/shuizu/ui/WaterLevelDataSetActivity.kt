@@ -22,16 +22,19 @@ import org.jetbrains.anko.toast
 class WaterLevelDataSetActivity : MyBaseActivity() {
 
     private var deviceId = 0
-    private var isCodeChecked = false
+    private var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_water_level_data_set)
         initActionBar(this, "水位报警设置")
         deviceId = intent.getIntExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, 0)
+        levelSwitchWarn.setOnTouchListener { _, _ ->
+            isTouched = true
+            false
+        }
         levelSwitchWarn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (!isCodeChecked) {
-                isCodeChecked = true
+            if(isTouched){
                 levelSwitchWarn.isEnabled = false
                 saveBaoJinBJ()
             }
@@ -76,9 +79,9 @@ class WaterLevelDataSetActivity : MyBaseActivity() {
                 val baoJinInfo = baoJin_InfoRes.retRes
                 levelWarnResult.text = WaterMonitorDataSetActivity.BAOJIN_REL[baoJinInfo.sz_status]
                 if (baoJinInfo.sz_status != 1) {
-                    isCodeChecked = false
                     levelSwitchWarn.isEnabled = true
                     levelSwitchWarn.isChecked = baoJinInfo.v_1 == 1f
+                    isTouched = false
                 }
                 if (baoJinInfo.sz_status == 1 && !isFinishing) {
                     doAsync {
