@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.widget.CompoundButton
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_CURR
@@ -13,6 +15,7 @@ import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SE
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_MAX
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_MIN
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CIRCLE_SELECTOR_TITLE
+import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
@@ -25,7 +28,14 @@ import org.jetbrains.anko.toast
 /**
  * Created by kevin on 2018/9/1.
  */
-class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
+class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        if(isTouched){
+            switchWarn.isEnabled = false
+            saveBaoJinBJ()
+        }
+    }
+
     companion object {
         const val SEND_DATA = "发送数据"
         const val VERIFING = "正在校验"
@@ -171,6 +181,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
     private var isPHChange = false
     private var isTDSChange = false
     private var isPHVerifyChange = false
+    private var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,19 +191,19 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
                 toast("没有任何修改")
             } else {
                 if (isSWChange) {
-                    high_h_value.isEnabled = false
-                    high_value.isEnabled = false
-                    low_value.isEnabled = false
-                    low_l_value.isEnabled = false
+                    high_h_valueBtn.isEnabled = false
+                    high_valueBtn.isEnabled = false
+                    low_valueBtn.isEnabled = false
+                    low_l_valueBtn.isEnabled = false
                     saveBaoJinSW()
                 }
                 if (isPHChange) {
-                    high_ph_value.isEnabled = false
-                    low_ph_value.isEnabled = false
+                    high_ph_valueBtn.isEnabled = false
+                    low_ph_valueBtn.isEnabled = false
                     saveBaoJinPH()
                 }
                 if (isTDSChange) {
-                    tdsSet.isEnabled = false
+                    tdsSetBtn.isEnabled = false
                     saveBaoJinTDS()
                 }
                 if (isPHVerifyChange) {
@@ -202,12 +213,12 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
             }
         })
         deviceId = intent.getIntExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, 0)
-        initViews()
         getBaoJinDataState(BAOJIN_SW)
         getBaoJinDataState(BAOJIN_PH)
         getBaoJinDataState(BAOJIN_TDS)
         getBaoJinDataState(BAOJIN_BJ)
         getBaoJinDataState(VERIFY_PH)
+        initViews()
     }
 
     private fun initViews() {
@@ -220,13 +231,11 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
         tdsSetBtn.setOnClickListener(this)
         firstBtn.setOnClickListener(this)
         secondBtn.setOnClickListener(this)
-        switchWarn.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (!isCodeChecked) {
-                isCodeChecked = true
-                switchWarn.isEnabled = false
-                saveBaoJinBJ()
-            }
+        switchWarn.setOnTouchListener { _, _ ->
+            isTouched = true
+            false
         }
+        switchWarn.setOnCheckedChangeListener(this@WaterMonitorDataSetActivity)
     }
 
     private fun savePHVerify() {
@@ -344,8 +353,6 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
         }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(SZ_BJKG), map)
     }
 
-    private var isCodeChecked = false
-
     private fun getBaoJinDataState(type: Int) {
         val inter = when (type) {
             BAOJIN_SW -> BJWD_INFO
@@ -365,10 +372,10 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
                         swResult.text = BAOJIN_REL[baoJinInfo.sz_status]
                         if (baoJinInfo.sz_status != 1) {
                             isSWChange = false
-                            high_h_value.isEnabled = true
-                            high_value.isEnabled = true
-                            low_value.isEnabled = true
-                            low_l_value.isEnabled = true
+                            high_h_valueBtn.isEnabled = true
+                            high_valueBtn.isEnabled = true
+                            low_valueBtn.isEnabled = true
+                            low_l_valueBtn.isEnabled = true
 
                             high_h_value.text = baoJinInfo.v_4.toString()
                             high_value.text = baoJinInfo.v_3.toString()
@@ -380,8 +387,8 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
                         phResult.text = BAOJIN_REL[baoJinInfo.sz_status]
                         if (baoJinInfo.sz_status != 1) {
                             isPHChange = false
-                            high_ph_value.isEnabled = true
-                            low_ph_value.isEnabled = true
+                            high_ph_valueBtn.isEnabled = true
+                            low_ph_valueBtn.isEnabled = true
 
                             high_ph_value.text = baoJinInfo.v_2.toString()
                             low_ph_value.text = baoJinInfo.v_1.toString()
@@ -391,24 +398,26 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener {
                         tdsResult.text = BAOJIN_REL[baoJinInfo.sz_status]
                         if (baoJinInfo.sz_status != 1) {
                             isTDSChange = false
-                            tdsSet.isEnabled = true
+                            tdsSetBtn.isEnabled = true
                             tdsSet.text = baoJinInfo.v_1.toString()
                         }
                     }
                     BAOJIN_BJ -> {
                         warnResult.text = BAOJIN_REL[baoJinInfo.sz_status]
                         if (baoJinInfo.sz_status != 1) {
-                            isCodeChecked = false
-                            switchWarn.isEnabled = true
                             switchWarn.isChecked = baoJinInfo.v_1 == 1f
+                            switchWarn.isEnabled = true
+                            isTouched = false
                         }
                     }
                     VERIFY_PH -> {
                         verifyResult.text = BAOJIN_REL[baoJinInfo.sz_status]
                         if (baoJinInfo.sz_status != 1) {
                             isPHVerifyChange = false
-                            switchWarn.isEnabled = true
-                            switchWarn.isChecked = baoJinInfo.v_1 == 1f
+                            firstBtn.isEnabled = true
+                            secondBtn.isEnabled = true
+                            firstData.text = baoJinInfo.v_1.toString()
+                            secondData.text = baoJinInfo.v_2.toString()
                         }
                     }
                 }

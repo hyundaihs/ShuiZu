@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_gray"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg_gray"
+              android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/layout_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                         android:padding="10dp"
                         android:text="报警开关设置"
                         android:textColor="@color/text_332c2b"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/warnResult"
@@ -48,25 +48,26 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
                         android:textColor="@color/text_green"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <Switch
                     android:id="@+id/switchWarn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:enabled="false"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="报警开关"
                     android:textColor="@color/text_gray_dark"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -92,7 +93,7 @@
                         android:padding="10dp"
                         android:text="水温"
                         android:textColor="@color/text_332c2b"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                         android:padding="10dp"
                         android:text="(单位℃)"
                         android:textColor="@color/text_gray"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/swResult"
@@ -112,19 +113,20 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
                         android:textColor="@color/text_green"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/high_h_valueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -136,7 +138,7 @@
                         android:padding="10dp"
                         android:text="极高值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/high_h_value"
@@ -148,19 +150,20 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="30dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/high_valueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -172,7 +175,7 @@
                         android:padding="10dp"
                         android:text="高值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/high_value"
@@ -184,19 +187,20 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="30dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/low_valueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -208,7 +212,7 @@
                         android:padding="10dp"
                         android:text="低值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/low_value"
@@ -220,7 +224,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
 
@@ -228,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="30dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/low_l_valueBtn"
@@ -245,7 +249,7 @@
                         android:padding="10dp"
                         android:text="极低值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/low_l_value"
@@ -257,7 +261,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
@@ -285,7 +289,7 @@
                         android:padding="10dp"
                         android:text="PH值"
                         android:textColor="@color/text_332c2b"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/phResult"
@@ -295,19 +299,20 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
                         android:textColor="@color/text_green"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/high_ph_valueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -319,7 +324,7 @@
                         android:padding="10dp"
                         android:text="高值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/high_ph_value"
@@ -331,19 +336,20 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="30dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/low_ph_valueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -355,7 +361,7 @@
                         android:padding="10dp"
                         android:text="低值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/low_ph_value"
@@ -367,7 +373,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -394,7 +400,7 @@
                         android:padding="10dp"
                         android:text="TDS基准值设置"
                         android:textColor="@color/text_332c2b"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tdsResult"
@@ -404,7 +410,7 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
                         android:textColor="@color/text_green"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
 
@@ -412,12 +418,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginStart="30dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/tdsSetBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -429,7 +436,7 @@
                         android:padding="10dp"
                         android:text="基准值"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/tdsSet"
@@ -441,7 +448,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -468,7 +475,7 @@
                         android:gravity="center_vertical"
                         android:text="设备校验"
                         android:textColor="@color/text_332c2b"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/verifyResult"
@@ -478,7 +485,7 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical|end"
                         android:textColor="@color/text_green"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
 
@@ -487,12 +494,13 @@
                     android:layout_height="1dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/firstBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -504,7 +512,7 @@
                         android:padding="10dp"
                         android:text="校验数据(1)"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/firstData"
@@ -516,7 +524,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <View
@@ -524,12 +532,13 @@
                     android:layout_height="1dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
+                    android:background="@color/line_gray"/>
 
                 <LinearLayout
                     android:id="@+id/secondBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:orientation="horizontal">
 
                     <TextView
@@ -541,7 +550,7 @@
                         android:padding="10dp"
                         android:text="校验数据(2)"
                         android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/secondData"
@@ -553,7 +562,7 @@
                         android:gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/text_gray_light"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
