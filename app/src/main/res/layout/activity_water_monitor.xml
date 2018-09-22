@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_gray"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg_gray"
+              android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <include layout="@layout/layout_toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,19 +26,19 @@
                 android:layout_height="wrap_content"
                 android:text="当前水质"
                 app:layout_constraintBottom_toTopOf="@id/waterLevel"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/waterLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="极优"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp"
-                android:text="极优"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/waterLevelTitle"
                 app:layout_constraintRight_toRightOf="@id/waterLevelTitle"
-                app:layout_constraintTop_toBottomOf="@id/waterLevelTitle" />
+                app:layout_constraintTop_toBottomOf="@id/waterLevelTitle"/>
 
             <TextView
                 android:id="@+id/waterTempTip"
@@ -48,7 +48,7 @@
                 android:background="@drawable/red_tip"
                 app:layout_constraintBottom_toBottomOf="@id/waterTemp"
                 app:layout_constraintLeft_toRightOf="@id/waterLevelTitle"
-                app:layout_constraintTop_toTopOf="@id/waterTemp" />
+                app:layout_constraintTop_toTopOf="@id/waterTemp"/>
 
 
             <TextView
@@ -58,7 +58,7 @@
                 android:background="@drawable/yellow_tip"
                 app:layout_constraintBottom_toBottomOf="@id/waterPH"
                 app:layout_constraintLeft_toLeftOf="@id/waterTempTip"
-                app:layout_constraintTop_toTopOf="@id/waterPH" />
+                app:layout_constraintTop_toTopOf="@id/waterPH"/>
 
             <TextView
                 android:id="@+id/waterTDSTip"
@@ -67,7 +67,7 @@
                 android:background="@drawable/blue_tip"
                 app:layout_constraintBottom_toBottomOf="@id/waterTDS"
                 app:layout_constraintLeft_toLeftOf="@id/waterTempTip"
-                app:layout_constraintTop_toTopOf="@id/waterTDS" />
+                app:layout_constraintTop_toTopOf="@id/waterTDS"/>
 
             <TextView
                 android:id="@+id/waterTemp"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 app:layout_constraintLeft_toRightOf="@id/waterTempTip"
-                app:layout_constraintTop_toTopOf="@id/waterLevelTitle" />
+                app:layout_constraintTop_toTopOf="@id/waterLevelTitle"/>
 
             <TextView
                 android:id="@+id/waterPH"
@@ -83,14 +83,14 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/waterTDS"
                 app:layout_constraintLeft_toLeftOf="@id/waterTemp"
-                app:layout_constraintTop_toBottomOf="@id/waterTemp" />
+                app:layout_constraintTop_toBottomOf="@id/waterTemp"/>
 
             <TextView
                 android:id="@+id/waterTDS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/waterLevel"
-                app:layout_constraintLeft_toLeftOf="@id/waterTemp" />
+                app:layout_constraintLeft_toLeftOf="@id/waterTemp"/>
 
             <TextView
                 android:id="@+id/high"
@@ -99,7 +99,7 @@
                 android:drawableStart="@mipmap/high"
                 android:text="偏高"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/waterLevelTitle" />
+                app:layout_constraintTop_toTopOf="@id/waterLevelTitle"/>
 
             <TextView
                 android:id="@+id/normal"
@@ -109,7 +109,7 @@
                 android:text="正常"
                 app:layout_constraintBottom_toTopOf="@id/low"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/high" />
+                app:layout_constraintTop_toBottomOf="@id/high"/>
 
             <TextView
                 android:id="@+id/low"
@@ -118,7 +118,7 @@
                 android:drawableStart="@mipmap/low"
                 android:text="偏低"
                 app:layout_constraintBottom_toBottomOf="@id/waterLevel"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
         <ScrollView
@@ -149,7 +149,7 @@
                             android:layout_width="5dp"
                             android:layout_height="15dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/red_rect" />
+                            android:background="@drawable/red_rect"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -157,12 +157,12 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:text="水温监测"
-                            android:textColor="@color/tip_red" />
+                            android:textColor="@color/tip_red"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"/>
 
                         <TextView
                             android:id="@+id/tempHistory"
@@ -172,14 +172,14 @@
                             android:drawableEnd="@mipmap/more"
                             android:drawablePadding="5dp"
                             android:text="历史记录"
-                            android:textColor="@color/text_gray" />
+                            android:textColor="@color/text_gray"/>
                     </LinearLayout>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/tempMonitor"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -202,7 +202,7 @@
                             android:layout_width="5dp"
                             android:layout_height="15dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/yellow_rect" />
+                            android:background="@drawable/yellow_rect"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -210,12 +210,12 @@
                             android:layout_gravity="center_vertical|start"
                             android:layout_marginStart="5dp"
                             android:text="PH值监测"
-                            android:textColor="@color/tip_yellow" />
+                            android:textColor="@color/tip_yellow"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"/>
 
                         <TextView
                             android:id="@+id/phHistory"
@@ -225,17 +225,18 @@
                             android:drawableEnd="@mipmap/more"
                             android:drawablePadding="5dp"
                             android:text="历史记录"
-                            android:textColor="@color/text_gray" />
+                            android:textColor="@color/text_gray"/>
                     </LinearLayout>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/phMonitor"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"/>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/tdsMonitorLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="10dp"
@@ -254,20 +255,20 @@
                             android:layout_width="5dp"
                             android:layout_height="15dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/blue_rect" />
+                            android:background="@drawable/blue_rect"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|start"
-                            android:text="TDS值监测"
                             android:layout_marginStart="5dp"
-                            android:textColor="@color/tip_blue" />
+                            android:text="TDS值监测"
+                            android:textColor="@color/tip_blue"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"/>
 
                         <TextView
                             android:id="@+id/tdsHistory"
@@ -277,15 +278,29 @@
                             android:drawableEnd="@mipmap/more"
                             android:drawablePadding="5dp"
                             android:text="历史记录"
-                            android:textColor="@color/text_gray" />
+                            android:textColor="@color/text_gray"/>
                     </LinearLayout>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/tdsMonitor"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"/>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/deleteDevice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/white_corner"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="删除设备"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/tdsMonitorLayout"/>
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
     </LinearLayout>

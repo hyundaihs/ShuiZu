@@ -1,6 +1,7 @@
 package com.android.kevin.shuizu.ui
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,12 +9,13 @@ import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_CHART_DATA_TYPE
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_WATER_MONITOR_ID
-import com.android.kevin.shuizu.utils.ChartUtil
+import com.android.kevin.shuizu.utils.DayChartUtil
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
 import com.android.shuizu.myutillibrary.utils.CalendarUtil.YYYYMMDD
+import com.android.shuizu.myutillibrary.utils.CustomDialog
 import com.github.mikephil.charting.data.Entry
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_water_monitor.*
@@ -47,12 +49,13 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 
     var flag = false
     private var deviceId = 0
+    private val bgs = arrayListOf<Int>(R.drawable.blue_tip, R.drawable.yellow_tip, R.drawable.red_tip)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_water_monitor)
         initActionBar(this, "水质监测器", rightClick = View.OnClickListener {
-            val inten = Intent(this@WaterMonitorActivity, DataSetActivity::class.java)
+            val inten = Intent(this@WaterMonitorActivity, WaterMonitorDataSetActivity::class.java)
             inten.putExtra(KEYWORD_WATER_MONITOR_ID, deviceId)
             startActivity(inten)
         })
@@ -61,6 +64,14 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         tempHistory.setOnClickListener(this)
         phHistory.setOnClickListener(this)
         tdsHistory.setOnClickListener(this)
+        deleteDevice.setOnClickListener {
+            CustomDialog("提示", "确定要删除设备吗？", positiveClicked = object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    deleteDevice(deviceId)
+                }
+            }, negative = "取消")
+
+        }
     }
 
     override fun onResume() {
@@ -96,6 +107,31 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         waterTemp.text = "当前水温 / ${waterMonitor.wd}℃"
         waterPH.text = "当前PH值 / ${waterMonitor.ph}"
         waterTDS.text = "当前TDS值 / ${waterMonitor.tds}"
+        waterTempTip.setBackgroundResource(bgs[waterMonitor.wd_zl])
+        waterPHTip.setBackgroundResource(bgs[waterMonitor.ph_zl])
+        waterTDSTip.setBackgroundResource(bgs[waterMonitor.tds_zl])
+    }
+
+    private fun deleteDevice(id: Int) {
+        val map = mapOf(Pair("id", id.toString()))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                context.toast("删除成功")
+                finish()
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+//                    context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+//                        val intent = Intent(context, LoginActivity::class.java)
+//                        startActivity(intent)
+//                    })
+            }
+
+        }, false).postRequest(this, getInterface(SCSB), map)
     }
 
     /**
@@ -134,7 +170,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                 for (i in 0 until waterHistoryDataRes.retRes.size) {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, tempMonitor, ChartDataType.WD)
+                val chartUtil = DayChartUtil(this@WaterMonitorActivity, tempMonitor, ChartDataType.WD)
                 chartUtil.setTitle("")
                 chartUtil.setData(values)
             }
@@ -163,7 +199,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                 for (i in 0 until waterHistoryDataRes.retRes.size) {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, phMonitor, ChartDataType.PH)
+                val chartUtil = DayChartUtil(this@WaterMonitorActivity, phMonitor, ChartDataType.PH)
                 chartUtil.setTitle("")
                 chartUtil.setData(values)
             }
@@ -192,7 +228,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
                 for (i in 0 until waterHistoryDataRes.retRes.size) {
                     values.add(Entry(waterHistoryDataRes.retRes[i].x.toFloat(), waterHistoryDataRes.retRes[i].y))
                 }
-                val chartUtil = ChartUtil(this@WaterMonitorActivity, tdsMonitor, ChartDataType.TDS)
+                val chartUtil = DayChartUtil(this@WaterMonitorActivity, tdsMonitor, ChartDataType.TDS)
                 chartUtil.setTitle("")
                 chartUtil.setData(values)
             }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.kevin.shuizu">
+<manifest package="com.android.kevin.shuizu"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
@@ -29,29 +29,50 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:allowBackup">
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RegistrationActivity" />
-        <activity android:name=".ui.HomeActivity" />
-        <activity android:name=".ui.WaterMonitorActivity" />
+        <activity
+            android:name=".ui.RegistrationActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.WaterMonitorActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.ChartActivity"
-            android:screenOrientation="landscape" />
-        <activity android:name=".ui.BindDeviceActivity" />
-        <activity android:name=".ui.AddDeviceActivity" />
-        <activity android:name=".ui.GroupActivity"/>
-        <activity android:name=".ui.DataSetActivity"/>
-        <activity android:name=".ui.CircleSelectorActivity"/>
-        <activity android:name=".ui.DateChooseActivity" />
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".ui.BindDeviceActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.AddDeviceActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.GroupActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.WaterMonitorDataSetActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.CircleSelectorActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.DateChooseActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.WaterLevelDataSetActivity"
+            android:screenOrientation="portrait"/>
 
-        <service android:name=".MonitorService" />
+        <service android:name=".MonitorService"/>
     </application>
 
 </manifest>

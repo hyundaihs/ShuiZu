@@ -44,6 +44,8 @@ const val SET_INFO = "setinfo" //修改用户信息
 
 const val SYS_INFO = "sysinfo" //获取系统介绍信息
 
+const val INDEX_INFO = "indexinfo" //获取首页时间
+
 const val YG_LISTS = "yglists" //鱼缸列表
 
 /*id：鱼缸id*/
@@ -63,6 +65,8 @@ const val SZJC_TJTSJ = "szjctjtsj" //水质监测统计图数据
 /*acccardtype_id：分组id（0为常用设备）
 ids：设备id数组（[1,2,3]）*/
 const val TJSB_DYG = "tjsbdyg" //水质监测统计图数据
+
+const val SCSB = "scsb"//删除设备
 
 /*id：鱼缸id*/
 const val SCYG = "scyg" //删除鱼缸

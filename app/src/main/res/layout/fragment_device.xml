@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/gray_corner_half"
             android:padding="20dp"
-            android:text="鱼缸001"
+            android:text="常用"
             android:textColor="@color/text_332c2b"
             android:textSize="18sp" />
 

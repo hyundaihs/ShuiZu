@@ -60,14 +60,18 @@ enum class DeviceType {
     TR, HT, WP, PF, WL
 }
 
-@Parcelize
-class ChartDataType : Parcelable {
+
+class ChartDataType {
     companion object {
         const val WD = 0
         const val PH = 1
         const val TDS = 2
     }
 }
+
+data class DateInfo(val dates: String)
+
+data class DateInfoRes(val retRes: DateInfo) : RequestResult()
 
 /*[login_verf] => 自动登录密码*/
 data class LoginInfo(val login_verf: String)
@@ -111,9 +115,12 @@ val WATER_LEVEL = arrayOf("无", "极优", "优良", "良", "一般", "差")
 [wd] => 温度
 [ph] => PH
 [tds] => TDS
+[wd_zl] => 温度质量（0：正常，1：偏低，2：偏高）
+[ph_zl] => PH质量（0：正常，1：偏低，2：偏高）
+[tds_zl] => TDS质量（0：正常，1：偏低，2：偏高）
 [zl] => 水质级别（0:无，1：极优，2：优良，3:良，4：一般，5：差）*/
-@Parcelize
-data class WaterMonitorInfo(val is_online: Int, val wd: Float, val ph: Float, val tds: Int, val zl: Int) : Parcelable
+
+data class WaterMonitorInfo(val is_online: Int, val wd: Float, val ph: Float, val tds: Int, val wd_zl: Int, val ph_zl: Int, val tds_zl: Int, val zl: Int)
 
 data class WaterMonitorInfoRes(val retRes: WaterMonitorInfo) : RequestResult()
 

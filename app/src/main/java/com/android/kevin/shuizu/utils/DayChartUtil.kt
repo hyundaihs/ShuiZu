@@ -2,14 +2,12 @@ package com.android.kevin.shuizu.utils
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Matrix
 import android.support.v4.content.ContextCompat
 import android.view.MotionEvent
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.ChartDataType
 import com.android.shuizu.myutillibrary.I
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
-import com.android.shuizu.myutillibrary.utils.CalendarUtil.YY_MM_DD_HH_MM
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
@@ -20,15 +18,13 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
 import com.github.mikephil.charting.utils.Utils
-import com.github.mikephil.charting.charts.Chart
-
 
 /**
  * ChaYin
  * Created by ${蔡雨峰} on 2018/8/23/023.
  */
-class ChartUtil(private val context: Context, private val lineChart: LineChart,
-                val type: Int, edgeListener: OnEdgeListener? = null) {
+class DayChartUtil(private val context: Context, private val lineChart: LineChart,
+                   val type: Int, edgeListener: OnEdgeListener? = null) {
     /**
      * Entry 坐标点对象  构造函数 第一个参数为x点坐标 第二个为y点
      */
@@ -39,12 +35,12 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart,
     init {
         lineChart.setNoDataText("没有数据哦")//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE)//没有数据时显示文字的颜色
-        lineChart.viewPortHandler.matrixTouch.postScale(5f,1f)
+        lineChart.viewPortHandler.matrixTouch.postScale(10f,1f)
         lineChart.setDrawGridBackground(false)//chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawBorders(false)//禁止绘制图表边框的线
         lineChart.setVisibleXRangeMaximum(10f)
-        lineChart.animateXY(1000, 1000)
         lineChart.isScaleYEnabled = false
+        lineChart.animateXY(1000, 1000)
         val lineData = LineData()
         lineChart.data = lineData
         lineChart.onChartGestureListener = object : OnChartGestureListener {
@@ -203,11 +199,11 @@ class ChartUtil(private val context: Context, private val lineChart: LineChart,
 //        xAxis.setLabelCount(values.size,true)
 
         xAxis.position = XAxis.XAxisPosition.BOTTOM//设置x轴的显示位置
-//        xAxis.labelCount = 3
+        xAxis.labelCount = 4
         xAxis.setAvoidFirstLastClipping(true)
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
             val calendarUtil = CalendarUtil(value.toLong(), true)
-            calendarUtil.format(YY_MM_DD_HH_MM)
+            calendarUtil.format(CalendarUtil.HH_mm)
         }
 //        xAxis.labelRotationAngle = 60f
 

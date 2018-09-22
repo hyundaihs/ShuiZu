@@ -58,6 +58,7 @@ class DeviceFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViews()
+        getDate()
         getYGList()
         getMyDeviceList(0)
     }
@@ -123,9 +124,14 @@ class DeviceFragment : BaseFragment() {
                     intent.putExtra(KEYWORD, KEYWORD_EDIT_GROUP)
                     startActivity(intent)
                 } else {
-                    val intent = Intent(activity, WaterMonitorActivity::class.java)
+                    val intent = if (myDeviceList[position].card_type == DeviceType.TR) {
+                        Intent(activity, WaterMonitorActivity::class.java)
+                    } else {
+                        Intent(activity, WaterLevelDataSetActivity::class.java)
+                    }
                     intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, myDeviceList[position].id)
                     startActivity(intent)
+
                 }
             }
         }
@@ -243,6 +249,28 @@ class DeviceFragment : BaseFragment() {
                 Thread.sleep(10000)
             }
         }
+    }
+
+    private fun getDate() {
+        val map = mapOf(Pair("", ""))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val dateInfoRes = Gson().fromJson(result, DateInfoRes::class.java)
+                deviceTime.text = dateInfoRes.retRes.dates
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(activity as Context, getInterface(INDEX_INFO), map)
     }
 
     private fun getYGList() {
