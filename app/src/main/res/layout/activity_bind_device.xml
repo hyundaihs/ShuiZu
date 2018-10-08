@@ -9,125 +9,52 @@
 
     <include layout="@layout/layout_toolbar" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/loadLayout"
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/bind_progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible">
+            app:layout_constraintBottom_toTopOf="@id/tempLayout"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/bind_info"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
-                android:id="@+id/bind_progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="@id/bind_info"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/bind_info"
-                app:layout_constraintTop_toTopOf="@id/bind_info" />
-
-            <TextView
-                android:id="@+id/bind_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_332c2b"
-                app:layout_constraintLeft_toRightOf="@id/bind_progressBar"
-                app:layout_constraintRight_toRightOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <Button
-            android:id="@+id/chooseDevice"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/bind_info"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="点击选择设备型号"
-            android:textColor="@color/text_gray_dark"
-            android:textSize="16sp" />
+            android:layout_margin="5dp"
+            android:text="正在搜索设备"
+            android:textColor="@color/text_332c2b"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/bind_progressBar"
+            app:layout_constraintLeft_toRightOf="@id/bind_progressBar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bind_progressBar" />
 
-        <Button
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:text="搜索设备"
-            android:textColor="@color/text_gray_dark"
-            android:textSize="16sp"
-            android:visibility="gone" />
+        <View
+            android:id="@+id/tempLayout"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            app:layout_constraintTop_toBottomOf="@id/bind_progressBar"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/accountLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:elevation="2dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wifiList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/wifiAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="请输入Wifi账号"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/wifiPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="请输入Wifi密码"
-                android:inputType="textPassword" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/connect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:text="连接设备"
-            android:textColor="@color/text_gray_dark"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-
-    </LinearLayout>
-
-    <!--<EditText-->
-    <!--android:id="@+id/deviceWifiAccount"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:hint="设备热点账号"-->
-    <!--android:text="JIASONG" />-->
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/sendWifiLayout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="vertical"-->
-    <!--android:visibility="gone">-->
-
-
-    <!--<Button-->
-    <!--android:id="@+id/sendWifi"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="发送Wifi信息" />-->
-    <!--</LinearLayout>-->
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/bind_device_info"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:gravity="center_horizontal" />-->
-
+    </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

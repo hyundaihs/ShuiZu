@@ -50,10 +50,17 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="phone"
                     android:maxLines="1"
+                    android:background="@android:color/transparent"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorHint="@android:color/white"
                     android:theme="@style/white_edit_text" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -61,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp">
 
                 <EditText
@@ -70,6 +78,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/password"
                     android:hint="@string/input_password"
+                    android:background="@android:color/transparent"
                     android:imeActionId="6"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
@@ -79,6 +88,11 @@
                     android:textColorHint="@android:color/white"
                     android:theme="@style/white_edit_text" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"/>
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 

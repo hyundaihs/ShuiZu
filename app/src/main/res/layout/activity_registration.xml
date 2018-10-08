@@ -36,17 +36,23 @@
                     android:hint="@string/input_phone"
                     android:imeActionId="6"
                     android:imeOptions="actionUnspecified"
+                    android:background="@android:color/transparent"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:theme="@style/gray_edit_text" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_gray"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -57,6 +63,7 @@
                     android:drawableStart="@mipmap/password_black"
                     android:hint="@string/input_password"
                     android:imeActionId="6"
+                    android:background="@android:color/transparent"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -64,11 +71,16 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:theme="@style/gray_edit_text" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_gray"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -79,6 +91,7 @@
                     android:drawableStart="@mipmap/password_black"
                     android:hint="@string/inputPswdAgain"
                     android:imeActionId="6"
+                    android:background="@android:color/transparent"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -86,11 +99,16 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:theme="@style/gray_edit_text" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_gray"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputLayout
@@ -106,6 +124,7 @@
                         android:drawableStart="@mipmap/yzm"
                         android:hint="@string/inputVerifyCode"
                         android:imeActionId="6"
+                        android:background="@android:color/transparent"
                         android:imeOptions="actionUnspecified"
                         android:inputType="phone"
                         android:maxLines="1"
@@ -120,13 +139,24 @@
                     android:id="@+id/getVerifyCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginEnd="5dp"
-                    android:padding="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/getVerifyCode"
                     android:textColor="@android:color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/verifyCodeLayout"
                     app:layout_constraintRight_toRightOf="@+id/verifyCodeLayout" />
+
+                <View
+                    android:layout_width="0dp"
+                    app:layout_constraintLeft_toLeftOf="@id/verifyCodeLayout"
+                    app:layout_constraintRight_toRightOf="@id/getVerifyCode"
+                    android:layout_height="1.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/verifyCodeLayout"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_gray"/>
             </android.support.constraint.ConstraintLayout>
 
             <LinearLayout
