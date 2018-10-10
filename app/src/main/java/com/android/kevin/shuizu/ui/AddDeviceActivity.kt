@@ -83,7 +83,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(TJYG), map)
+        }).postRequest(this, TJYG.getInterface(), map)
     }
 
     private fun alterGroup() {
@@ -108,7 +108,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(XGYG), map)
+        }).postRequest(this, XGYG.getInterface(), map)
     }
 
     private fun addDevice(id: Int) {
@@ -156,7 +156,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(TJSB_DYG), Gson().toJson(PostDeviceIds(id, addIds)))
+        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(id, addIds)))
     }
 
     private fun deleteDevice(ids: ArrayList<Int>) {
@@ -177,7 +177,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(TJSB_DYG), Gson().toJson(PostDeviceIds(0, ids)))
+        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(0, ids)))
     }
 
     private fun initView() {
@@ -254,6 +254,6 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(YGSB), map)
+        }).postRequest(this, YGSB.getInterface(), map)
     }
 }

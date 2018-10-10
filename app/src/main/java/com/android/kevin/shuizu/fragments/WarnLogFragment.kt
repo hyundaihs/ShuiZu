@@ -137,6 +137,6 @@ class WarnLogFragment : BaseFragment(){
                 })
             }
 
-        }, false).postRequest(activity as Context, getInterface(BJ_LOG), map)
+        }, false).postRequest(activity as Context, BJ_LOG.getInterface(), map)
     }
 }

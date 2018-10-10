@@ -2,6 +2,8 @@ package com.android.kevin.shuizu
 
 import android.app.Application
 import cn.jpush.android.api.JPushInterface
+import com.android.kevin.shuizu.entities.UserInfo
+import com.android.kevin.shuizu.utils.SdCardUtil
 import kotlin.properties.Delegates
 
 /**
@@ -15,13 +17,15 @@ class SZApplication : Application() {
 //    }
 
     companion object {
-//        var isLogged: Boolean = false //是否登录
+        //        var isLogged: Boolean = false //是否登录
         var instance: SZApplication by Delegates.notNull()
+        var userInfo: UserInfo by Delegates.notNull()
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        SdCardUtil()
         JPushInterface.setDebugMode(true)
         JPushInterface.init(this)
     }

@@ -21,9 +21,8 @@ class SocketUtil(val host: String, private val port: Int, private val onMsgComin
     fun init() {
         doAsync {
             try {
-                Thread.sleep(2000)
                 socket = Socket(host, port)
-                Thread.sleep(2000)
+                Thread.sleep(500)
                 if (socket!!.isConnected) {
                     mBufferedReaderClient = socket!!.getInputStream()
                     mPrintWriterClient = socket!!.getOutputStream()
@@ -43,6 +42,28 @@ class SocketUtil(val host: String, private val port: Int, private val onMsgComin
             }
         }
     }
+
+//    fun open(){
+//        try {
+//            socket = Socket(host, port)
+//            if (socket!!.isConnected) {
+//                mBufferedReaderClient = socket!!.getInputStream()
+//                mPrintWriterClient = socket!!.getOutputStream()
+////                uiThread {
+//                    onMsgComing.onInitSocket(true)
+////                }
+//                openReceiver()
+//            } else {
+////                uiThread {
+//                    onMsgComing.onInitSocket(false)
+////                }
+//            }
+//        } catch (e: ConnectException) {
+////            uiThread {
+//                onMsgComing.onInitSocket(false)
+////            }
+//        }
+//    }
 
     fun sendMsg(byteArray: ByteArray) {
         doAsync {

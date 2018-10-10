@@ -131,7 +131,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SCSB), map)
+        }, false).postRequest(this, SCSB.getInterface(), map)
     }
 
     /**
@@ -157,7 +157,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SZJC_SSSJ), map)
+        }, false).postRequest(this, SZJC_SSSJ.getInterface(), map)
     }
 
     private fun getWaterTemp(id: Int) {
@@ -186,7 +186,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SZJC_TJTSJ), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
     }
 
     private fun getWaterPH(id: Int) {
@@ -215,7 +215,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SZJC_TJTSJ), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
     }
 
     private fun getWaterTDS(id: Int) {
@@ -244,6 +244,6 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SZJC_TJTSJ), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
     }
 }

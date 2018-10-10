@@ -6,13 +6,17 @@ package com.android.kevin.shuizu.entities
  */
 const val TEST_DEVICE_ID = "TR-005D16660016402020E42DE4"
 
-const val ROOT_URL = "http://szx.hyk001.com"
+const val ROOT_URL = "http://szx.yshdszx.com"
 const val INTERFACE_INDEX = "/api.php/Index/"
 const val FROM = "/from/android"
 const val KEY_STR = "/keystr/defualtencryption"
 
-fun Any.getInterface(interStr: String): String {
-    return ROOT_URL + INTERFACE_INDEX + interStr + FROM + KEY_STR
+fun String.getImageUrl(): String {
+    return if(this.contains("http")) this else ROOT_URL + this
+}
+
+fun String.getInterface(): String {
+    return ROOT_URL + INTERFACE_INDEX + this + FROM + KEY_STR
 }
 
 /*phone：手机号码*/

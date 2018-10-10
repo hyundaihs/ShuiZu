@@ -105,7 +105,7 @@ class GroupActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(YG_LISTS), map)
+        }).postRequest(this, YG_LISTS.getInterface(), map)
     }
 
     var mMenuItemClickListener: SwipeMenuItemClickListener = SwipeMenuItemClickListener { menuBridge ->
@@ -137,7 +137,7 @@ class GroupActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(SCYG), map)
+        }).postRequest(this, SCYG.getInterface(), map)
     }
 
     private class GroupAdapter(val data: ArrayList<YGInfo>) : MyBaseAdapter(R.layout.layout_group_list_item) {

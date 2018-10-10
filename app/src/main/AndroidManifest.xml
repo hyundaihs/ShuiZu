@@ -77,6 +77,8 @@
         <activity
             android:name=".ui.WaterLevelDataSetActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ChangeUserInfoActivity" />
+        <activity android:name=".ui.MyTakePhotoActivity" />
 
         <service android:name=".MonitorService"/>
     </application>

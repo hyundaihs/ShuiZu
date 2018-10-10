@@ -157,3 +157,12 @@ data class BaoJin_InfoRes(val retRes: BaoJin_Info) : RequestResult()
 data class WarnLog(val id: Int, val true_value: Float, val create_time: Long, val title: String)
 
 data class WarnLogListRes(val retRes: ArrayList<WarnLog>) : RequestResult()
+
+/*[id] => 用户id
+[account] => 账号
+[title] => 昵称
+[file_url] => 头像
+[ts_status] => 推送接收状态（0：关闭，1：开启）*/
+data class UserInfo(var id: Int, var account: String, var title: String, var file_url: String, var ts_status: Int)
+
+data class UserInfoRes(val retRes: UserInfo) : RequestResult()

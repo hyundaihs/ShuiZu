@@ -68,7 +68,7 @@ class WaterLevelDataSetActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this@WaterLevelDataSetActivity, getInterface(SZ_BJKG), map)
+        }, false).postRequest(this@WaterLevelDataSetActivity, SZ_BJKG.getInterface(), map)
     }
 
     private fun getBaoJinDataState() {
@@ -102,7 +102,7 @@ class WaterLevelDataSetActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this@WaterLevelDataSetActivity, getInterface(KG_INFO), map)
+        }, false).postRequest(this@WaterLevelDataSetActivity, KG_INFO.getInterface(), map)
     }
 
     private fun deleteDevice(id: Int) {
@@ -124,6 +124,6 @@ class WaterLevelDataSetActivity : MyBaseActivity() {
 //                    })
             }
 
-        }, false).postRequest(this, getInterface(SCSB), map)
+        }, false).postRequest(this, SCSB.getInterface(), map)
     }
 }

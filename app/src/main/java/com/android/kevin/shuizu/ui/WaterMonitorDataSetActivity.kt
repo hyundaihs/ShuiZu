@@ -258,7 +258,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(PHJZ), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, PHJZ.getInterface(), map)
     }
 
     private fun saveBaoJinSW() {
@@ -283,7 +283,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(SZ_BJWD), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJWD.getInterface(), map)
     }
 
     private fun saveBaoJinPH() {
@@ -306,7 +306,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(SZ_BJPH), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJPH.getInterface(), map)
     }
 
     private fun saveBaoJinTDS() {
@@ -328,7 +328,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(SZ_BJTDS), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJTDS.getInterface(), map)
     }
 
     private fun saveBaoJinBJ() {
@@ -350,7 +350,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(SZ_BJKG), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJKG.getInterface(), map)
     }
 
     private fun getBaoJinDataState(type: Int) {
@@ -440,7 +440,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, getInterface(inter), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, inter.getInterface(), map)
     }
 
 }

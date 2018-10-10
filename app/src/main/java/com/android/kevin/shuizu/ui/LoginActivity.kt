@@ -83,7 +83,7 @@ class LoginActivity : MyBaseActivity() {
                     })
                 }
 
-            }).postRequest(this, getInterface(VERF_LOGIN), map)
+            }).postRequest(this, VERF_LOGIN.getInterface(), map)
         }
     }
 
@@ -132,6 +132,6 @@ class LoginActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(LOGIN), map)
+        }).postRequest(this, LOGIN.getInterface(), map)
     }
 }

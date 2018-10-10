@@ -70,14 +70,14 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                           callback?.onLoginErr(context)
+                            callback?.onLoginErr(context)
                         }
                     } else {
                         uiThread {
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                           callback?.onError(context, res.retErr)
+                            callback?.onError(context, res.retErr)
                         }
                     }
                 }
@@ -86,14 +86,14 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                   callback?.onError(context, response.message())
+                    callback?.onError(context, response.message())
                 }
             }
         }
     }
 
     fun postRequest(url: String, map: Map<String, String>, callback: RequestCallBackWithOutContext) {
-        D(Gson().toJson(map).toString())
+        D(url + "\n" + Gson().toJson(map).toString())
         val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
         val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
         try {
@@ -104,29 +104,29 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                 val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
                 D("requestResult = $string")
                 if (res.retInt == 1) {
-                   callback.onSuccess(string)
+                    callback.onSuccess(string)
                 } else {
                     if (res.retErr == LOGINERR) {
-                       callback.onLoginErr()
+                        callback.onLoginErr()
                     } else {
-                       callback.onError(res.retErr)
+                        callback.onError(res.retErr)
                     }
                 }
             } else {
-               callback.onError(response.message())
+                callback.onError(response.message())
             }
         } catch (e: Exception) {
-           callback.onError(e.toString())
+            callback.onError(e.toString())
         }
     }
 
 
-    fun postRequest(context: Context, url: String, map: Map<String, String>) {
+    fun postRequest(context: Context, url: String, map: Map<String, String> = mapOf(Pair("", ""))) {
         var dialog: AlertDialog? = null
         if (getProgress) {
             dialog = MyProgressDialog(context)
         }
-        D(Gson().toJson(map).toString())
+        D(url + "\n" + Gson().toJson(map).toString())
         context.doAsync {
             val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
             val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
@@ -142,7 +142,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                           callback?.onSuccess(context, string)
+                            callback?.onSuccess(context, string)
                         }
                     } else {
                         if (res.retErr == LOGINERR) {
@@ -150,14 +150,14 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onLoginErr(context)
+                                callback?.onLoginErr(context)
                             }
                         } else {
                             uiThread {
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onError(context, res.retErr)
+                                callback?.onError(context, res.retErr)
                             }
                         }
                     }
@@ -166,7 +166,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                       callback?.onError(context, response.message())
+                        callback?.onError(context, response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -174,7 +174,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                   callback?.onError(context, e.toString())
+                    callback?.onError(context, e.toString())
                 }
             }
         }
@@ -185,7 +185,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
         if (getProgress) {
             dialog = MyProgressDialog(context)
         }
-        D(str)
+        D(url + "\n" + str)
         context.doAsync {
             val requestBody = RequestBody.create(MEDIA_TYPE_JSON, str)
             val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
@@ -201,7 +201,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                           callback?.onSuccess(context, string)
+                            callback?.onSuccess(context, string)
                         }
                     } else {
                         if (res.retErr == LOGINERR) {
@@ -209,14 +209,14 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onLoginErr(context)
+                                callback?.onLoginErr(context)
                             }
                         } else {
                             uiThread {
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onError(context, res.retErr)
+                                callback?.onError(context, res.retErr)
                             }
                         }
                     }
@@ -225,7 +225,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                       callback?.onError(context, response.message())
+                        callback?.onError(context, response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -233,7 +233,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                   callback?.onError(context, e.toString())
+                    callback?.onError(context, e.toString())
                 }
             }
         }
@@ -267,7 +267,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                             if (getProgress) {
                                 dialog?.dismiss()
                             }
-                           callback?.onSuccess(context, string)
+                            callback?.onSuccess(context, string)
                         }
                     } else {
                         if (res.retErr == LOGINERR) {
@@ -275,14 +275,14 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onLoginErr(context)
+                                callback?.onLoginErr(context)
                             }
                         } else {
                             uiThread {
                                 if (getProgress) {
                                     dialog?.dismiss()
                                 }
-                               callback?.onError(context, res.retErr)
+                                callback?.onError(context, res.retErr)
                             }
                         }
                     }
@@ -291,7 +291,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                       callback?.onError(context, response.message())
+                        callback?.onError(context, response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -299,7 +299,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                   callback?.onError(context, e.toString())
+                    callback?.onError(context, e.toString())
                 }
             }
         }

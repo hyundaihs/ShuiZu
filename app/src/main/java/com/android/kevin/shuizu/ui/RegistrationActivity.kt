@@ -106,7 +106,7 @@ class RegistrationActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(SEND_VERF), map)
+        }).postRequest(this, SEND_VERF.getInterface(), map)
     }
 
     private fun submit() {
@@ -130,6 +130,6 @@ class RegistrationActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, getInterface(REG), map)
+        }).postRequest(this, REG.getInterface(), map)
     }
 }

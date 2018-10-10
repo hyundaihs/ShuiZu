@@ -219,7 +219,7 @@ class DeviceFragment : BaseFragment() {
                 } else {
                     mapOf(Pair("", ""))
                 }
-                MySimpleRequest().postRequest(getInterface(NEW_LOG), map, object : MySimpleRequest.RequestCallBackWithOutContext {
+                MySimpleRequest().postRequest(NEW_LOG.getInterface(), map, object : MySimpleRequest.RequestCallBackWithOutContext {
                     override fun onSuccess(result: String) {
                         val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
                         warnLogList.clear()
@@ -270,7 +270,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, getInterface(INDEX_INFO), map)
+        }).postRequest(activity as Context, INDEX_INFO.getInterface(), map)
     }
 
     private fun getYGList() {
@@ -294,7 +294,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, getInterface(YG_LISTS), map)
+        }).postRequest(activity as Context, YG_LISTS.getInterface(), map)
     }
 
     private fun getMyDeviceList(id: Int) {
@@ -321,6 +321,6 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, getInterface(YGSB), map)
+        }).postRequest(activity as Context, YGSB.getInterface(), map)
     }
 }
