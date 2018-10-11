@@ -69,15 +69,14 @@
                 android:id="@+id/mineName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="蔡雨峰"
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前积分6666"
                 android:textColor="@color/white"
+                android:visibility="gone"
                 android:textSize="12sp"/>
 
         </LinearLayout>

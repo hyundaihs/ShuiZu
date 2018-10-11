@@ -6,7 +6,29 @@
     android:background="@color/bg_gray"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/page_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="修改信息"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,41 +56,40 @@
                 app:civ_border_overlay="true"
                 app:civ_border_width="1dp" />
 
-            <View
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:src="@mipmap/more" />
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:hint="请输入昵称"
+                    android:inputType="text"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_launcher"
+                    android:text="蔡雨峰"
+                    android:textColor="@color/text_332c2b"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/line_gray"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="蔡雨峰"
-                android:hint="请输入昵称"
-                android:textSize="18sp"
-                android:textColor="@color/text_332c2b"
-                android:src="@mipmap/ic_launcher"
-                android:inputType="text" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,13 +102,24 @@
 
             <Switch
                 android:id="@+id/warnMsg"
-                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="是否接收推送" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/submitUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="提交"
+        android:textColor="@color/text_332c2b"
+        android:textSize="18sp" />
 
 </LinearLayout>

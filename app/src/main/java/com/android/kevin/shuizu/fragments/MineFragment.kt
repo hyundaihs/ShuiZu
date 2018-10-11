@@ -64,7 +64,7 @@ class MineFragment : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val userInfoRes = Gson().fromJson(result, UserInfoRes::class.java)
                 userInfo = userInfoRes.retRes
-                //Picasso.with(context).load(userInfo.file_url.getImageUrl()).into(mineImage)
+                Picasso.with(context).load(userInfo.file_url.getImageUrl()).into(mineImage)
                 mineName.text = userInfo.title
             }
 

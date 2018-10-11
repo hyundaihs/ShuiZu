@@ -1,8 +1,6 @@
 package com.android.kevin.shuizu.entities
 
-import android.os.Parcelable
 import com.android.shuizu.myutillibrary.request.RequestResult
-import kotlinx.android.parcel.Parcelize
 
 /**
  * ChaYin
@@ -166,3 +164,8 @@ data class WarnLogListRes(val retRes: ArrayList<WarnLog>) : RequestResult()
 data class UserInfo(var id: Int, var account: String, var title: String, var file_url: String, var ts_status: Int)
 
 data class UserInfoRes(val retRes: UserInfo) : RequestResult()
+
+data class UploadInfo(val file_url: String)
+
+data class UploadInfoRes(val retRes: UploadInfo) : RequestResult()
+

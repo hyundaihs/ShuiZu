@@ -12,13 +12,14 @@ const val FROM = "/from/android"
 const val KEY_STR = "/keystr/defualtencryption"
 
 fun String.getImageUrl(): String {
-    return if(this.contains("http")) this else ROOT_URL + this
+    return if (this.contains("http")) this else ROOT_URL + "/" + this
 }
 
 fun String.getInterface(): String {
     return ROOT_URL + INTERFACE_INDEX + this + FROM + KEY_STR
 }
 
+const val UPFILE = "upfile"//文件上传
 /*phone：手机号码*/
 const val SEND_VERF = "sendverf" //发送短信验证码
 
