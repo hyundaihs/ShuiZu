@@ -18,6 +18,12 @@ abstract class MyBaseAdapter(private val layoutId: Int) : RecyclerView.Adapter<M
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(layoutId, parent, false))
     }
 
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            myOnItemClickListener?.onItemClick(this, holder.itemView, position)
+        }
+    }
+
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     interface MyOnItemClickListener {

@@ -13,7 +13,8 @@ import com.android.kevin.shuizu.SZApplication.Companion.userInfo
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.ui.ChangeUserInfoActivity
 import com.android.kevin.shuizu.ui.LoginActivity
-import com.android.shuizu.myutillibrary.D
+import com.android.kevin.shuizu.ui.ReservationActivity
+import com.android.kevin.shuizu.ui.ReservationDetailsActivity
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CustomDialog
@@ -43,11 +44,15 @@ class MineFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         getUserInfo()
+        getYYZJ()
     }
 
     private fun initViews() {
         changeUserInfo.setOnClickListener {
             startActivity(Intent(it.context, ChangeUserInfoActivity::class.java))
+        }
+        yuYueMore.setOnClickListener {
+            startActivity(Intent(it.context, ReservationActivity::class.java))
         }
         exit.setOnClickListener {
             activity?.CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
@@ -80,5 +85,50 @@ class MineFragment : BaseFragment() {
             }
 
         }, false).postRequest(activity as Context, USER_INFO.getInterface())
+    }
+
+    //获取养鱼专家列表
+    private fun getYYZJ() {
+        val map = mapOf(Pair("page","1"))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val yYZJInfoListRes = Gson().fromJson(result, YYZJInfoListRes::class.java)
+                val list = yYZJInfoListRes.retRes
+                if (list.size > 0) {
+                    Picasso.with(context).load(list[0].file_url.getImageUrl()).into(reservationImage1)
+                    name1.text = list[0].title
+                    title1.text = list[0].sub_title
+                    reservation1.setOnClickListener {
+                        //进入专家详情
+                        val intent = Intent(it.context, ReservationDetailsActivity::class.java)
+                        intent.putExtra("id",list[0].id)
+                        startActivity(intent)
+                    }
+                }
+                if (list.size > 1) {
+                    Picasso.with(context).load(list[1].file_url.getImageUrl()).into(reservationImage2)
+                    name2.text = list[1].title
+                    title2.text = list[1].sub_title
+                    reservation2.setOnClickListener {
+                        //进入专家详情
+                        val intent = Intent(it.context, ReservationDetailsActivity::class.java)
+                        intent.putExtra("id",list[1].id)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, false).postRequest(activity as Context, YYZJ.getInterface(),map)
     }
 }

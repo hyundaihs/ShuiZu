@@ -13,7 +13,6 @@ import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.SZApplication
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.utils.SdCardUtil
-import com.android.shuizu.myutillibrary.D
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.BottomDialog
 import com.android.shuizu.myutillibrary.utils.CustomDialog
@@ -22,6 +21,7 @@ import com.google.gson.Gson
 import com.jph.takephoto.app.TakePhotoActivity
 import com.jph.takephoto.model.CropOptions
 import com.jph.takephoto.model.TResult
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_user_info.*
 import kotlinx.android.synthetic.main.layout_take_photo.view.*
 import org.jetbrains.anko.toast
@@ -46,6 +46,7 @@ class ChangeUserInfoActivity : TakePhotoActivity() {
         page_back.setOnClickListener {
             finish()
         }
+        Picasso.with(this).load(SZApplication.userInfo.file_url.getImageUrl()).into(photo)
         photo.setOnClickListener {
             val view = LayoutInflater.from(it.context).inflate(R.layout.layout_take_photo, null, false)
             val dialog = BottomDialog(view)
@@ -158,7 +159,11 @@ class ChangeUserInfoActivity : TakePhotoActivity() {
     }
 
     private fun submit() {
-        uploadImage()
+        if (userTemp.file_url.equals(SZApplication.userInfo.file_url)) {
+            submitInfo()
+        } else {
+            uploadImage()
+        }
     }
 
     private fun uploadImage() {

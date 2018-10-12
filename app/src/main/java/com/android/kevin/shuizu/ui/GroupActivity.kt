@@ -144,6 +144,7 @@ class GroupActivity : MyBaseActivity() {
 
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            super.onBindViewHolder(holder, position)
             val ygInfo = data[position]
             holder.itemView.groupName.text = ygInfo.title
             holder.itemView.deviceNum.text = "${ygInfo.counts}个设备"

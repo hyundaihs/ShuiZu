@@ -9,6 +9,8 @@
     <color name="text_gray_dark">#666666</color>
     <color name="line_gray">#9F9F9F</color>
     <color name="bg_gray">#E0E0E0</color>
+    <color name="line_gray_E2E2E2">#E2E2E2</color>
+    <color name="line_gray_ECECEC">#ECECEC</color>
     <color name="half_corner_gray">#EFEFEF</color>
     <color name="text_332c2b">#332c2b</color>
     <color name="bg_device_item">#F3F3F3</color>

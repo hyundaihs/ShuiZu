@@ -169,3 +169,14 @@ data class UploadInfo(val file_url: String)
 
 data class UploadInfoRes(val retRes: UploadInfo) : RequestResult()
 
+/*[id] => ID
+[title] => 标题
+[file_url] => 图片
+[sub_title] => 简介
+[app_contents] => 详情（html代码）*/
+data class YYZJInfo(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String)
+
+data class YYZJInfoRes(val retRes: YYZJInfo) : RequestResult()
+
+data class YYZJInfoListRes(val retRes: ArrayList<YYZJInfo>) : RequestResult()
+

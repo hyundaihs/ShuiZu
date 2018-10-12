@@ -80,6 +80,8 @@
             android:name=".ui.WaterLevelDataSetActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.ChangeUserInfoActivity" />
+        <activity android:name=".ui.ReservationActivity" />
+        <activity android:name=".ui.ReservationDetailsActivity" />
 
         <service android:name=".MonitorService" />
     </application>

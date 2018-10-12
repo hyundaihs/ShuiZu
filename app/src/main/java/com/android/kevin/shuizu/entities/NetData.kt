@@ -134,6 +134,11 @@ const val BJ_LOG = "bjlog" //设备日志
 card_id：设备编号*/
 const val BDSB = "bdsb" //绑定设备
 
+const val YYZJ = "yyzj" //养鱼专家列表
+
+/*id：专家id*/
+const val YYZJ_INFO = "yyzjinfo" //养鱼专家详情
+
 
 
 
