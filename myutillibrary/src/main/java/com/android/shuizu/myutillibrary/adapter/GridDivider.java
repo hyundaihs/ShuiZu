@@ -17,10 +17,12 @@ public class GridDivider extends RecyclerView.ItemDecoration {
     private int mDividerHight = 1;
     private Paint mColorPaint;
     public final int[] ATRRS = new int[]{android.R.attr.listDivider};
+    private int spanCount = 2;
 
-    public GridDivider(Context context) {
+    public GridDivider(Context context, int spanCount) {
         final TypedArray ta = context.obtainStyledAttributes(ATRRS);
         this.mDividerDarwable = ta.getDrawable(0);
+        this.spanCount = spanCount;
         ta.recycle();
     }
 
@@ -28,8 +30,8 @@ public class GridDivider extends RecyclerView.ItemDecoration {
      int dividerHight  分割线的线宽
      int dividerColor  分割线的颜色
      */
-    public GridDivider(Context context, int dividerHight, int dividerColor) {
-        this(context);
+    public GridDivider(Context context, int dividerHight, int dividerColor, int spanCount) {
+        this(context, spanCount);
         mDividerHight = dividerHight;
         //绘制颜色分割线的画笔
         mColorPaint = new Paint();
@@ -40,8 +42,8 @@ public class GridDivider extends RecyclerView.ItemDecoration {
      int dividerHight  分割线的线宽
      Drawable dividerDrawable  图片分割线
      */
-    public GridDivider(Context context, int dividerHight, Drawable dividerDrawable) {
-        this(context);
+    public GridDivider(Context context, int dividerHight, Drawable dividerDrawable, int spanCount) {
+        this(context, spanCount);
         mDividerHight = dividerHight;
         mDividerDarwable = dividerDrawable;
     }
@@ -70,7 +72,7 @@ public class GridDivider extends RecyclerView.ItemDecoration {
             int right = 0;
 
             //左边第一列，
-            if ((i % 2) == 0) {
+            if ((i % spanCount) == 0) {
                 //item左边分割线
                 left = child.getLeft();
                 right = left + mDividerHight;
@@ -109,7 +111,7 @@ public class GridDivider extends RecyclerView.ItemDecoration {
             int bottom = 0;
 
             // 最上面一行
-            if ((i / 2) == 0) {
+            if ((i / spanCount) == 0) {
                 //当前item最上面的分割线
                 top = child.getTop();
                 //当前item下面的分割线

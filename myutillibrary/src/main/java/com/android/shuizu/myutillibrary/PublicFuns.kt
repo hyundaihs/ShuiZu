@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.Toast
 import com.android.shuizu.myutillibrary.utils.CalendarUtil
@@ -53,6 +54,14 @@ val mPermissions = arrayOf(Permission.READ_EXTERNAL_STORAGE,
         Permission.ACCESS_COARSE_LOCATION,
         Permission.ACCESS_FINE_LOCATION
 )
+
+fun Context.dp2px(dp: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+}
+
+fun Context.sp2px(sp:Float):Float{
+    return TypedValue.applyDimension (TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
+}
 
 fun AppCompatActivity.initActionBar(act: AppCompatActivity, title: String, showBack: Boolean = true, rightBtn: String? = null, isAdd: Boolean = false,
                                     rightClick: View.OnClickListener? = null, leftBtn: String? = null,

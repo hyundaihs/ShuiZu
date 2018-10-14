@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -12,6 +13,7 @@ import android.widget.ProgressBar
 import com.android.shuizu.myutillibrary.R
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.squareup.picasso.Picasso
+import java.io.File
 
 
 /**
@@ -53,8 +55,19 @@ fun Context.ShowImageDialog(url: String) {
     val dialog = Dialog(this)
     dialog.setCancelable(true)
     val imageView = ImageView(this)
+    imageView.setBackgroundColor(Color.TRANSPARENT)
     dialog.setContentView(imageView)
     Picasso.with(this).load(url).into(imageView)
+    dialog.show()
+}
+
+fun Context.ShowImageDialog(file: File) {
+    val dialog = Dialog(this)
+    dialog.setCancelable(true)
+    val imageView = ImageView(this)
+    imageView.setBackgroundColor(Color.TRANSPARENT)
+    dialog.setContentView(imageView)
+    Picasso.with(this).load(file).into(imageView)
     dialog.show()
 }
 

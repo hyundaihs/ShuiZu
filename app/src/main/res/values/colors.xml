@@ -20,4 +20,8 @@
     <color name="text_green">#00B063</color>
     <color name="tip_green">#20D146</color>
     <color name="text_gray_light">#b0b0b0</color>
+    <color name="gray_F1F1F1">#F1F1F1</color>
+    <color name="gray_B0B0B0">#B0B0B0</color>
+    <color name="gray_767676">#767676</color>
+    <color name="gray_E5E5E5">#E5E5E5</color>
 </resources>

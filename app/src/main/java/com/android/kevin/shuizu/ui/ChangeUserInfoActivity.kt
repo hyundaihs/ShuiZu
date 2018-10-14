@@ -47,8 +47,8 @@ class ChangeUserInfoActivity : TakePhotoActivity() {
             finish()
         }
         Picasso.with(this).load(SZApplication.userInfo.file_url.getImageUrl()).into(photo)
-        photo.setOnClickListener {
-            val view = LayoutInflater.from(it.context).inflate(R.layout.layout_take_photo, null, false)
+        photo.setOnClickListener { itView ->
+            val view = LayoutInflater.from(itView.context).inflate(R.layout.layout_take_photo, null, false)
             val dialog = BottomDialog(view)
             view.capture.setOnClickListener {
                 dialog.dismiss()

@@ -180,3 +180,27 @@ data class YYZJInfoRes(val retRes: YYZJInfo) : RequestResult()
 
 data class YYZJInfoListRes(val retRes: ArrayList<YYZJInfo>) : RequestResult()
 
+/*[id] => ID
+[title] => 标题
+[sub_title] => 简介
+[contents] => 详情
+[create_time] => 时间（时间戳）*/
+data class FishLog(val id: Int, val title: String, val sub_title: String, val contents: String, val create_time: Long)
+
+data class FishLogRes(val retRes: FishLog) : RequestResult()
+
+data class FishLogListRes(val retRes: ArrayList<FishLog>) : RequestResult()
+
+/*[id] => ID
+[title] => 标题
+[file_url] => 图片
+[sub_title] => 简介
+[app_contents] => 详情（html代码）*/
+data class FishKnowledge(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String)
+
+data class FishKnowledgeRes(val retRes: FishKnowledge) : RequestResult()
+
+data class FishKnowledgeListRes(val retRes: ArrayList<FishKnowledge>) : RequestResult()
+
+
+

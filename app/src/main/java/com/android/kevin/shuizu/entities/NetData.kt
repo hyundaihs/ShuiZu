@@ -134,11 +134,30 @@ const val BJ_LOG = "bjlog" //设备日志
 card_id：设备编号*/
 const val BDSB = "bdsb" //绑定设备
 
+/*page：页数
+page_size:每页大小（默认20）*/
 const val YYZJ = "yyzj" //养鱼专家列表
 
 /*id：专家id*/
 const val YYZJ_INFO = "yyzjinfo" //养鱼专家详情
 
 
+/*page：页数
+page_size:每页大小（默认20）*/
+const val YLZS = "ylzs" //鱼类知识列表
+
+/*id：鱼类知识id*/
+const val YLZS_INFO = "ylzsinfo" //鱼类知识详情
+
+/*page：页数
+page_size:每页大小（默认20）*/
+const val YYRZ = "yyrz" //养鱼日志列表
+
+/*id：养鱼日志id*/
+const val YYRZ_INFO = "yyrzinfo" //养鱼日志详情
+
+/*title：标题
+contents：内容*/
+const val TJ_YYRZ = "tjyyrz" //养鱼日志详情
 
 

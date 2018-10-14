@@ -39,7 +39,6 @@
                 android:id="@+id/reservationItemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="蔡雨峰"
                 android:textColor="@color/text_green"
                 android:textSize="16sp" />
 
@@ -47,7 +46,6 @@
                 android:id="@+id/reservationItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="主旨医生"
                 android:textSize="14sp" />
 
         </LinearLayout>

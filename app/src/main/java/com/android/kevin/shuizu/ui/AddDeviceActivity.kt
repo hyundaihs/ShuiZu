@@ -3,6 +3,7 @@ package com.android.kevin.shuizu.ui
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
@@ -10,15 +11,16 @@ import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
 import com.android.shuizu.myutillibrary.MyBaseActivity
-import com.android.shuizu.myutillibrary.adapter.GridDivider
+import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
+import com.android.shuizu.myutillibrary.dp2px
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import org.jetbrains.anko.toast
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.acitivity_add_device.*
 import kotlinx.android.synthetic.main.layout_add_device_list_item.view.*
+import org.jetbrains.anko.toast
 
 /**
  * ChaYin
@@ -186,7 +188,9 @@ class AddDeviceActivity : MyBaseActivity() {
         }
         val gridLayoutManager = GridLayoutManager(this, 2)
         deviceList.layoutManager = gridLayoutManager
-        deviceList.addItemDecoration(GridDivider(this, 10, this.resources.getColor(R.color.white)))
+        deviceList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.BOTH_SET, dp2px(10f).toInt(), Color.TRANSPARENT))
+        //deviceList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST, dp2px(10f).toInt(), Color.TRANSPARENT))
+        //deviceList.addItemDecoration(GridDivider(this, 10, this.resources.getColor(R.color.white), 2))
         deviceList.itemAnimator = DefaultItemAnimator()
         deviceList.adapter = adapter
         deviceList.isNestedScrollingEnabled = false

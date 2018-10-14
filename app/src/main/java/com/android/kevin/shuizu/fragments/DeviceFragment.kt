@@ -3,6 +3,7 @@ package com.android.kevin.shuizu.fragments
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
@@ -17,11 +18,13 @@ import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_EDIT_GROUP
 import com.android.kevin.shuizu.ui.*
-import com.android.shuizu.myutillibrary.adapter.GridDivider
+import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
 import com.android.shuizu.myutillibrary.adapter.LineDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
+import com.android.shuizu.myutillibrary.dp2px
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
+import com.android.shuizu.myutillibrary.utils.DisplayUtils.dp2px
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
 import com.paradoxie.autoscrolltextview.VerticalTextview
@@ -111,7 +114,8 @@ class DeviceFragment : BaseFragment() {
 
         val gridLayoutManager = GridLayoutManager(activity, 2)
         deviceDevices.layoutManager = gridLayoutManager
-        deviceDevices.addItemDecoration(GridDivider(activity, 10, this.resources.getColor(R.color.white)))
+        deviceDevices.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.BOTH_SET, activity!!.dp2px(10f).toInt(), Color.RED))
+        //deviceDevices.addItemDecoration(GridDivider(activity, 10, this.resources.getColor(R.color.white), 2))
         deviceDevices.itemAnimator = DefaultItemAnimator()
         deviceDevices.adapter = deviceAdapter
         deviceDevices.isNestedScrollingEnabled = false
@@ -294,7 +298,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, YG_LISTS.getInterface(), map)
+        }, false).postRequest(activity as Context, YG_LISTS.getInterface(), map)
     }
 
     private fun getMyDeviceList(id: Int) {
@@ -321,6 +325,6 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, YGSB.getInterface(), map)
+        }, false).postRequest(activity as Context, YGSB.getInterface(), map)
     }
 }

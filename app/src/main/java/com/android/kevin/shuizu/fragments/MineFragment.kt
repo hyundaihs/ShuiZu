@@ -11,10 +11,7 @@ import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.SZApplication
 import com.android.kevin.shuizu.SZApplication.Companion.userInfo
 import com.android.kevin.shuizu.entities.*
-import com.android.kevin.shuizu.ui.ChangeUserInfoActivity
-import com.android.kevin.shuizu.ui.LoginActivity
-import com.android.kevin.shuizu.ui.ReservationActivity
-import com.android.kevin.shuizu.ui.ReservationDetailsActivity
+import com.android.kevin.shuizu.ui.*
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.CustomDialog
@@ -29,7 +26,7 @@ import org.jetbrains.anko.toast
  * ChaYin
  * Created by ${蔡雨峰} on 2018/8/15/015.
  */
-class MineFragment : BaseFragment() {
+class MineFragment : BaseFragment(),View.OnClickListener {
     var login_verf: String by PreferenceUtil(SZApplication.instance, App_Keyword.LOGIN_VERF, "")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,19 +45,35 @@ class MineFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        changeUserInfo.setOnClickListener {
-            startActivity(Intent(it.context, ChangeUserInfoActivity::class.java))
-        }
-        yuYueMore.setOnClickListener {
-            startActivity(Intent(it.context, ReservationActivity::class.java))
-        }
-        exit.setOnClickListener {
-            activity?.CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
-                login_verf = ""
-                val intent = Intent(activity, LoginActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }, negative = "取消")
+        changeUserInfo.setOnClickListener(this)
+        yuYueMore.setOnClickListener(this)
+        exit.setOnClickListener(this)
+        fishLogBtn.setOnClickListener(this)
+        fishKnowledgeBtn.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.changeUserInfo->{
+                startActivity(Intent(context, ChangeUserInfoActivity::class.java))
+            }
+            R.id.yuYueMore->{
+                startActivity(Intent(context, ReservationActivity::class.java))
+            }
+            R.id.exit->{
+                activity?.CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
+                    login_verf = ""
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }, negative = "取消")
+            }
+            R.id.fishLogBtn->{
+                startActivity(Intent(context, FishLogListActivity::class.java))
+            }
+            R.id.fishKnowledgeBtn->{
+                startActivity(Intent(context, FishKnowledgeListActivity::class.java))
+            }
         }
     }
 
