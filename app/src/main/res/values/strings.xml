@@ -13,6 +13,7 @@
     <string name="inputPswdAgain">请重复输入密码</string>
     <string name="device">设备</string>
     <string name="intelligence">智能</string>
+    <string name="service">智能</string>
     <string name="store">商城</string>
     <string name="mine">我的</string>
 </resources>

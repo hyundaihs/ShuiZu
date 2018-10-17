@@ -49,7 +49,8 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 
     var flag = false
     private var deviceId = 0
-    private val bgs = arrayListOf<Int>(R.drawable.blue_tip, R.drawable.yellow_tip, R.drawable.red_tip)
+    private val tips = arrayListOf(R.mipmap.px, R.mipmap.low, R.mipmap.high)
+    private val texts = arrayListOf("正常", "偏低", "偏高")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,9 +108,18 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
         waterTemp.text = "当前水温 / ${waterMonitor.wd}℃"
         waterPH.text = "当前PH值 / ${waterMonitor.ph}"
         waterTDS.text = "当前TDS值 / ${waterMonitor.tds}"
-        waterTempTip.setBackgroundResource(bgs[waterMonitor.wd_zl])
-        waterPHTip.setBackgroundResource(bgs[waterMonitor.ph_zl])
-        waterTDSTip.setBackgroundResource(bgs[waterMonitor.tds_zl])
+        waterTempLevel.text = texts[waterMonitor.wd_zl]
+        waterPHLevel.text = texts[waterMonitor.ph_zl]
+        waterTDSLevel.text = texts[waterMonitor.tds_zl]
+        var rightDrawable = resources.getDrawable(tips[waterMonitor.wd_zl])
+        rightDrawable.setBounds(0, 0, rightDrawable.minimumWidth, rightDrawable.minimumHeight)
+        waterTempLevel.setCompoundDrawablesRelative(rightDrawable, null, null, null)
+        rightDrawable = resources.getDrawable(tips[waterMonitor.ph_zl])
+        rightDrawable.setBounds(0, 0, rightDrawable.minimumWidth, rightDrawable.minimumHeight)
+        waterPHLevel.setCompoundDrawablesRelative(rightDrawable, null, null, null)
+        rightDrawable = resources.getDrawable(tips[waterMonitor.tds_zl])
+        rightDrawable.setBounds(0, 0, rightDrawable.minimumWidth, rightDrawable.minimumHeight)
+        waterTDSLevel.setCompoundDrawablesRelative(rightDrawable, null, null, null)
     }
 
     private fun deleteDevice(id: Int) {

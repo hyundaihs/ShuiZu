@@ -93,7 +93,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/waterTemp"/>
 
             <TextView
-                android:id="@+id/high"
+                android:id="@+id/waterTempLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@mipmap/high"
@@ -102,17 +102,17 @@
                 app:layout_constraintTop_toTopOf="@id/waterLevelTitle"/>
 
             <TextView
-                android:id="@+id/normal"
+                android:id="@+id/waterPHLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@mipmap/px"
                 android:text="正常"
-                app:layout_constraintBottom_toTopOf="@id/low"
+                app:layout_constraintBottom_toTopOf="@id/waterTDSLevel"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/high"/>
+                app:layout_constraintTop_toBottomOf="@id/waterTempLevel"/>
 
             <TextView
-                android:id="@+id/low"
+                android:id="@+id/waterTDSLevel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@mipmap/low"

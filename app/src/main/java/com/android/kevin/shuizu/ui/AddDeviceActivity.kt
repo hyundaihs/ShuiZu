@@ -12,6 +12,7 @@ import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
+import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.dp2px
 import com.android.shuizu.myutillibrary.initActionBar
@@ -188,7 +189,7 @@ class AddDeviceActivity : MyBaseActivity() {
         }
         val gridLayoutManager = GridLayoutManager(this, 2)
         deviceList.layoutManager = gridLayoutManager
-        deviceList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.BOTH_SET, dp2px(10f).toInt(), Color.TRANSPARENT))
+        deviceList.addItemDecoration(GridDivider(this, dp2px(10f).toInt(), 2))
         //deviceList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST, dp2px(10f).toInt(), Color.TRANSPARENT))
         //deviceList.addItemDecoration(GridDivider(this, 10, this.resources.getColor(R.color.white), 2))
         deviceList.itemAnimator = DefaultItemAnimator()

@@ -73,6 +73,8 @@ class ReservationActivity : MyBaseActivity() {
             Picasso.with(holder.itemView.context).load(yyzjInfo.file_url.getImageUrl())
                     .into(holder.itemView.reservationItemImage)
             holder.itemView.reservationItemName.text = yyzjInfo.title
+            holder.itemView.reservationItemZhuanYe.text = yyzjInfo.zhuanye
+            holder.itemView.reservationItemAge.text = yyzjInfo.biaoqian
             holder.itemView.reservationItemTitle.text = yyzjInfo.sub_title
         }
 

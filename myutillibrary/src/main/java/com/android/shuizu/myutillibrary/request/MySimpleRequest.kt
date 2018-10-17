@@ -121,7 +121,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
     }
 
 
-    fun postRequest(context: Context, url: String, map: Map<String, String> = mapOf(Pair("", ""))) {
+    fun postRequest(context: Context, url: String, map: Map<String, Any> = mapOf(Pair("", ""))) {
         var dialog: AlertDialog? = null
         if (getProgress) {
             dialog = MyProgressDialog(context)
@@ -245,11 +245,12 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
             dialog = MyProgressDialog(context)
         }
         doAsync {
+            val name = if(files.size > 1) "uploadedfile[]" else "uploadedfile"
             val requestBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
             for (i in 0 until files.size) {
                 val file = File(files[i])
                 val fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file)
-                requestBodyBuilder.addFormDataPart("uploadedfile", files[i].substring(files[i].lastIndexOf("/")), fileBody)
+                requestBodyBuilder.addFormDataPart(name, files[i].substring(files[i].lastIndexOf("/")), fileBody)
             }
             val requestBody = requestBodyBuilder.build()
             val request = Request.Builder()

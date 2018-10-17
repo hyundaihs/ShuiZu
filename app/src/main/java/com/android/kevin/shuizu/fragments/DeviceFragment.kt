@@ -19,6 +19,7 @@ import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_EDIT_GROUP
 import com.android.kevin.shuizu.ui.*
 import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
+import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.LineDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.dp2px
@@ -114,8 +115,7 @@ class DeviceFragment : BaseFragment() {
 
         val gridLayoutManager = GridLayoutManager(activity, 2)
         deviceDevices.layoutManager = gridLayoutManager
-        deviceDevices.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.BOTH_SET, activity!!.dp2px(10f).toInt(), Color.RED))
-        //deviceDevices.addItemDecoration(GridDivider(activity, 10, this.resources.getColor(R.color.white), 2))
+        deviceDevices.addItemDecoration(GridDivider(activity, activity!!.dp2px(10f).toInt(), 2))
         deviceDevices.itemAnimator = DefaultItemAnimator()
         deviceDevices.adapter = deviceAdapter
         deviceDevices.isNestedScrollingEnabled = false

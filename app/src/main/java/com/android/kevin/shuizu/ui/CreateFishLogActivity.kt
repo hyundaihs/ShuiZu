@@ -3,27 +3,28 @@ package com.android.kevin.shuizu.ui
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import com.android.kevin.shuizu.R
-import com.android.kevin.shuizu.entities.UPFILE
-import com.android.kevin.shuizu.entities.UploadInfoRes
+import com.android.kevin.shuizu.entities.TJ_YYRZ
+import com.android.kevin.shuizu.entities.UPFILE_LISTS
+import com.android.kevin.shuizu.entities.UploadInfoListRes
 import com.android.kevin.shuizu.entities.getInterface
 import com.android.kevin.shuizu.utils.SdCardUtil
-import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
 import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
-import com.bumptech.glide.Glide
+import com.android.shuizu.myutillibrary.dp2px
+import com.android.shuizu.myutillibrary.request.MySimpleRequest
+import com.android.shuizu.myutillibrary.utils.BottomDialog
+import com.android.shuizu.myutillibrary.utils.LoginErrDialog
+import com.android.shuizu.myutillibrary.utils.RoundTransform
+import com.android.shuizu.myutillibrary.utils.ShowImageDialog
+import com.google.gson.Gson
 import com.jph.takephoto.app.TakePhotoActivity
-import com.jph.takephoto.model.CropOptions
 import com.jph.takephoto.model.TResult
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_fish_log.*
@@ -31,21 +32,16 @@ import kotlinx.android.synthetic.main.layout_create_fish_log_images.view.*
 import kotlinx.android.synthetic.main.layout_take_photo.view.*
 import org.jetbrains.anko.toast
 import java.io.File
-import com.bumptech.glide.request.target.BitmapImageViewTarget
-import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration.BOTH_SET
-import com.android.shuizu.myutillibrary.dp2px
-import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.utils.*
-import com.google.gson.Gson
 
 
 /**
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/14/014.
  */
-class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
+class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
 
     val images = ArrayList<String>()
+    val imagesUpload = ArrayList<String>()
     private val mAdapter = MyImageAdapter(images)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,21 +51,29 @@ class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        finish()
+        when (v?.id) {
+            R.id.page_back -> {
+                finish()
+            }
+            R.id.publish -> {
+                if (checkData()) {
+                    uploadImages()
+                }
+            }
+        }
     }
 
     private fun initViews() {
         val gridLayoutManager = GridLayoutManager(this, 3)
         logImages.layoutManager = gridLayoutManager
         //水平分割线
-        logImages.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.BOTH_SET, dp2px(10f).toInt(), Color.TRANSPARENT))
-        //logImages.addItemDecoration(GridDivider(this, 10, this.resources.getColor(R.color.white), 3))
+        logImages.addItemDecoration(GridDivider(this, dp2px(10f).toInt(), 3))
         logImages.itemAnimator = DefaultItemAnimator()
         logImages.adapter = mAdapter
         logImages.isNestedScrollingEnabled = false
         mAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
-                if (position == images.size) {
+                if (position == images.size && position < 9) {
                     val mView = LayoutInflater.from(view.context).inflate(R.layout.layout_take_photo, null, false)
                     val dialog = BottomDialog(mView)
                     mView.capture.setOnClickListener {
@@ -91,14 +95,28 @@ class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
         }
     }
 
-    private fun uploadImage() {
-        val list = ArrayList<String>()
-//        list.add(userTemp.file_url)
+    private fun checkData(): Boolean {
+        if (logTitle.text.isEmpty()) {
+            logTitle.error = "日志标题不能为空"
+            return false
+        }
+        if (logContent.text.isEmpty()) {
+            logContent.error = "日志正文不能为空"
+            return false
+        }
+        if (images.size <= 0) {
+            toast("最少上传一张图片")
+            return false
+        }
+        return true
+    }
+
+    private fun uploadImages() {
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-                val uploadInfoRes = Gson().fromJson(result, UploadInfoRes::class.java)
-//                userTemp.file_url = uploadInfoRes.retRes.file_url
-//                submitInfo()
+                val uploadInfoListRes = Gson().fromJson(result, UploadInfoListRes::class.java)
+                imagesUpload.addAll(uploadInfoListRes.retRes)
+                submit()
             }
 
             override fun onError(context: Context, error: String) {
@@ -113,7 +131,32 @@ class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
             }
             //
 
-        }, true).uploadFile(this, UPFILE.getInterface(), list)
+        }).uploadFile(this, UPFILE_LISTS.getInterface(), images)
+    }
+
+    private fun submit() {
+        val map = mapOf(Pair("title", logTitle.text.toString())
+                , Pair("contents", logContent.text.toString())
+                , Pair("img_file_urls", imagesUpload)
+        )
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                toast("发布成功")
+                finish()
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(this, TJ_YYRZ.getInterface(), map)
     }
 
     inner class MyOnClickListener : View.OnClickListener {
@@ -170,7 +213,7 @@ class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
-            if (position == data.size) {
+            if (position == data.size && position < 9) {
                 holder.itemView.image.setImageResource(R.mipmap.add_gray)
                 holder.itemView.delete.visibility = View.GONE
             } else {
@@ -187,6 +230,6 @@ class CreateFishLogActivity : TakePhotoActivity(),View.OnClickListener {
 //            holder.itemView.fishItemSubtitle.text = fishKnowledge.sub_title
         }
 
-        override fun getItemCount(): Int = data.size + 1
+        override fun getItemCount(): Int = if (data.size >= 9) data.size else data.size + 1
     }
 }

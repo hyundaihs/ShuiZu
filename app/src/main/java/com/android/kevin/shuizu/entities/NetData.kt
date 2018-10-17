@@ -20,6 +20,7 @@ fun String.getInterface(): String {
 }
 
 const val UPFILE = "upfile"//文件上传
+const val UPFILE_LISTS = "upfilelists"//文件上传
 /*phone：手机号码*/
 const val SEND_VERF = "sendverf" //发送短信验证码
 
@@ -158,6 +159,9 @@ const val YYRZ_INFO = "yyrzinfo" //养鱼日志详情
 
 /*title：标题
 contents：内容*/
-const val TJ_YYRZ = "tjyyrz" //养鱼日志详情
+const val TJ_YYRZ = "tjyyrz" //发布养鱼日志
+
+/*id：养鱼日志id*/
+const val DEL_YYRZ = "delyyrz" //删除养鱼日志
 
 

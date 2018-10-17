@@ -39,8 +39,9 @@ class ReservationDetailsActivity : MyBaseActivity() {
                 val yYZJInfoRes = Gson().fromJson(result, YYZJInfoRes::class.java)
                 Picasso.with(context).load(yYZJInfoRes.retRes.file_url.getImageUrl()).into(detailsImage)
                 detailsName.text = yYZJInfoRes.retRes.title
-                detailsTitle.text = yYZJInfoRes.retRes.sub_title
-                webDetails.loadData(yYZJInfoRes.retRes.app_contents,"text/html; charset=UTF-8", null)
+                detailsZhuanYe.text = yYZJInfoRes.retRes.zhuanye
+                detailsTitle.text = yYZJInfoRes.retRes.biaoqian
+                webDetails.loadData(yYZJInfoRes.retRes.app_contents, "text/html; charset=UTF-8", null)
             }
 
             override fun onError(context: Context, error: String) {

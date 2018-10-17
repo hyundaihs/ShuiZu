@@ -35,12 +35,42 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/reservationItemName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_green"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reservationItemName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_green"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_332c2b"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/reservationItemZhuanYe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_332c2b"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/reservationItemAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray_light"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/reservationItemTitle"
@@ -53,8 +83,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@null"
             android:layout_marginEnd="10dp"
+            android:contentDescription="@null"
             android:src="@mipmap/more" />
 
     </LinearLayout>
@@ -62,7 +92,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:elevation="1dp"
-        android:background="@color/line_gray_ECECEC" />
+        android:background="@color/line_gray_ECECEC"
+        android:elevation="1dp" />
 
 </LinearLayout>

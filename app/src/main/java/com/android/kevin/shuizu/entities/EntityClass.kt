@@ -169,12 +169,17 @@ data class UploadInfo(val file_url: String)
 
 data class UploadInfoRes(val retRes: UploadInfo) : RequestResult()
 
+data class UploadInfoListRes(val retRes: ArrayList<String>) : RequestResult()
+
 /*[id] => ID
 [title] => 标题
 [file_url] => 图片
 [sub_title] => 简介
+[biaoqian] => 标签（医龄：6年）
+[zhuanye] => 专业（鱼类专家
 [app_contents] => 详情（html代码）*/
-data class YYZJInfo(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String)
+data class YYZJInfo(val id: Int, val title: String, val file_url: String, val sub_title: String
+                    , val biaoqian: String, val zhuanye: String, val app_contents: String)
 
 data class YYZJInfoRes(val retRes: YYZJInfo) : RequestResult()
 
@@ -184,8 +189,10 @@ data class YYZJInfoListRes(val retRes: ArrayList<YYZJInfo>) : RequestResult()
 [title] => 标题
 [sub_title] => 简介
 [contents] => 详情
-[create_time] => 时间（时间戳）*/
-data class FishLog(val id: Int, val title: String, val sub_title: String, val contents: String, val create_time: Long)
+[create_time] => 时间（时间戳）
+ [img_file_urls] => 图片数组['public/1.jpg','public/2.jpg']*/
+data class FishLog(val id: Int, val title: String, val sub_title: String, val contents: String, val create_time: Long
+                   , val file_url: String, val img_file_urls: ArrayList<String>)
 
 data class FishLogRes(val retRes: FishLog) : RequestResult()
 
