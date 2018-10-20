@@ -80,13 +80,13 @@
             android:name=".ui.WaterLevelDataSetActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.ChangeUserInfoActivity" />
-        <activity android:name=".ui.ReservationActivity" />
         <activity android:name=".ui.ReservationDetailsActivity" />
         <activity android:name=".ui.FishKnowledgeListActivity" />
         <activity android:name=".ui.FishKnowledgeDetailsActivity" />
         <activity android:name=".ui.FishLogListActivity" />
         <activity android:name=".ui.CreateFishLogActivity" />
         <activity android:name=".ui.FishLogDetailsActivity" />
+        <activity android:name=".ui.CallZJActivity" />
 
         <service android:name=".MonitorService" />
     </application>

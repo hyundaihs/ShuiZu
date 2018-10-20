@@ -16,4 +16,9 @@
     <string name="service">智能</string>
     <string name="store">商城</string>
     <string name="mine">我的</string>
+    <string name="title_1" >title1</string>
+    <string name="title_2" >title2</string>
+    <string name="title_3" >title3</string>
+    <string name="title_4" >title4</string>
+    <string name="text_1" >text1</string>
 </resources>

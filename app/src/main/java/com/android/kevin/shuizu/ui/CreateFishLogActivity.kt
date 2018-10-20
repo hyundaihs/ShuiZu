@@ -213,8 +213,8 @@ class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             super.onBindViewHolder(holder, position)
-            if (position == data.size && position < 9) {
-                holder.itemView.image.setImageResource(R.mipmap.add_gray)
+            if (position >= data.size && position < 9) {
+                holder.itemView.image.setImageResource(R.mipmap.add_device)
                 holder.itemView.delete.visibility = View.GONE
             } else {
                 val images = data[position]

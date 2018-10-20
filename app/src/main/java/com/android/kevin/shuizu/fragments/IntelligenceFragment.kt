@@ -34,24 +34,24 @@ class IntelligenceFragment : BaseFragment() {
     }
 
     private fun initViews() {
-        val fragmentList = ArrayList<Fragment>()
-        val listTitle = arrayListOf("操作日志", "报警日志", "便捷设置")
-        fragmentList.add(ActionLogFragment())
-        fragmentList.add(WarnLogFragment())
-        fragmentList.add(QuickSetFragment())
-        viewpager.adapter = MyPagerAdapter(childFragmentManager, fragmentList, listTitle)
-        tabLayout.setupWithViewPager(viewpager)
-        viewpager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-
-            }
-        })
+//        val fragmentList = ArrayList<Fragment>()
+//        val listTitle = arrayListOf("操作日志", "报警日志", "便捷设置")
+//        fragmentList.add(ExpertAdviceFragment())
+//        fragmentList.add(NetworkQueryFragment())
+//        fragmentList.add(MemoSetFragment())
+//        viewpager.adapter = MyPagerAdapter(childFragmentManager, fragmentList, listTitle)
+//        tabLayout.setupWithViewPager(viewpager)
+//        viewpager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+//            override fun onPageScrollStateChanged(state: Int) {
+//            }
+//
+//            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+//            }
+//
+//            override fun onPageSelected(position: Int) {
+//
+//            }
+//        })
     }
 
     inner class MyPagerAdapter(fm: FragmentManager, val fragmentList: ArrayList<Fragment>, val listTitle: ArrayList<String>)

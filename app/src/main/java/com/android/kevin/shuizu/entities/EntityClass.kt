@@ -179,7 +179,7 @@ data class UploadInfoListRes(val retRes: ArrayList<String>) : RequestResult()
 [zhuanye] => 专业（鱼类专家
 [app_contents] => 详情（html代码）*/
 data class YYZJInfo(val id: Int, val title: String, val file_url: String, val sub_title: String
-                    , val biaoqian: String, val zhuanye: String, val app_contents: String)
+                    , val biaoqian: String, val zhuanye: String, val app_contents: String, val tags: String)
 
 data class YYZJInfoRes(val retRes: YYZJInfo) : RequestResult()
 

@@ -42,6 +42,11 @@ class ReservationDetailsActivity : MyBaseActivity() {
                 detailsZhuanYe.text = yYZJInfoRes.retRes.zhuanye
                 detailsTitle.text = yYZJInfoRes.retRes.biaoqian
                 webDetails.loadData(yYZJInfoRes.retRes.app_contents, "text/html; charset=UTF-8", null)
+                detailsCallzj.setOnClickListener {
+                    val intent = Intent(context, CallZJActivity::class.java)
+                    intent.putExtra("id", yYZJInfoRes.retRes.id)
+                    startActivity(intent)
+                }
             }
 
             override fun onError(context: Context, error: String) {

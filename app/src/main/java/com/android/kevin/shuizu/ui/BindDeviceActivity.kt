@@ -16,22 +16,26 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.EditText
 import com.android.kevin.shuizu.R
-import com.android.kevin.shuizu.entities.BDSB
-import com.android.kevin.shuizu.entities.getInterface
+import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.ui.BindDeviceActivity.MyAdapter.MyOnItemClickListener
 import com.android.kevin.shuizu.utils.CharUtil
 import com.android.kevin.shuizu.utils.SocketUtil
 import com.android.kevin.shuizu.utils.SocketUtil.OnMsgComing
 import com.android.shuizu.myutillibrary.*
 import com.android.shuizu.myutillibrary.adapter.LineDecoration
+import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
+import com.android.shuizu.myutillibrary.utils.CustomDialog
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.utils.charToHexStr
 import com.android.shuizu.myutillibrary.utils.makeChecksum
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_bind_device.*
 import kotlinx.android.synthetic.main.layout_wifi_list_item.view.*
+import kotlinx.android.synthetic.main.layout_yg_list_item.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
@@ -45,7 +49,7 @@ import java.util.*
 class BindDeviceActivity : MyBaseActivity() {
 
     companion object {
-        val WIFI_SSID = "JIASONG"
+        val WIFI_SSID = "BJ888888"
     }
 
     enum class InfoType {
@@ -61,11 +65,11 @@ class BindDeviceActivity : MyBaseActivity() {
     val options1Items = arrayListOf<String>("水质监测器", "加热棒", "水泵", "断电报警器", "水位报警")
     val scanResults = ArrayList<ScanResult>()
     private val mAdapter = MyAdapter(scanResults)
-    var checkDevice: String = "WL"
+    private var ygId = 0
     var state = ConnectState.SEARCHING
 
     enum class ConnectState {
-        SEARCHING, SEARCHED, CONNECTING, CONNECTED, CREATE_SOCKET, INIT_SOCKET, SENDING_CLOSE
+        SEARCHING, SEARCHED, CONNECTING, CONNECT_SUCCESS, CONNECTED, CREATE_SOCKET, INIT_SOCKET, SENDING_CLOSE
     }
 
     private val receiver = MyBroadCastReceiver()
@@ -102,7 +106,7 @@ class BindDeviceActivity : MyBaseActivity() {
                         if (state == ConnectState.SEARCHING) {
                             state = ConnectState.SEARCHED
                             D("找到热点")
-                            connectWifi(scanResults[rel].SSID, 1)
+                            connectWifi(WIFI_SSID, 1)
                         }
                     } else {
                         //如果没有设备热点,并且状态不在搜索中,置为搜索中
@@ -114,7 +118,8 @@ class BindDeviceActivity : MyBaseActivity() {
                     isCallResult = false
                 }
                 WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
-                    if (isCallStateChanged || state != ConnectState.CONNECTED) {
+                    E("NETWORK_STATE_CHANGED_ACTION")
+                    if (isCallStateChanged) {
                         return
                     }
                     isCallStateChanged = true
@@ -125,6 +130,8 @@ class BindDeviceActivity : MyBaseActivity() {
                             E("CONNECTED")
                             val wifiInfo = intent.getParcelableExtra<WifiInfo>(WifiManager.EXTRA_WIFI_INFO)
                             if (wifiInfo != null && wifiInfo.ssid.replace("\"", "") == WIFI_SSID) {
+                                D("热点连接成功")
+                                state = ConnectState.CONNECTED
                                 doAsync {
                                     Thread.sleep(15000)
                                     uiThread {
@@ -184,7 +191,7 @@ class BindDeviceActivity : MyBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bind_device)
         initActionBar(this, "添加新设备")
-
+        ygId = intent.getIntExtra("id", 0)
         val layoutManager = LinearLayoutManager(this)
         wifiList.layoutManager = layoutManager
         layoutManager.orientation = OrientationHelper.VERTICAL
@@ -208,6 +215,29 @@ class BindDeviceActivity : MyBaseActivity() {
             }
         }
         searchWifi()
+    }
+
+    private fun addDevice(id: Int) {
+        val ids = ArrayList<Int>()
+        ids.add(id)
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                toast("添加成功")
+                finish()
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(id, ids)))
     }
 
     private fun setLoadText(str: String) {
@@ -321,10 +351,10 @@ class BindDeviceActivity : MyBaseActivity() {
             }
             var config = checkSavedWifiSSID()
             val netWorkId = if (config != null) {
-                D("连接已存在的JIASONG")
+                D("连接已存在的BJ888888")
                 config.networkId
             } else {
-                config = createWifiInfo(SSID, "", 1)
+                config = createWifiInfo(SSID, SSID, 3)
                 mWifiMangaer.addNetwork(config)
             }
             if (!mWifiMangaer.enableNetwork(netWorkId, true)) {
@@ -333,8 +363,8 @@ class BindDeviceActivity : MyBaseActivity() {
                     restartProcess(4)
                 }
             } else {
-                D("热点连接成功")
-                state = ConnectState.CONNECTED
+                D("热点连接")
+                state = ConnectState.CONNECT_SUCCESS
             }
             Thread.sleep(3000)
             isCallSearchResult = false
@@ -344,7 +374,7 @@ class BindDeviceActivity : MyBaseActivity() {
     var count = 0
 
     fun registerDevice(id: String) {
-        val map = mapOf(Pair("acccardtype_id", 0.toString()),
+        val map = mapOf(Pair("acccardtype_id", ygId.toString()),
                 Pair("card_id", id))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
@@ -399,11 +429,9 @@ class BindDeviceActivity : MyBaseActivity() {
 
     private fun getCloseWifiMsg(): ByteArray {
         val sb = StringBuffer()
-        sb.append(charToHexStr(checkDevice[0]))
-        sb.append(charToHexStr(checkDevice[1]))
-        sb.append(charToHexStr('-'))
         sb.append(charToHexStr('1'))
-        sb.append(makeChecksum(sb.toString()))
+        sb.append(charToHexStr('1'))
+        //sb.append(makeChecksum(sb.toString()))
         D("closeWifi = $sb")
         return CharUtil.string2bytes(sb.toString())
     }
@@ -411,9 +439,6 @@ class BindDeviceActivity : MyBaseActivity() {
 
     private fun createMsg(wifiAccount: String, wifiPassword: String): ByteArray {
         val sb = StringBuffer()
-        sb.append(charToHexStr(checkDevice[0]))
-        sb.append(charToHexStr(checkDevice[1]))
-        sb.append(charToHexStr('-'))
         sb.append(charToHexStr('0'))
         for (i in 0 until wifiAccount.length) {
             sb.append(charToHexStr(wifiAccount[i]))
@@ -430,9 +455,6 @@ class BindDeviceActivity : MyBaseActivity() {
 
     private fun getCheckSum(wifiAccount: String, wifiPassword: String): String {
         val sb = StringBuffer()
-        sb.append(charToHexStr(checkDevice[0]))
-        sb.append(charToHexStr(checkDevice[1]))
-        sb.append(charToHexStr('-'))
         sb.append(charToHexStr('0'))
         for (i in 0 until wifiAccount.length) {
             sb.append(charToHexStr(wifiAccount[i]))

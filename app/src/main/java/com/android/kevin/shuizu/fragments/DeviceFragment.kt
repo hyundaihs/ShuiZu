@@ -48,7 +48,6 @@ class DeviceFragment : BaseFragment() {
     val warnLogList = ArrayList<WarnLog>()
     private val ygAdapter = GroupAdapter(ygInfoList)
     private val deviceAdapter = DeviceAdapter(myDeviceList)
-    var isFirst = true
     var isFlag = false
 
     companion object {
@@ -63,19 +62,11 @@ class DeviceFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         initViews()
         getDate()
-        getYGList()
-        getMyDeviceList(0)
     }
 
     override fun onResume() {
         super.onResume()
-        if (!isFirst) {
-            oftenCheck.isChecked = true
-            getYGList()
-            getMyDeviceList(0)
-        } else {
-            isFirst = false
-        }
+        getYGList()
         isFlag = true
         getWarnLog()
         verticalTextview.startAutoScroll()
@@ -96,19 +87,9 @@ class DeviceFragment : BaseFragment() {
         deviceGroup.adapter = ygAdapter
         deviceGroup.isNestedScrollingEnabled = false
         ygAdapter.onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
-            oftenCheck.isChecked = false
             if (isChecked) {
                 checkedId = ygAdapter.getCheck().id
                 groupName.text = ygAdapter.getCheck().title
-                getMyDeviceList(checkedId)
-            }
-        }
-
-        oftenCheck.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                ygAdapter.cleanCheck()
-                checkedId = 0
-                groupName.text = "常用"
                 getMyDeviceList(checkedId)
             }
         }
@@ -140,7 +121,9 @@ class DeviceFragment : BaseFragment() {
             }
         }
         bindNewDevice.setOnClickListener {
-            startActivity(Intent(activity, BindDeviceActivity::class.java))
+            val intent = Intent(activity, BindDeviceActivity::class.java)
+            intent.putExtra("id", ygAdapter.getCheck().id)
+            startActivity(intent)
         }
         groupSet.setOnClickListener {
             startActivity(Intent(activity, GroupActivity::class.java))
@@ -155,13 +138,13 @@ class DeviceFragment : BaseFragment() {
 
     private class GroupAdapter(val data: ArrayList<YGInfo>) : MyBaseAdapter(R.layout.layout_yg_list_item) {
 
-        var checkIndex = -1
+        var checkIndex = 0
         var checkYGInfo: YGInfo? = null
         var onCheckedChangeListener: CompoundButton.OnCheckedChangeListener? = null
 
         fun cleanCheck() {
             val temp = checkIndex
-            checkIndex = -1
+            checkIndex = 0
             notifyItemChanged(temp)
         }
 
@@ -174,9 +157,19 @@ class DeviceFragment : BaseFragment() {
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            if (checkIndex <= 0 || checkIndex >= data.size) {
+                checkIndex = 0
+            }
             val ygInfo = data[position]
             holder.itemView.ygListItem.text = ygInfo.title
             holder.itemView.ygListItem.isChecked = checkIndex == position
+            if (position == 0) {
+                val drawable = holder.itemView.context.resources.getDrawable(R.drawable.often)
+                drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+                holder.itemView.ygListItem.setCompoundDrawables(null, drawable, null, null)
+            } else {
+                holder.itemView.ygListItem.setCompoundDrawables(null, null, null, null)
+            }
             holder.itemView.ygListItem.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { view, isChecked ->
                 if (isChecked) {
                     val temp = checkIndex
@@ -274,7 +267,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }).postRequest(activity as Context, INDEX_INFO.getInterface(), map)
+        }, false).postRequest(activity as Context, INDEX_INFO.getInterface(), map)
     }
 
     private fun getYGList() {
@@ -283,8 +276,10 @@ class DeviceFragment : BaseFragment() {
             override fun onSuccess(context: Context, result: String) {
                 val ygInfoListRes = Gson().fromJson(result, YGInfoListRes::class.java)
                 ygInfoList.clear()
+                ygInfoList.add(YGInfo(0, "常用", 0L, 0))
                 ygInfoList.addAll(ygInfoListRes.retRes)
                 ygAdapter.notifyDataSetChanged()
+                getMyDeviceList(ygAdapter.getCheck().id)
             }
 
             override fun onError(context: Context, error: String) {

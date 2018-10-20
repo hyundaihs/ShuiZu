@@ -57,9 +57,6 @@ class MineFragment : BaseFragment(),View.OnClickListener {
             R.id.changeUserInfo->{
                 startActivity(Intent(context, ChangeUserInfoActivity::class.java))
             }
-            R.id.yuYueMore->{
-                startActivity(Intent(context, ReservationActivity::class.java))
-            }
             R.id.exit->{
                 activity?.CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
                     login_verf = ""

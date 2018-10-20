@@ -118,25 +118,6 @@
         app:layout_constraintRight_toLeftOf="@id/deviceLayout"
         app:layout_constraintTop_toBottomOf="@id/warnLayout">
 
-        <RadioButton
-            android:id="@+id/oftenCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:button="@null"
-            android:checked="true"
-            android:contentDescription="@null"
-            android:drawableTop="@drawable/often"
-            android:padding="5dp"
-            android:text="常用"
-            android:textColor="@drawable/text_gray_to_green"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_gray" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/deviceGroup"
             android:layout_width="wrap_content"
