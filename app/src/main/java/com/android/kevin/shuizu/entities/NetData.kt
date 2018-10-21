@@ -142,6 +142,14 @@ const val YYZJ = "yyzj" //养鱼专家列表
 /*id：专家id*/
 const val YYZJ_INFO = "yyzjinfo" //养鱼专家详情
 
+/*yyzj_id:专家id
+link_man：联系人
+link_phone：联系电话
+contents：详情
+img_file_urls：图片列表（['public/1.jpg','public/2.jpg']）地址从上传文件接口得到
+video_file_urls:视频列表（['public/1.MP4','public/2.MP4']）地址从上传文件接口得到*/
+const val TJYYXX = "tjyyxx"//提交预约信息
+
 
 /*page：页数
 page_size:每页大小（默认20）*/
@@ -163,5 +171,28 @@ const val TJ_YYRZ = "tjyyrz" //发布养鱼日志
 
 /*id：养鱼日志id*/
 const val DEL_YYRZ = "delyyrz" //删除养鱼日志
+
+/*lng：经度
+lat：纬度
+title:搜索关键词
+page：页数
+page_size:每页大小（默认20）*/
+const val WANGDIAN = "wangdian" //网点列表
+
+/*id：网点id
+lng：经度
+lat：纬度*/
+const val WANGDIAN_INFO = "wangdianinfo" //网点详情
+
+/*page：页数
+page_size:每页大小（默认20）*/
+const val BWXX = "bwxx" //备忘信息列表
+
+/*contents：内容
+tx_time:提醒时间（2018-09-07 15:30:00  为空则不提醒）*/
+const val TJBWXX = "tjbwxx" //提交备忘信息
+
+/*id：备忘信息id*/
+const val BWXX_INFO = "bwxxinfo" //备忘信息详情
 
 

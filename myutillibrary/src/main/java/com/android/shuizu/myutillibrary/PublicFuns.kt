@@ -52,7 +52,8 @@ fun Any.V(text: String) {
 val mPermissions = arrayOf(Permission.READ_EXTERNAL_STORAGE,
         Permission.WRITE_EXTERNAL_STORAGE,
         Permission.ACCESS_COARSE_LOCATION,
-        Permission.ACCESS_FINE_LOCATION
+        Permission.ACCESS_FINE_LOCATION,
+        Permission.CAMERA
 )
 
 fun Context.dp2px(dp: Float): Float {

@@ -245,7 +245,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
             dialog = MyProgressDialog(context)
         }
         doAsync {
-            val name = if(files.size > 1) "uploadedfile[]" else "uploadedfile"
+            val name = "uploadedfile[]"
             val requestBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
             for (i in 0 until files.size) {
                 val file = File(files[i])
@@ -292,7 +292,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                         if (getProgress) {
                             dialog?.dismiss()
                         }
-                        callback?.onError(context, response.message())
+                        callback?.onError(context, "无响应:" + response.message())
                     }
                 }
             } catch (e: Exception) {
@@ -300,7 +300,7 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
                     if (getProgress) {
                         dialog?.dismiss()
                     }
-                    callback?.onError(context, e.toString())
+                    callback?.onError(context, "异常:" + e.toString())
                 }
             }
         }

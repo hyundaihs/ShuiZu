@@ -1,5 +1,6 @@
 package com.android.kevin.shuizu.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -15,17 +16,22 @@ import com.android.kevin.shuizu.entities.UPFILE_LISTS
 import com.android.kevin.shuizu.entities.UploadInfoListRes
 import com.android.kevin.shuizu.entities.getInterface
 import com.android.kevin.shuizu.utils.SdCardUtil
+import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.dp2px
+import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.BottomDialog
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.utils.RoundTransform
 import com.android.shuizu.myutillibrary.utils.ShowImageDialog
 import com.google.gson.Gson
-import com.jph.takephoto.app.TakePhotoActivity
-import com.jph.takephoto.model.TResult
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+//import com.jph.takephoto.app.TakePhotoActivity
+//import com.jph.takephoto.model.TResult
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_fish_log.*
 import kotlinx.android.synthetic.main.layout_create_fish_log_images.view.*
@@ -38,7 +44,7 @@ import java.io.File
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/14/014.
  */
-class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
+class CreateFishLogActivity : MyBaseActivity(){
 
     val images = ArrayList<String>()
     val imagesUpload = ArrayList<String>()
@@ -47,20 +53,12 @@ class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_fish_log)
+        initActionBar(this,"发布日志",rightBtn = "发布",rightClick = View.OnClickListener {
+            if (checkData()) {
+                uploadImages()
+            }
+        })
         initViews()
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.page_back -> {
-                finish()
-            }
-            R.id.publish -> {
-                if (checkData()) {
-                    uploadImages()
-                }
-            }
-        }
     }
 
     private fun initViews() {
@@ -74,27 +72,43 @@ class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
         mAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
                 if (position == images.size && position < 9) {
-                    val mView = LayoutInflater.from(view.context).inflate(R.layout.layout_take_photo, null, false)
-                    val dialog = BottomDialog(mView)
-                    mView.capture.setOnClickListener {
-                        dialog.dismiss()
-                        MyOnClickListener().onClick(it)
-                    }
-                    mView.galley.setOnClickListener {
-                        dialog.dismiss()
-                        MyOnClickListener().onClick(it)
-                    }
-                    mView.cancel.setOnClickListener {
-                        dialog.dismiss()
-                        MyOnClickListener().onClick(it)
-                    }
+                    PictureSelector.create(this@CreateFishLogActivity)
+                            .openGallery(PictureMimeType.ofImage())
+                            .enableCrop(true)
+                            .compress(true)
+                            .withAspectRatio(1, 1)
+                            .minimumCompressSize(100)
+                            .freeStyleCropEnabled(true)
+                            .maxSelectNum(9)
+                            //.minSelectNum(1)
+                            .forResult(PictureConfig.CHOOSE_REQUEST)
                 } else {
-                    ShowImageDialog(File(images[position]))
+                    //ShowImageDialog(File(images[position]))
                 }
             }
         }
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (resultCode == Activity.RESULT_OK) {
+            val selectList = PictureSelector.obtainMultipleResult(data)
+            when (requestCode) {
+                PictureConfig.CHOOSE_REQUEST -> {
+                    // 图片、视频、音频选择结果回调
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    for (loc in selectList) {
+                        images.add(loc.compressPath)
+                    }
+                    mAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
     private fun checkData(): Boolean {
         if (logTitle.text.isEmpty()) {
             logTitle.error = "日志标题不能为空"
@@ -157,56 +171,6 @@ class CreateFishLogActivity : TakePhotoActivity(), View.OnClickListener {
             }
 
         }).postRequest(this, TJ_YYRZ.getInterface(), map)
-    }
-
-    inner class MyOnClickListener : View.OnClickListener {
-        override fun onClick(v: View?) {
-            when (v?.id) {
-                R.id.capture -> {
-                    takePhoto.onPickFromCapture(Uri.fromFile(initFile()))
-                }
-                R.id.galley -> {
-                    takePhoto.onPickFromGallery()
-                }
-                R.id.cancel -> {
-
-                }
-            }
-        }
-
-    }
-
-    private fun initFile(): File {
-        val file = File(SdCardUtil.IMAGE + System.currentTimeMillis() + ".jpg")
-        if (file.exists()) {
-            file.delete()
-        }
-        return file
-    }
-
-    override fun takeSuccess(result: TResult?) {
-        super.takeSuccess(result)
-        if (result == null) {
-            toast("选取失败,请重新选取")
-        } else {
-            //userTemp.file_url = result.image.originalPath
-            images.add(result.image.originalPath)
-            //photo.setImageURI(Uri.fromFile(File(userTemp.file_url)))
-            mAdapter.notifyDataSetChanged()
-        }
-    }
-
-    override fun takeFail(result: TResult?, msg: String?) {
-        super.takeFail(result, msg)
-        if (msg == null) {
-            toast("选取失败,请重新选取")
-        } else {
-            toast(msg)
-        }
-    }
-
-    override fun takeCancel() {
-        super.takeCancel()
     }
 
     private class MyImageAdapter(val data: ArrayList<String>) : MyBaseAdapter(R.layout.layout_create_fish_log_images) {

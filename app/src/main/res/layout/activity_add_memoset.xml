@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/layout_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,12 +25,12 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/logTitle"
+                android:id="@+id/addMemoSetTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_conner_edit"
-                android:hint="请输入日志标题"
+                android:hint="请输入备忘标题"
                 android:inputType="text"
                 android:maxLines="2"
                 android:padding="5dp"
@@ -46,14 +46,14 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/logContent"
+                android:id="@+id/addMemoSetContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/white_conner_edit"
                 android:gravity="top"
-                android:hint="请输入日志正文"
-                android:lines="10"
+                android:hint="请输入备忘正文"
+                android:minLines="10"
                 android:padding="5dp"
                 android:textColor="@color/text_gray_dark"
                 android:textSize="14sp" />
@@ -62,15 +62,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="图片:"
+                android:text="提醒时间:"
                 android:textColor="@color/text_gray_dark"
                 android:textSize="16sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/logImages"
+            <TextView
+                android:id="@+id/addMemoSetTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_conner_edit"
+                android:gravity="center"
+                android:hint="点击获取"
+                android:padding="10dp"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

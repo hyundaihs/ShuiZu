@@ -209,5 +209,14 @@ data class FishKnowledgeRes(val retRes: FishKnowledge) : RequestResult()
 
 data class FishKnowledgeListRes(val retRes: ArrayList<FishKnowledge>) : RequestResult()
 
+/*[id] => ID
+[contents] => 内容
+[tx_time] => 提醒时间戳
+[create_time] => 创建时间戳*/
+data class MemoSetInfo(val id: Int, val title: String, val contents: String, val tx_time: Long, val create_time: Long)
+
+data class MemoSetInfoRes(val retRes: MemoSetInfo) : RequestResult()
+
+data class MemoSetInfoListRes(val retRes: ArrayList<MemoSetInfo>) : RequestResult()
 
 

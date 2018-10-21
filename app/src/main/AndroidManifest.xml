@@ -24,6 +24,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <permission
         android:name="android.permission.INTERACT_ACROSS_USERS"
         android:protectionLevel="signature" />
@@ -87,6 +89,9 @@
         <activity android:name=".ui.CreateFishLogActivity" />
         <activity android:name=".ui.FishLogDetailsActivity" />
         <activity android:name=".ui.CallZJActivity" />
+        <activity android:name=".ui.NetworkActivity" />
+        <activity android:name=".ui.MemoSetActivity" />
+        <activity android:name=".ui.AddMemoSetActivity" />
 
         <service android:name=".MonitorService" />
     </application>

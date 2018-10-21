@@ -200,8 +200,58 @@
                     android:layout_height="wrap_content"
                     android:background="@color/bg_device_item"
                     android:gravity="top|left"
-                    android:padding="5dp"
-                    android:lines="5" />
+                    android:minLines="5"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/white_conner_edit"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="16dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/colorPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="联系方式"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/callZjLinkMan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_device_item"
+                    android:hint="联系姓名"
+                    android:lines="1"
+                    android:padding="5dp" />
+
+                <EditText
+                    android:id="@+id/callZjLinkPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:lines="1"
+                    android:background="@color/bg_device_item"
+                    android:hint="联系电话"
+                    android:padding="5dp" />
             </LinearLayout>
 
         </LinearLayout>

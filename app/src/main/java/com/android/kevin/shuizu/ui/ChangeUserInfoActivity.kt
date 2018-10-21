@@ -1,5 +1,6 @@
 package com.android.kevin.shuizu.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,14 +14,19 @@ import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.SZApplication
 import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.utils.SdCardUtil
+import com.android.shuizu.myutillibrary.MyBaseActivity
+import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
 import com.android.shuizu.myutillibrary.utils.BottomDialog
 import com.android.shuizu.myutillibrary.utils.CustomDialog
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
-import com.jph.takephoto.app.TakePhotoActivity
-import com.jph.takephoto.model.CropOptions
-import com.jph.takephoto.model.TResult
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.config.PictureConfig
+import com.luck.picture.lib.config.PictureMimeType
+//import com.jph.takephoto.app.TakePhotoActivity
+//import com.jph.takephoto.model.CropOptions
+//import com.jph.takephoto.model.TResult
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_user_info.*
 import kotlinx.android.synthetic.main.layout_take_photo.view.*
@@ -31,7 +37,7 @@ import java.io.File
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/9/009.
  */
-class ChangeUserInfoActivity : TakePhotoActivity() {
+class ChangeUserInfoActivity : MyBaseActivity() {
 
     lateinit var userTemp: UserInfo
 
@@ -39,29 +45,23 @@ class ChangeUserInfoActivity : TakePhotoActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_user_info)
         userTemp = SZApplication.userInfo.copy()
+        initActionBar(this, "修改信息")
         initViews()
     }
 
     private fun initViews() {
-        page_back.setOnClickListener {
-            finish()
-        }
         Picasso.with(this).load(SZApplication.userInfo.file_url.getImageUrl()).into(photo)
         photo.setOnClickListener { itView ->
-            val view = LayoutInflater.from(itView.context).inflate(R.layout.layout_take_photo, null, false)
-            val dialog = BottomDialog(view)
-            view.capture.setOnClickListener {
-                dialog.dismiss()
-                MyOnClickListener().onClick(it)
-            }
-            view.galley.setOnClickListener {
-                dialog.dismiss()
-                MyOnClickListener().onClick(it)
-            }
-            view.cancel.setOnClickListener {
-                dialog.dismiss()
-                MyOnClickListener().onClick(it)
-            }
+            PictureSelector.create(this@ChangeUserInfoActivity)
+                    .openGallery(PictureMimeType.ofImage())
+                    .enableCrop(true)
+                    .compress(true)
+                    .withAspectRatio(1, 1)
+                    .minimumCompressSize(100)
+                    .freeStyleCropEnabled(true)
+                    .maxSelectNum(1)
+                    //.minSelectNum(1)
+                    .forResult(PictureConfig.CHOOSE_REQUEST)
         }
         name.setText(SZApplication.userInfo.title)
         warnMsg.isChecked = SZApplication.userInfo.ts_status == 1
@@ -107,55 +107,25 @@ class ChangeUserInfoActivity : TakePhotoActivity() {
         return userTemp == SZApplication.userInfo
     }
 
-    inner class MyOnClickListener : View.OnClickListener {
-        override fun onClick(v: View?) {
-            when (v?.id) {
-                R.id.capture -> {
-                    val options = CropOptions.Builder().create()
-                    takePhoto.onPickFromCaptureWithCrop(Uri.fromFile(initFile()), options)
-                }
-                R.id.galley -> {
-                    val options = CropOptions.Builder().create()
-                    takePhoto.onPickFromGalleryWithCrop(Uri.fromFile(initFile()), options)
-                }
-                R.id.cancel -> {
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        if (resultCode == Activity.RESULT_OK) {
+            val selectList = PictureSelector.obtainMultipleResult(data)
+            when (requestCode) {
+                PictureConfig.CHOOSE_REQUEST -> {
+                    // 图片、视频、音频选择结果回调
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    if (selectList.size > 0) {
+                        userTemp.file_url = selectList[0].compressPath
+                        photo.setImageURI(Uri.fromFile(File(userTemp.file_url)))
+                    }
                 }
             }
         }
-
-    }
-
-
-    private fun initFile(): File {
-        val file = File(SdCardUtil.IMAGE + System.currentTimeMillis() + ".jpg")
-        if (file.exists()) {
-            file.delete()
-        }
-        return file
-    }
-
-    override fun takeSuccess(result: TResult?) {
-        super.takeSuccess(result)
-        if (result == null) {
-            toast("选取失败,请重新选取")
-        } else {
-            userTemp.file_url = result.image.originalPath
-            photo.setImageURI(Uri.fromFile(File(userTemp.file_url)))
-        }
-    }
-
-    override fun takeFail(result: TResult?, msg: String?) {
-        super.takeFail(result, msg)
-        if (msg == null) {
-            toast("选取失败,请重新选取")
-        } else {
-            toast(msg)
-        }
-    }
-
-    override fun takeCancel() {
-        super.takeCancel()
     }
 
     private fun submit() {
