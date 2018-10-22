@@ -43,7 +43,7 @@ class FishLogListActivity : MyBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fish_log)
         initActionBar(this, "养鱼日志", rightBtn = "写日志", rightClick = View.OnClickListener {
-            startActivityForResult(Intent(it.context, CreateFishLogActivity::class.java), 10)
+            startActivityForResult(Intent(it.context, FishLogAddActivity::class.java), 10)
         })
         initViews()
     }

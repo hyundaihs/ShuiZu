@@ -53,9 +53,16 @@ class App_Keyword {
     }
 }
 
-/*“TR”:水质监测，“HT”:加热棒，“WP”：水泵，“PF”：断电报警器,"WL"：水位报警*/
-enum class DeviceType {
-    TR, HT, WP, PF, WL
+/*“TR”:水质监测，"WF":换水机器人，“WP”：水泵，“PF”：断电报警器,"WL"：水位报警,“HT”:加热棒*/
+class DeviceType {
+    companion object {
+        const val TR = "TR"
+        const val WF = "WF"
+        const val WP = "WP"
+        const val PF = "PF"
+        const val WL = "WL"
+        const val HT = "HT"
+    }
 }
 
 
@@ -102,7 +109,7 @@ val DEVICE_IS_ONLINE = arrayOf("离线", "在线")
 [title] => 设备名称
 [create_time] => 绑定时间（时间戳）
 [is_online] => 设备是否在线（0：离线，1：在线）*/
-data class MyDevice(val id: Int, val acccardtype_id: Int, val card_type: DeviceType,
+data class MyDevice(val id: Int, val acccardtype_id: Int, val card_type: String,
                     val title: String, val create_time: Long, val is_online: Int)
 
 data class MyDeviceListRes(val retRes: ArrayList<MyDevice>) : RequestResult()
@@ -218,5 +225,26 @@ data class MemoSetInfo(val id: Int, val title: String, val contents: String, val
 data class MemoSetInfoRes(val retRes: MemoSetInfo) : RequestResult()
 
 data class MemoSetInfoListRes(val retRes: ArrayList<MemoSetInfo>) : RequestResult()
+
+/*[card_type] => TR
+[title] => 设备类型（水质监测）
+[nums] => 数量*/
+data class Statistics(val card_type: String, val title: String, val nums: Int)
+
+/*[ygsl] => 鱼缸数量
+[sbsl] => 设备数量
+[sbfb] => Array（设备分类详情）
+(
+[0] => Array
+(
+Statistics
+)
+)
+
+[czsl] => 操作数量
+[bjsl] => 报警数量*/
+data class BigStatistics(val ygsl: Int, val sbsl: Int, val ycsb: Int, val sbfb: ArrayList<Statistics>, val czsl: Int, val bjsl: Int)
+
+data class BigStatisticsRes(val retRes: BigStatistics) : RequestResult()
 
 

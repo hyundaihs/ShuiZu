@@ -10,7 +10,6 @@ import android.support.v7.widget.OrientationHelper
 import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
-import com.android.kevin.shuizu.fragments.ActionLogFragment
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.initActionBar
@@ -28,7 +27,7 @@ import java.util.ArrayList
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/21/021.
  */
-class MemoSetActivity : MyBaseActivity() {
+class MemoSetListActivity : MyBaseActivity() {
 
     val myData = ArrayList<MemoSetInfo>()
     private val mAdapter = MyAdapter(myData)
@@ -37,7 +36,7 @@ class MemoSetActivity : MyBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memoset)
         initActionBar(this, "备忘设置", rightBtn = "新增", rightClick = View.OnClickListener {
-            startActivity(Intent(this, AddMemoSetActivity::class.java))
+            startActivity(Intent(this, MemoSetAddActivity::class.java))
         })
         initViews()
     }
@@ -51,34 +50,44 @@ class MemoSetActivity : MyBaseActivity() {
         memoSetRecycler.isNestedScrollingEnabled = false
         memoSetSwipe.setOnRefreshListener(object : SwipeRefreshAndLoadLayout.OnRefreshListener {
             override fun onRefresh() {
-                getLog(memoSetSwipe.currPage, true)
+                getMemoSetList(memoSetSwipe.currPage, true)
             }
 
             override fun onLoadMore(currPage: Int, totalPages: Int) {
-                getLog(currPage)
+                getMemoSetList(currPage)
             }
         })
         memoSetRecycler.adapter = mAdapter
-
+        mAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
+            override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
+                val intent = Intent(view.context, MemoSetAddActivity::class.java)
+                intent.putExtra("id", myData[position].id)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        getLog(memoSetSwipe.currPage, true)
+        getMemoSetList(memoSetSwipe.currPage, true)
     }
 
-    private class MyAdapter(val data: ArrayList<MemoSetInfo>) : MyBaseAdapter(R.layout.memoset_list_item) {
+    private inner class MyAdapter(val data: ArrayList<MemoSetInfo>) : MyBaseAdapter(R.layout.memoset_list_item) {
         override fun getItemCount(): Int = data.size
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            super.onBindViewHolder(holder, position)
             val memoSetInfo = data[position]
             val calendarUtil = CalendarUtil(memoSetInfo.tx_time, true)
             holder.itemView.memoSetTime.text = calendarUtil.format(CalendarUtil.STANDARD)
             holder.itemView.memoSetMessage.text = memoSetInfo.title
+            holder.itemView.memoSetDel.setOnClickListener {
+                deleteMemoSet(position)
+            }
         }
     }
 
-    private fun getLog(page: Int, isRefresh: Boolean = false) {
+    private fun getMemoSetList(page: Int, isRefresh: Boolean = false) {
         val map = mapOf(Pair("page", page.toString()),
                 Pair("page_size", "20")
         )
@@ -106,5 +115,27 @@ class MemoSetActivity : MyBaseActivity() {
             }
 
         }, false).postRequest(this, BWXX.getInterface(), map)
+    }
+
+    private fun deleteMemoSet(position: Int) {
+        val map = mapOf(Pair("id", myData[position].id.toString()))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                myData.removeAt(position)
+                mAdapter.notifyDataSetChanged()
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, true).postRequest(this, BWXX_DEL.getInterface(), map)
     }
 }

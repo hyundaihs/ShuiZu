@@ -14,7 +14,7 @@ import com.android.kevin.shuizu.entities.YYZJInfoListRes
 import com.android.kevin.shuizu.entities.getInterface
 import com.android.kevin.shuizu.ui.CallZJActivity
 import com.android.kevin.shuizu.ui.LoginActivity
-import com.android.kevin.shuizu.ui.MemoSetActivity
+import com.android.kevin.shuizu.ui.MemoSetListActivity
 import com.android.kevin.shuizu.ui.ReservationDetailsActivity
 import com.android.kevin.shuizu.utils.CardPagerAdapter
 import com.android.kevin.shuizu.utils.ShadowTransformer
@@ -70,7 +70,7 @@ class ServiceFragment : BaseFragment() {
         }
 
         memoSet.setOnClickListener {
-            startActivity(Intent(it.context, MemoSetActivity::class.java))
+            startActivity(Intent(it.context, MemoSetListActivity::class.java))
         }
     }
 

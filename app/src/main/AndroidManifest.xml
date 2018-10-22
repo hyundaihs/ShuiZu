@@ -34,9 +34,9 @@
     <application
         android:name=".SZApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
@@ -86,12 +86,12 @@
         <activity android:name=".ui.FishKnowledgeListActivity" />
         <activity android:name=".ui.FishKnowledgeDetailsActivity" />
         <activity android:name=".ui.FishLogListActivity" />
-        <activity android:name=".ui.CreateFishLogActivity" />
+        <activity android:name=".ui.FishLogAddActivity" />
         <activity android:name=".ui.FishLogDetailsActivity" />
         <activity android:name=".ui.CallZJActivity" />
         <activity android:name=".ui.NetworkActivity" />
-        <activity android:name=".ui.MemoSetActivity" />
-        <activity android:name=".ui.AddMemoSetActivity" />
+        <activity android:name=".ui.MemoSetListActivity" />
+        <activity android:name=".ui.MemoSetAddActivity" />
 
         <service android:name=".MonitorService" />
     </application>

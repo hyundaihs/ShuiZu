@@ -6,10 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.android.kevin.shuizu.R
-import com.android.kevin.shuizu.entities.BWXX
-import com.android.kevin.shuizu.entities.MemoSetInfoListRes
-import com.android.kevin.shuizu.entities.TJBWXX
-import com.android.kevin.shuizu.entities.getInterface
+import com.android.kevin.shuizu.entities.*
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
@@ -27,21 +24,28 @@ import org.jetbrains.anko.toast
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/21/021.
  */
-class AddMemoSetActivity : MyBaseActivity() {
+class MemoSetAddActivity : MyBaseActivity() {
 
+    private var id = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_memoset)
-        initActionBar(this, "备忘设置", rightBtn = "提交", rightClick = View.OnClickListener {
-            if (check()) {
-                submit()
+        id = intent.getIntExtra("id", -1)
+        if (id >= 0) {
+            initActionBar(this, "备忘信息")
+            getMemoSet()
+        } else {
+            initActionBar(this, "备忘设置", rightBtn = "提交", rightClick = View.OnClickListener {
+                if (check()) {
+                    submit()
+                }
+            })
+            addMemoSetTime.setOnClickListener {
+                val pvTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
+                    val calendarUtil = CalendarUtil(date.time)
+                    addMemoSetTime.text = calendarUtil.format(CalendarUtil.YYYY_MM_DD_HH_MM)
+                }).setType(booleanArrayOf(true, true, true, true, true, false)).build().show()
             }
-        })
-        addMemoSetTime.setOnClickListener {
-            val pvTime = TimePickerBuilder(this, OnTimeSelectListener { date, v ->
-                val calendarUtil = CalendarUtil(date.time)
-                addMemoSetTime.text = calendarUtil.format(CalendarUtil.YYYY_MM_DD_HH_MM)
-            }).setType(booleanArrayOf(true, true, true, true, true, true)).build().show()
         }
     }
 
@@ -87,5 +91,30 @@ class AddMemoSetActivity : MyBaseActivity() {
         return true
     }
 
+    private fun getMemoSet() {
+        val map = mapOf(Pair("id", id.toString()))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val memoSetInfoRes = Gson().fromJson(result, MemoSetInfoRes::class.java)
+                addMemoSetTitle.setText(memoSetInfoRes.retRes.title)
+                addMemoSetTitle.isEnabled = false
+                addMemoSetContent.setText(memoSetInfoRes.retRes.contents)
+                addMemoSetContent.isEnabled = false
+                addMemoSetTime.text = CalendarUtil(memoSetInfoRes.retRes.tx_time,true).format(CalendarUtil.YYYY_MM_DD_HH_MM)
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                })
+            }
+
+        }, false).postRequest(this, BWXX_INFO.getInterface(), map)
+    }
 
 }

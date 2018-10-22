@@ -195,4 +195,9 @@ const val TJBWXX = "tjbwxx" //提交备忘信息
 /*id：备忘信息id*/
 const val BWXX_INFO = "bwxxinfo" //备忘信息详情
 
+/*id：备忘信息id*/
+const val BWXX_DEL = "bwxxdel" //备忘信息详情
+
+const val ZNTJ = "zntj" //智能统计
+
 
