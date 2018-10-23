@@ -3,7 +3,6 @@ package com.android.kevin.shuizu.fragments
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
@@ -18,14 +17,12 @@ import com.android.kevin.shuizu.entities.*
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD
 import com.android.kevin.shuizu.entities.App_Keyword.Companion.KEYWORD_EDIT_GROUP
 import com.android.kevin.shuizu.ui.*
-import com.android.shuizu.myutillibrary.adapter.DividerItemDecoration
 import com.android.shuizu.myutillibrary.adapter.GridDivider
 import com.android.shuizu.myutillibrary.adapter.LineDecoration
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.dp2px
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.utils.DisplayUtils.dp2px
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
 import com.paradoxie.autoscrolltextview.VerticalTextview
@@ -66,15 +63,15 @@ class DeviceFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        getYGList()
         isFlag = true
+        getYGList()
         getWarnLog()
-        verticalTextview.startAutoScroll()
+        verticalTextview?.startAutoScroll()
     }
 
     override fun onStop() {
         super.onStop()
-        verticalTextview.stopAutoScroll()
+        verticalTextview?.stopAutoScroll()
         isFlag = false
     }
 
@@ -132,8 +129,15 @@ class DeviceFragment : BaseFragment() {
         verticalTextview.setTextStillTime(3000)//设置停留时长间隔
         verticalTextview.setAnimTime(300)//设置进入和退出的时间间隔
         verticalTextview.setOnItemClickListener(VerticalTextview.OnItemClickListener { position ->
-            activity!!.toast("点击了 : ")
+            val intent = Intent(activity, LogListActivity::class.java)
+            intent.putExtra("type", 1)
+            startActivity(intent)
         })
+        warnLayout.setOnClickListener {
+            val intent = Intent(activity, LogListActivity::class.java)
+            intent.putExtra("type", 1)
+            startActivity(intent)
+        }
     }
 
     private class GroupAdapter(val data: ArrayList<YGInfo>) : MyBaseAdapter(R.layout.layout_yg_list_item) {
@@ -211,41 +215,42 @@ class DeviceFragment : BaseFragment() {
     private fun getWarnLog() {
         doAsync {
             while (isFlag) {
-                val map = if (warnLogList.size > 0) {
-                    mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
-                } else {
-                    mapOf(Pair("", ""))
+                uiThread {
+                    getWarnLogRequest()
                 }
-                MySimpleRequest().postRequest(NEW_LOG.getInterface(), map, object : MySimpleRequest.RequestCallBackWithOutContext {
-                    override fun onSuccess(result: String) {
-                        val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
-                        warnLogList.clear()
-                        warnLogList.addAll(warnLogListRes.retRes)
-                        val titleList = ArrayList<String>()
-                        if (warnLogList.size > 0) {
-                            warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
-                        } else {
-                            titleList.add("暂无预警消息")
-                        }
-                        uiThread {
-                            verticalTextview.setTextList(titleList)
-                        }
-//                verticalTextview.setText(26, 5, Color.RED)//设置属性
-                    }
-
-                    override fun onError(error: String) {
-                        uiThread {
-                            activity?.toast(error)
-                        }
-                    }
-
-                    override fun onLoginErr() {
-                    }
-
-                })
                 Thread.sleep(10000)
             }
         }
+    }
+
+    private fun getWarnLogRequest() {
+        val map = if (warnLogList.size > 0) {
+            mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
+        } else {
+            mapOf(Pair("", ""))
+        }
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
+                warnLogList.clear()
+                warnLogList.addAll(warnLogListRes.retRes)
+                val titleList = ArrayList<String>()
+                if (warnLogList.size > 0) {
+                    warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
+                } else {
+                    titleList.add("暂无预警消息")
+                }
+                verticalTextview?.setTextList(titleList)
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+            }
+
+            override fun onLoginErr(context: Context) {
+            }
+
+        }, false).postRequest(activity as Context, NEW_LOG.getInterface(), map)
     }
 
     private fun getDate() {
@@ -320,6 +325,6 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, YGSB.getInterface(), map)
+        }, false).postRequest(this.requireContext(), YGSB.getInterface(), map)
     }
 }

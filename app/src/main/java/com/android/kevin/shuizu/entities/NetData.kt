@@ -126,6 +126,16 @@ const val SZ_BJKG = "szbjkg" //设置报警开关
 
 const val NEW_LOG = "newlog" //最新日志（5分钟内)
 
+const val NEW_NEWS = "newnews" //最新消息（5分钟内)
+
+/*title:搜索关键词
+page：页数
+page_size:每页大小（默认20）*/
+const val NEWS = "news" //消息列表
+
+/*id：消息id*/
+const val NEWS_INFO = "newsinfo" //消息详情
+
 /*page:页数
 page_size：每页条数(默认20)
 type_id:类型（1:报警，2：操作）*/

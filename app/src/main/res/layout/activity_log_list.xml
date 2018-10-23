@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/layout_toolbar"/>
     <Button
         android:id="@+id/addOrTime"
         android:layout_width="match_parent"

@@ -209,8 +209,12 @@ data class FishLogListRes(val retRes: ArrayList<FishLog>) : RequestResult()
 [title] => 标题
 [file_url] => 图片
 [sub_title] => 简介
-[app_contents] => 详情（html代码）*/
-data class FishKnowledge(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String)
+[app_contents] => 详情（html代码）
+后面两个是消息中心消息的字段
+create_time => 创建时间
+is_read => 是否已读(0：未读，1：已读)*/
+data class FishKnowledge(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String
+                         , val create_time: Long, val is_read: Int)
 
 data class FishKnowledgeRes(val retRes: FishKnowledge) : RequestResult()
 

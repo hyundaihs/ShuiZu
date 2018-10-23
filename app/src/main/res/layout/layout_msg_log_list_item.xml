@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/msgLogItemTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:contentDescription="@null"
+        android:src="@drawable/small_red_circle"
+        app:layout_constraintBottom_toBottomOf="@id/msgLogItemTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/msgLogItemTitle"
+        app:layout_constraintTop_toTopOf="@id/msgLogItemTitle" />
+
+
+    <TextView
+        android:id="@+id/msgLogItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="这是一个标题的健身房慷慨大方"
+        android:textColor="@color/text_332c2b"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/msgLogItemTime"
+        app:layout_constraintLeft_toRightOf="@id/msgLogItemTip"
+        app:layout_constraintRight_toLeftOf="@id/msgLogItemMore"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/msgLogItemTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="2018-12-15"
+        android:textColor="@color/text_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/msgLogItemSubtitle"
+        app:layout_constraintLeft_toLeftOf="@id/msgLogItemTitle"
+        app:layout_constraintRight_toLeftOf="@id/msgLogItemMore"
+        app:layout_constraintTop_toBottomOf="@id/msgLogItemTitle" />
+
+    <TextView
+        android:id="@+id/msgLogItemSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:text="这是一个标题的健身房慷慨大方这是一个标题的健身房慷慨大方这是一个标题的健身房慷慨大方这是一个标题的健身房慷慨大方"
+        android:textColor="@color/text_gray_dark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/msgLogItemTitle"
+        app:layout_constraintRight_toLeftOf="@id/msgLogItemMore"
+        app:layout_constraintTop_toBottomOf="@id/msgLogItemTime" />
+
+    <ImageView
+        android:id="@+id/msgLogItemMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/msgLogItemTitle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

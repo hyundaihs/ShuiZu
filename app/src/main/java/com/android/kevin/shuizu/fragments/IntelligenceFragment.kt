@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
+import com.android.kevin.shuizu.ui.HomeActivity
+import com.android.kevin.shuizu.ui.LogListActivity
 import com.android.kevin.shuizu.ui.LoginActivity
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
@@ -21,7 +23,6 @@ import com.android.shuizu.myutillibrary.utils.DisplayUtils
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -60,6 +61,7 @@ class IntelligenceFragment : BaseFragment(), View.OnClickListener {
         intelligenceRecycler.isNestedScrollingEnabled = false
         layout_left.setOnClickListener(this)
         layout_right.setOnClickListener(this)
+        layout_top.setOnClickListener(this)
     }
 
     private fun initPieChart(data: ArrayList<Statistics>) {
@@ -141,11 +143,19 @@ class IntelligenceFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.layout_top -> {
+                val h = activity as HomeActivity
+                h.loadPage(0)
+            }
             R.id.layout_left -> {
-
+                val intent = Intent(activity, LogListActivity::class.java)
+                intent.putExtra("type", 2)
+                startActivity(intent)
             }
             R.id.layout_right -> {
-
+                val intent = Intent(activity, LogListActivity::class.java)
+                intent.putExtra("type", 1)
+                startActivity(intent)
             }
         }
     }

@@ -18,16 +18,21 @@ import com.android.shuizu.myutillibrary.utils.CustomDialog
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.utils.PreferenceUtil
 import com.google.gson.Gson
+import com.paradoxie.autoscrolltextview.VerticalTextview
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_mine.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 /**
  * ChaYin
  * Created by ${蔡雨峰} on 2018/8/15/015.
  */
-class MineFragment : BaseFragment(),View.OnClickListener {
+class MineFragment : BaseFragment(), View.OnClickListener {
     var login_verf: String by PreferenceUtil(SZApplication.instance, App_Keyword.LOGIN_VERF, "")
+    var isFlag = false
+    val warnLogList = ArrayList<WarnLog>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_mine, container, false)
@@ -41,23 +46,41 @@ class MineFragment : BaseFragment(),View.OnClickListener {
     override fun onResume() {
         super.onResume()
         getUserInfo()
-        getYYZJ()
+        isFlag = true
+        getMsgLog()
+        msgTitle.startAutoScroll()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        msgTitle.stopAutoScroll()
+        isFlag = false
     }
 
     private fun initViews() {
         changeUserInfo.setOnClickListener(this)
-        yuYueMore.setOnClickListener(this)
         exit.setOnClickListener(this)
         fishLogBtn.setOnClickListener(this)
         fishKnowledgeBtn.setOnClickListener(this)
+        warnLayout.setOnClickListener(this)
+        msgTitle.setTextStillTime(3000)//设置停留时长间隔
+        msgTitle.setAnimTime(300)//设置进入和退出的时间间隔
+        msgTitle.setOnItemClickListener(VerticalTextview.OnItemClickListener { position ->
+            val intent = Intent(activity, MsgLogListActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.changeUserInfo->{
+        when (v?.id) {
+            R.id.warnLayout -> {
+                val intent = Intent(activity, MsgLogListActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.changeUserInfo -> {
                 startActivity(Intent(context, ChangeUserInfoActivity::class.java))
             }
-            R.id.exit->{
+            R.id.exit -> {
                 activity?.CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
                     login_verf = ""
                     val intent = Intent(activity, LoginActivity::class.java)
@@ -65,10 +88,10 @@ class MineFragment : BaseFragment(),View.OnClickListener {
                     activity?.finish()
                 }, negative = "取消")
             }
-            R.id.fishLogBtn->{
+            R.id.fishLogBtn -> {
                 startActivity(Intent(context, FishLogListActivity::class.java))
             }
-            R.id.fishKnowledgeBtn->{
+            R.id.fishKnowledgeBtn -> {
                 startActivity(Intent(context, FishKnowledgeListActivity::class.java))
             }
         }
@@ -79,8 +102,10 @@ class MineFragment : BaseFragment(),View.OnClickListener {
             override fun onSuccess(context: Context, result: String) {
                 val userInfoRes = Gson().fromJson(result, UserInfoRes::class.java)
                 userInfo = userInfoRes.retRes
-                Picasso.with(context).load(userInfo.file_url.getImageUrl()).into(mineImage)
-                mineName.text = userInfo.title
+                if (mineImage != null) {
+                    Picasso.with(context).load(userInfo.file_url.getImageUrl()).into(mineImage)
+                }
+                mineName?.text = userInfo.title
             }
 
             override fun onError(context: Context, error: String) {
@@ -97,35 +122,38 @@ class MineFragment : BaseFragment(),View.OnClickListener {
         }, false).postRequest(activity as Context, USER_INFO.getInterface())
     }
 
-    //获取养鱼专家列表
-    private fun getYYZJ() {
-        val map = mapOf(Pair("page","1"))
+    private fun getMsgLog() {
+        doAsync {
+            while (isFlag) {
+                uiThread {
+                    getMsgLogRequest()
+                }
+                Thread.sleep(10000)
+            }
+        }
+    }
+
+    private fun getMsgLogRequest() {
+        val map = if (warnLogList.size > 0) {
+            mapOf(Pair("times", warnLogList[warnLogList.lastIndex].create_time.toString()))
+        } else {
+            mapOf(Pair("", ""))
+        }
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-                val yYZJInfoListRes = Gson().fromJson(result, YYZJInfoListRes::class.java)
-                val list = yYZJInfoListRes.retRes
-                if (list.size > 0) {
-                    Picasso.with(context).load(list[0].file_url.getImageUrl()).into(reservationImage1)
-                    name1.text = list[0].title
-                    title1.text = list[0].sub_title
-                    reservation1.setOnClickListener {
-                        //进入专家详情
-                        val intent = Intent(it.context, ReservationDetailsActivity::class.java)
-                        intent.putExtra("id",list[0].id)
-                        startActivity(intent)
-                    }
+                val warnLogListRes = Gson().fromJson(result, WarnLogListRes::class.java)
+                warnLogList.clear()
+                warnLogList.addAll(warnLogListRes.retRes)
+                val titleList = ArrayList<String>()
+                if (warnLogList.size > 0) {
+                    msgNum.visibility = View.VISIBLE
+                    msgNum.text = warnLogList.size.toString()
+                    warnLogList.indices.mapTo(titleList) { warnLogList[it].title }
+                } else {
+                    msgNum.visibility = View.INVISIBLE
+                    titleList.add("暂无新的消息")
                 }
-                if (list.size > 1) {
-                    Picasso.with(context).load(list[1].file_url.getImageUrl()).into(reservationImage2)
-                    name2.text = list[1].title
-                    title2.text = list[1].sub_title
-                    reservation2.setOnClickListener {
-                        //进入专家详情
-                        val intent = Intent(it.context, ReservationDetailsActivity::class.java)
-                        intent.putExtra("id",list[1].id)
-                        startActivity(intent)
-                    }
-                }
+                msgTitle?.setTextList(titleList)
             }
 
             override fun onError(context: Context, error: String) {
@@ -133,12 +161,8 @@ class MineFragment : BaseFragment(),View.OnClickListener {
             }
 
             override fun onLoginErr(context: Context) {
-                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                })
             }
 
-        }, false).postRequest(activity as Context, YYZJ.getInterface(),map)
+        }, false).postRequest(activity as Context, NEW_NEWS.getInterface(), map)
     }
 }

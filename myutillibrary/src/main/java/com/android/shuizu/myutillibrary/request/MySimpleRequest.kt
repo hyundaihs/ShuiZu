@@ -92,35 +92,6 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
         }
     }
 
-    fun postRequest(url: String, map: Map<String, String>, callback: RequestCallBackWithOutContext) {
-        D(url + "\n" + Gson().toJson(map).toString())
-        val requestBody = RequestBody.create(MEDIA_TYPE_JSON, Gson().toJson(map))
-        val request = Request.Builder().url(url).post(requestBody).addHeader("cookie", sessionId).build()
-        try {
-            val response = mOkHttpClient.newCall(request).execute()
-            if (response.isSuccessful) {
-                val string = response.body().string()
-                getSession(response)
-                val res: RequestResult = Gson().fromJson(string, RequestResult::class.java)
-                D("requestResult = $string")
-                if (res.retInt == 1) {
-                    callback.onSuccess(string)
-                } else {
-                    if (res.retErr == LOGINERR) {
-                        callback.onLoginErr()
-                    } else {
-                        callback.onError(res.retErr)
-                    }
-                }
-            } else {
-                callback.onError(response.message())
-            }
-        } catch (e: Exception) {
-            callback.onError(e.toString())
-        }
-    }
-
-
     fun postRequest(context: Context, url: String, map: Map<String, Any> = mapOf(Pair("", ""))) {
         var dialog: AlertDialog? = null
         if (getProgress) {
@@ -451,12 +422,6 @@ public class MySimpleRequest(var callback: RequestCallBack? = null, val getProgr
         fun onSuccess(context: Context, result: String)
         fun onError(context: Context, error: String)
         fun onLoginErr(context: Context)
-    }
-
-    interface RequestCallBackWithOutContext {
-        fun onSuccess(result: String)
-        fun onError(error: String)
-        fun onLoginErr()
     }
 
     interface ReqProgressCallBack {

@@ -92,6 +92,9 @@
         <activity android:name=".ui.NetworkActivity" />
         <activity android:name=".ui.MemoSetListActivity" />
         <activity android:name=".ui.MemoSetAddActivity" />
+        <activity android:name=".ui.LogListActivity" />
+        <activity android:name=".ui.MsgLogListActivity" />
+        <activity android:name=".ui.MsgLogDetailsActivity" />
 
         <service android:name=".MonitorService" />
     </application>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bg_gray">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/titleLayout"
@@ -17,7 +17,7 @@
             android:orientation="vertical"
             app:layout_constraintDimensionRatio="5:3"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <ImageButton
             android:id="@+id/mineSetting"
@@ -30,7 +30,7 @@
             android:paddingStart="5dp"
             android:paddingTop="10dp"
             android:src="@mipmap/setting"
-            app:layout_constraintRight_toRightOf="@id/warnLayout"/>
+            app:layout_constraintRight_toRightOf="@id/warnLayout" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
             android:paddingEnd="5dp"
             android:paddingStart="10dp"
             android:src="@mipmap/state"
-            app:layout_constraintRight_toLeftOf="@id/mineSetting"/>
+            app:layout_constraintRight_toLeftOf="@id/mineSetting" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/mineImage"
@@ -53,7 +53,7 @@
             app:civ_border_overlay="true"
             app:civ_border_width="1dp"
             app:layout_constraintLeft_toLeftOf="@id/warnLayout"
-            app:layout_constraintTop_toBottomOf="@id/mineSetting"/>
+            app:layout_constraintTop_toBottomOf="@id/mineSetting" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -70,14 +70,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -95,7 +95,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/mineImage"
             app:layout_constraintRight_toRightOf="@id/warnLayout"
-            app:layout_constraintTop_toTopOf="@id/mineImage"/>
+            app:layout_constraintTop_toTopOf="@id/mineImage" />
 
         <TextView
             android:id="@+id/spaceLine"
@@ -105,7 +105,7 @@
             android:background="@color/white"
             app:layout_constraintLeft_toLeftOf="@id/warnLayout"
             app:layout_constraintRight_toRightOf="@id/warnLayout"
-            app:layout_constraintTop_toBottomOf="@id/mineImage"/>
+            app:layout_constraintTop_toBottomOf="@id/mineImage" />
 
 
         <LinearLayout
@@ -132,14 +132,14 @@
                     android:layout_height="wrap_content"
                     android:text="2"
                     android:textColor="@color/white"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="待付款"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -156,14 +156,14 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/white"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="待发货"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -180,14 +180,14 @@
                     android:layout_height="wrap_content"
                     android:text="4"
                     android:textColor="@color/white"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="待收货"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -204,14 +204,14 @@
                     android:layout_height="wrap_content"
                     android:text="8"
                     android:textColor="@color/white"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="待评价"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -228,14 +228,14 @@
                     android:layout_height="wrap_content"
                     android:text="19"
                     android:textColor="@color/white"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="售后"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -246,7 +246,7 @@
             app:layout_constraintBottom_toBottomOf="@id/navLayout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleLayout"/>
+            app:layout_constraintTop_toBottomOf="@id/titleLayout" />
 
         <LinearLayout
             android:id="@+id/navLayout"
@@ -266,7 +266,7 @@
                 android:gravity="center"
                 android:text="器材分类"
                 android:textColor="@color/text_332c2b"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -277,7 +277,7 @@
                 android:gravity="center"
                 android:text="品牌分类"
                 android:textColor="@color/text_332c2b"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/fishLogBtn"
@@ -289,7 +289,7 @@
                 android:gravity="center"
                 android:text="养鱼日志"
                 android:textColor="@color/text_332c2b"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/fishKnowledgeBtn"
@@ -301,165 +301,8 @@
                 android:gravity="center"
                 android:text="鱼类知识"
                 android:textColor="@color/text_332c2b"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/yuYueLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navLayout">
-
-            <LinearLayout
-                android:id="@+id/yuYueMore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@mipmap/forum"
-                    android:padding="10dp"
-                    android:text="专家预约"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableEnd="@mipmap/more"
-                    android:drawablePadding="10dp"
-                    android:padding="10dp"
-                    android:text="更多"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_gray"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/reservation1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/reservationImage1"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@mipmap/ic_launcher"
-                        app:civ_border_color="@color/bg_gray"
-                        app:civ_border_overlay="true"
-                        app:civ_border_width="1dp"
-                        app:layout_constraintLeft_toLeftOf="parent"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="@id/reservationImage1"
-                        app:layout_constraintLeft_toRightOf="@id/reservationImage1"
-                        app:layout_constraintTop_toTopOf="@id/reservationImage1">
-
-                        <TextView
-                            android:id="@+id/name1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_332c2b"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:id="@+id/title1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"/>
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/age1"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="医龄:8年"-->
-                            <!--android:textSize="12sp"/>-->
-                    </LinearLayout>
-                </android.support.constraint.ConstraintLayout>
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/reservation2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/reservationImage2"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@mipmap/ic_launcher"
-                        app:civ_border_color="@color/bg_gray"
-                        app:civ_border_overlay="true"
-                        app:civ_border_width="1dp"
-                        app:layout_constraintLeft_toLeftOf="parent"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="@id/reservationImage2"
-                        app:layout_constraintLeft_toRightOf="@id/reservationImage2"
-                        app:layout_constraintTop_toTopOf="@id/reservationImage2">
-
-                        <TextView
-                            android:id="@+id/name2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_332c2b"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:id="@+id/title2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12sp"/>
-
-                        <!--<TextView-->
-                            <!--android:id="@+id/age2"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="医龄:8年"-->
-                            <!--android:textSize="12sp"/>-->
-                    </LinearLayout>
-                </android.support.constraint.ConstraintLayout>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/buttonsLayout"
@@ -471,7 +314,7 @@
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/yuYueLayout">
+            app:layout_constraintTop_toBottomOf="@id/navLayout">
 
             <TextView
                 android:layout_width="match_parent"
@@ -480,12 +323,12 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/forum"
                 android:padding="10dp"
-                android:text="主力论坛"/>
+                android:text="主力论坛" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray"/>
+                android:background="@color/line_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -494,12 +337,12 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/shopping_cart"
                 android:padding="10dp"
-                android:text="购物车"/>
+                android:text="购物车" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray"/>
+                android:background="@color/line_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -508,12 +351,12 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/indent"
                 android:padding="10dp"
-                android:text="全部订单"/>
+                android:text="全部订单" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray"/>
+                android:background="@color/line_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -522,7 +365,7 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/address"
                 android:padding="10dp"
-                android:text="收货地址"/>
+                android:text="收货地址" />
 
         </LinearLayout>
 
@@ -555,18 +398,18 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
                     android:padding="5dp"
-                    android:src="@mipmap/msg"/>
+                    android:src="@mipmap/msg" />
 
                 <TextView
+                    android:id="@+id/msgNum"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:background="@drawable/red_circle"
                     android:gravity="center"
-                    android:text="5"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:layout_constraintRight_toRightOf="@id/msg"
-                    app:layout_constraintTop_toTopOf="@id/msg"/>
+                    app:layout_constraintTop_toTopOf="@id/msg" />
             </android.support.constraint.ConstraintLayout>
 
             <ImageView
@@ -575,23 +418,25 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"
                 android:contentDescription="@null"
-                android:src="@mipmap/line"/>
+                android:src="@mipmap/line" />
 
-            <TextView
+            <com.paradoxie.autoscrolltextview.VerticalTextview
+                android:id="@+id/msgTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="最新消息滚动显示"
                 android:textColor="@color/text_gray"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@null"
-                android:src="@mipmap/more"/>
+                android:src="@mipmap/more" />
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/exit"
@@ -603,8 +448,9 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:text="退出登录"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/red"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonsLayout"/>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

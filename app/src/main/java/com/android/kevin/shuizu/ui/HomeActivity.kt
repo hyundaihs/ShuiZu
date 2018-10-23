@@ -38,6 +38,7 @@ class HomeActivity : MyBaseActivity(), BottomNavigationBar.OnTabSelectedListener
     private fun init() {
         navigation.setTabSelectedListener(this)
         navigation.setFirstSelectedPosition(2)
+        val item =
         navigation.addItem(BottomNavigationItem(R.mipmap.nav1a, getString(R.string.device)).setInactiveIconResource(R.mipmap.nav1))
                 .addItem(BottomNavigationItem(R.mipmap.nav2a, getString(R.string.intelligence)).setInactiveIconResource(R.mipmap.nav2))
                 .addItem(BottomNavigationItem(R.mipmap.nav5a, getString(R.string.service)).setInactiveIconResource(R.mipmap.nav5))
@@ -51,6 +52,10 @@ class HomeActivity : MyBaseActivity(), BottomNavigationBar.OnTabSelectedListener
         fragments.add(StoreFragment())
         fragments.add(MineFragment())
         loadFragment(fragments[2])
+    }
+
+     fun loadPage(index: Int) {
+        navigation.selectTab(index)
     }
 
     private fun loadFragment(fragment: Fragment) {
