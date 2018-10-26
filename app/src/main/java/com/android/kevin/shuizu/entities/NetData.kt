@@ -160,6 +160,14 @@ img_file_urls：图片列表（['public/1.jpg','public/2.jpg']）地址从上传
 video_file_urls:视频列表（['public/1.MP4','public/2.MP4']）地址从上传文件接口得到*/
 const val TJYYXX = "tjyyxx"//提交预约信息
 
+/*status:状态（0：所有，1：未处理，2：已完成，3：取消/作废）*/
+const val WDYYLB = "wdyylb"//我的预约列表
+
+/*id：预约ID*/
+const val QXWDYY = "qxwdyy"//取消我的预约
+
+/*id：预约ID*/
+const val SCWDYY = "scwdyy"//取消我的预约
 
 /*page：页数
 page_size:每页大小（默认20）*/
@@ -209,5 +217,10 @@ const val BWXX_INFO = "bwxxinfo" //备忘信息详情
 const val BWXX_DEL = "bwxxdel" //备忘信息详情
 
 const val ZNTJ = "zntj" //智能统计
+
+const val CZSM = "czsm" //操作说明列表
+
+/*id：操作说明id*/
+const val CZSM_INFO = "czsminfo" //操作说明详情
 
 

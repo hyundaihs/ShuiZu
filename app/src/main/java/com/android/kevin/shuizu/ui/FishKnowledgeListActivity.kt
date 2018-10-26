@@ -29,7 +29,7 @@ import org.jetbrains.anko.toast
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/14/014.
  */
-class FishKnowledgeListActivity : MyBaseActivity(),View.OnClickListener {
+class FishKnowledgeListActivity : MyBaseActivity(), View.OnClickListener {
 
     val fishData = ArrayList<FishKnowledge>()
     private val fishAdapter = FishKnowledgeAdapter(fishData)
@@ -41,6 +41,9 @@ class FishKnowledgeListActivity : MyBaseActivity(),View.OnClickListener {
     }
 
     private fun initViews() {
+        fishKnowledgeBack.setOnClickListener {
+            finish()
+        }
         val layoutManager = LinearLayoutManager(this)
         fishKnowledgeList.layoutManager = layoutManager
         layoutManager.orientation = OrientationHelper.VERTICAL
@@ -68,8 +71,8 @@ class FishKnowledgeListActivity : MyBaseActivity(),View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.searchBtn->{
+        when (v?.id) {
+            R.id.searchBtn -> {
                 getFishKnowledgeList(fishKnowledgeSwipe.currPage, true)
             }
         }

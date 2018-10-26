@@ -133,10 +133,17 @@ class DeviceFragment : BaseFragment() {
             intent.putExtra("type", 1)
             startActivity(intent)
         })
+        verticalTextview.setOnClickListener {
+            val intent = Intent(activity, MsgLogListActivity::class.java)
+            startActivity(intent)
+        }
         warnLayout.setOnClickListener {
             val intent = Intent(activity, LogListActivity::class.java)
             intent.putExtra("type", 1)
             startActivity(intent)
+        }
+        deviceHelp.setOnClickListener {
+            startActivity(Intent(it.context,InstructionsActivity::class.java))
         }
     }
 

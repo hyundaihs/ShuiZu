@@ -33,6 +33,7 @@
             app:layout_constraintRight_toRightOf="@id/warnLayout" />
 
         <ImageButton
+            android:id="@+id/mineHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"

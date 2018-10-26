@@ -33,4 +33,6 @@
     <color name="device_type4">#FF9F7F</color>
     <color name="device_type5">#E062AE</color>
     <color name="red">#FF0000</color>
+    <color name="yellow_FFB414">#FFB414</color>
+    <color name="gray_F2F2F2">#F2F2F2</color>
 </resources>

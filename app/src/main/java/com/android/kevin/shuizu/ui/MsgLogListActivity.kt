@@ -38,6 +38,9 @@ class MsgLogListActivity : MyBaseActivity(), View.OnClickListener {
     }
 
     private fun initViews() {
+        msgLogBack.setOnClickListener {
+            finish()
+        }
         val layoutManager = LinearLayoutManager(this)
         msgLogList.layoutManager = layoutManager
         layoutManager.orientation = OrientationHelper.VERTICAL

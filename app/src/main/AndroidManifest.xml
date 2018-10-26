@@ -95,6 +95,10 @@
         <activity android:name=".ui.LogListActivity" />
         <activity android:name=".ui.MsgLogListActivity" />
         <activity android:name=".ui.MsgLogDetailsActivity" />
+        <activity android:name=".ui.InstructionsActivity" />
+        <activity android:name=".ui.InstructionsDetailsActivity" />
+        <activity android:name=".ui.MyReservationsActivity" />
+        <activity android:name=".ui.CallZjShowActivity" />
 
         <service android:name=".MonitorService" />
     </application>

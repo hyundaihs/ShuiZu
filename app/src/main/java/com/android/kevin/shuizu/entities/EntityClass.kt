@@ -251,4 +251,41 @@ data class BigStatistics(val ygsl: Int, val sbsl: Int, val ycsb: Int, val sbfb: 
 
 data class BigStatisticsRes(val retRes: BigStatistics) : RequestResult()
 
+/*[id] => ID
+[title] => 标题
+[file_url] => 图片
+[sub_title] => 简介
+[app_contents] => 详情（html代码）*/
+data class Instructions(val id: Int, val title: String, val file_url: String, val sub_title: String, val app_contents: String)
+
+data class InstructionsRes(val retRes: Instructions) : RequestResult()
+
+data class InstructionsListRes(val retRes: ArrayList<Instructions>) : RequestResult()
+
+/*[id] => 预约id
+numbers => 预约编号
+[yyzj_id] => 专家id
+[yyzj_title] => 专家名称
+[yyzj_file_url] => 专家头像
+[link_man] => 联系人
+[link_phone] => 联系电话
+[contents] => 内容
+[img_file_urls] => Array（图片列表）
+(
+)
+
+[video_file_urls] => Array（视频列表）
+(
+)
+
+[status] => 预约状态（1：未处理，2：已处理，3：作废）
+[create_time] => 预约时间（时间戳）*/
+data class Reservations(val id: Int,val numbers:String, val yyzj_id: Int, val yyzj_title: String, val yyzj_file_url: String, val link_man: String, val link_phone: String
+                        , val contents: String, val img_file_urls: ArrayList<String>, val video_file_urls: ArrayList<String>
+                        , val status: Int, val create_time: Long)
+
+data class ReservationsRes(val retRes: Reservations) : RequestResult()
+
+data class ReservationsListRes(val retRes: ArrayList<Reservations>) : RequestResult()
+
 

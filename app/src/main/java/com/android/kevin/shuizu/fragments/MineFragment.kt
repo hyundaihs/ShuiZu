@@ -69,6 +69,13 @@ class MineFragment : BaseFragment(), View.OnClickListener {
             val intent = Intent(activity, MsgLogListActivity::class.java)
             startActivity(intent)
         })
+        msgTitle.setOnClickListener {
+            val intent = Intent(activity, MsgLogListActivity::class.java)
+            startActivity(intent)
+        }
+        mineHelp.setOnClickListener {
+            startActivity(Intent(it.context,InstructionsActivity::class.java))
+        }
     }
 
     override fun onClick(v: View?) {
