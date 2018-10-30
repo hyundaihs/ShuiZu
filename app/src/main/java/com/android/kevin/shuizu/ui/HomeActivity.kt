@@ -51,6 +51,11 @@ class HomeActivity : MyBaseActivity(), BottomNavigationBar.OnTabSelectedListener
         fragments.add(ServiceFragment())
         fragments.add(StoreFragment())
         fragments.add(MineFragment())
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadFragment(fragments[2])
     }
 

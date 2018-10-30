@@ -99,6 +99,8 @@
         <activity android:name=".ui.InstructionsDetailsActivity" />
         <activity android:name=".ui.MyReservationsActivity" />
         <activity android:name=".ui.CallZjShowActivity" />
+        <activity android:name=".ui.GalleryActivity" />
+        <activity android:name=".ui.WaterPumpSetActivity" />
 
         <service android:name=".MonitorService" />
     </application>

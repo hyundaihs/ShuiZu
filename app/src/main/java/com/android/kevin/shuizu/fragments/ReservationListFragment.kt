@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
+import com.android.kevin.shuizu.ui.GalleryActivity
 import com.android.kevin.shuizu.ui.InstructionsDetailsActivity
 import com.android.kevin.shuizu.ui.LoginActivity
 import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
@@ -65,6 +66,22 @@ class ReservationListFragment : BaseFragment() {
         myReservaList.itemAnimator = DefaultItemAnimator()
         myReservaList.isNestedScrollingEnabled = false
         myReservaList.adapter = mAdapter
+        mAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
+            override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
+                if (mData[position].video_file_urls.size + mData[position].img_file_urls.size > 0) {
+                    val temp = ArrayList<String>()
+                    temp.addAll(mData[position].video_file_urls)
+                    temp.addAll(mData[position].img_file_urls)
+                    val intent = Intent(view.context, GalleryActivity::class.java)
+                    intent.putStringArrayListExtra("urls", temp)
+                    intent.putExtra("hasVideo", mData[position].video_file_urls.size > 0)
+                    startActivity(intent)
+                } else {
+                    view.context.toast("没有可供查看的图片或视频")
+                }
+            }
+
+        }
     }
 
     private fun getReservationsList() {
@@ -101,8 +118,9 @@ class ReservationListFragment : BaseFragment() {
             Picasso.with(holder.itemView.context).load(reservations.yyzj_file_url.getImageUrl()).into(holder.itemView.reserationItemPhoto)
             holder.itemView.reserationItemName.text = reservations.yyzj_title
             holder.itemView.reserationItemContent.text = reservations.contents
+            holder.itemView.reserationItemCancel.visibility = if (index == 1) View.VISIBLE else View.GONE
             holder.itemView.reserationItemCancel.setOnClickListener {
-                cancelReservation()
+                cancelReservation(position)
             }
             val layoutManager = LinearLayoutManager(holder.itemView.context)
             holder.itemView.reserationItemImages.layoutManager = layoutManager
@@ -113,7 +131,7 @@ class ReservationListFragment : BaseFragment() {
             val temp = ArrayList<String>()
             temp.addAll(reservations.video_file_urls)
             temp.addAll(reservations.img_file_urls)
-            holder.itemView.reserationItemImages.adapter = ImageAdapter(temp,isFirstVideo)
+            holder.itemView.reserationItemImages.adapter = ImageAdapter(temp, isFirstVideo)
         }
 
         override fun getItemCount(): Int = data.size
@@ -128,9 +146,9 @@ class ReservationListFragment : BaseFragment() {
                     holder.itemView.context.doAsync {
                         val tempBitmap = createVideoThumbnail(path.getImageUrl(), temp, temp)
                         uiThread {
-                            if(null!=tempBitmap){
+                            if (null != tempBitmap) {
                                 holder.itemView.smallImage.setImageBitmap(tempBitmap)
-                            }else{
+                            } else {
                                 holder.itemView.smallImage.setImageResource(R.mipmap.ic_launcher)
                             }
                         }
@@ -171,13 +189,11 @@ class ReservationListFragment : BaseFragment() {
 
     }
 
-    private fun cancelReservation() {
-        val map = mapOf(Pair("", ""))
+    private fun cancelReservation(pos: Int) {
+        val map = mapOf(Pair("id", mData[pos].id.toString()))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-                val reservationsListRes = Gson().fromJson(result, ReservationsListRes::class.java)
-                mData.clear()
-                mData.addAll(reservationsListRes.retRes)
+                mData.removeAt(pos)
                 mAdapter.notifyDataSetChanged()
             }
 
