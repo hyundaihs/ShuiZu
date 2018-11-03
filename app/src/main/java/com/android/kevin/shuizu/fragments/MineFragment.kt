@@ -43,8 +43,8 @@ class MineFragment : BaseFragment(), View.OnClickListener {
         initViews()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         getUserInfo()
         isFlag = true
         getMsgLog()
@@ -52,9 +52,9 @@ class MineFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onStop() {
-        super.onStop()
         msgTitle.stopAutoScroll()
         isFlag = false
+        super.onStop()
     }
 
     private fun initViews() {
@@ -74,7 +74,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
             startActivity(intent)
         }
         mineHelp.setOnClickListener {
-            startActivity(Intent(it.context,InstructionsActivity::class.java))
+            startActivity(Intent(it.context, InstructionsActivity::class.java))
         }
     }
 
@@ -105,6 +105,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun getUserInfo() {
+        val map = mapOf(Pair("", ""))
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
                 val userInfoRes = Gson().fromJson(result, UserInfoRes::class.java)
@@ -126,7 +127,7 @@ class MineFragment : BaseFragment(), View.OnClickListener {
                 })
             }
 
-        }, false).postRequest(activity as Context, USER_INFO.getInterface())
+        }, false).postRequest(activity as Context, USER_INFO.getInterface(Gson().toJson(map)),map)
     }
 
     private fun getMsgLog() {
@@ -170,6 +171,6 @@ class MineFragment : BaseFragment(), View.OnClickListener {
             override fun onLoginErr(context: Context) {
             }
 
-        }, false).postRequest(activity as Context, NEW_NEWS.getInterface(), map)
+        }, false).postRequest(activity as Context, NEW_NEWS.getInterface(Gson().toJson(map)), map)
     }
 }

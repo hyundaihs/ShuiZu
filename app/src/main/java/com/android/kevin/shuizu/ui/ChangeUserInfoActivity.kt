@@ -158,7 +158,7 @@ class ChangeUserInfoActivity : MyBaseActivity() {
             }
             //
 
-        }, true).uploadFile(this, UPFILE.getInterface(), list)
+        }, true).uploadFile(this, UPFILE.getInterface(""), list)
     }
 
     private fun submitInfo() {
@@ -182,6 +182,6 @@ class ChangeUserInfoActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this as Context, SET_INFO.getInterface(), map)
+        }, true).postRequest(this as Context, SET_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

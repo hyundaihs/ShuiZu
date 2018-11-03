@@ -60,6 +60,6 @@ class ReservationDetailsActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this as Context, YYZJ_INFO.getInterface(), map)
+        }, true).postRequest(this as Context, YYZJ_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

@@ -139,7 +139,7 @@ class FishLogAddActivity : MyBaseActivity(){
             }
             //
 
-        }).uploadFile(this, UPFILE_LISTS.getInterface(), images)
+        }).uploadFile(this, UPFILE_LISTS.getInterface(""), images)
     }
 
     private fun submit() {
@@ -164,7 +164,7 @@ class FishLogAddActivity : MyBaseActivity(){
                 })
             }
 
-        }).postRequest(this, TJ_YYRZ.getInterface(), map)
+        }).postRequest(this, TJ_YYRZ.getInterface(Gson().toJson(map)), map)
     }
 
     private class MyImageAdapter(val data: ArrayList<String>) : MyBaseAdapter(R.layout.layout_create_fish_log_images) {

@@ -49,7 +49,7 @@ class InstructionsDetailsActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this as Context, CZSM_INFO.getInterface(), map)
+        }, false).postRequest(this as Context, CZSM_INFO.getInterface(Gson().toJson(map)), map)
     }
 
 }

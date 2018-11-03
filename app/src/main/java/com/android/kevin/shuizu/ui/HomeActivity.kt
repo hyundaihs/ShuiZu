@@ -22,12 +22,11 @@ class HomeActivity : MyBaseActivity(), BottomNavigationBar.OnTabSelectedListener
     }
 
     override fun onTabSelected(position: Int) {
-        loadFragment(fragments[position])
+        loadFragment(position)
     }
 
-    companion object {
-        private val fragments = ArrayList<Fragment>()
-    }
+    private val fragments = Array<Fragment?>(5){null}
+    private var last = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,33 +38,37 @@ class HomeActivity : MyBaseActivity(), BottomNavigationBar.OnTabSelectedListener
         navigation.setTabSelectedListener(this)
         navigation.setFirstSelectedPosition(2)
         val item =
-        navigation.addItem(BottomNavigationItem(R.mipmap.nav1a, getString(R.string.device)).setInactiveIconResource(R.mipmap.nav1))
-                .addItem(BottomNavigationItem(R.mipmap.nav2a, getString(R.string.intelligence)).setInactiveIconResource(R.mipmap.nav2))
-                .addItem(BottomNavigationItem(R.mipmap.nav5a, getString(R.string.service)).setInactiveIconResource(R.mipmap.nav5))
-                .addItem(BottomNavigationItem(R.mipmap.nav3a, getString(R.string.store)).setInactiveIconResource(R.mipmap.nav3))
-                .addItem(BottomNavigationItem(R.mipmap.nav4a, getString(R.string.mine)).setInactiveIconResource(R.mipmap.nav4))
-                .initialise()//所有的设置需在调用该方法前完成
-
-        fragments.add(DeviceFragment())
-        fragments.add(IntelligenceFragment())
-        fragments.add(ServiceFragment())
-        fragments.add(StoreFragment())
-        fragments.add(MineFragment())
-
+                navigation.addItem(BottomNavigationItem(R.mipmap.nav1a, getString(R.string.device)).setInactiveIconResource(R.mipmap.nav1))
+                        .addItem(BottomNavigationItem(R.mipmap.nav2a, getString(R.string.intelligence)).setInactiveIconResource(R.mipmap.nav2))
+                        .addItem(BottomNavigationItem(R.mipmap.nav5a, getString(R.string.service)).setInactiveIconResource(R.mipmap.nav5))
+                        .addItem(BottomNavigationItem(R.mipmap.nav3a, getString(R.string.store)).setInactiveIconResource(R.mipmap.nav3))
+                        .addItem(BottomNavigationItem(R.mipmap.nav4a, getString(R.string.mine)).setInactiveIconResource(R.mipmap.nav4))
+                        .initialise()//所有的设置需在调用该方法前完成
+        loadFragment(2)
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadFragment(fragments[2])
-    }
-
-     fun loadPage(index: Int) {
+    fun loadPage(index: Int) {
         navigation.selectTab(index)
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(position: Int) {
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.content, fragment)
+        if (fragments[position] == null) {
+            fragments[position] = when (position) {
+                0 -> DeviceFragment()
+                1 -> IntelligenceFragment()
+                2 -> ServiceFragment()
+                3 -> StoreFragment()
+                4 -> MineFragment()
+                else -> MineFragment()
+            }
+            ft.add(R.id.content, fragments[position])
+        }
+        if(last != -1){
+            ft.hide(fragments[last])
+        }
+        ft.show(fragments[position])
+        last = position
         ft.commit()
     }
 

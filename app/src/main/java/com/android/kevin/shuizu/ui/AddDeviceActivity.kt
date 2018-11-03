@@ -33,10 +33,6 @@ class AddDeviceActivity : MyBaseActivity() {
     private var groupName = ""
     val myData = ArrayList<MyDevice>()
     val checkedData = ArrayList<MyDevice>()
-    val oftenData = ArrayList<MyDevice>()
-    val groupData = ArrayList<MyDevice>()
-    //    val addData = ArrayList<MyDevice>()
-//    val deleteData = ArrayList<MyDevice>()
     private val adapter = AddDeviceAdapter(myData, checkedData)
     private var isEdit = false
 
@@ -86,7 +82,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, TJYG.getInterface(), map)
+        }).postRequest(this, TJYG.getInterface(Gson().toJson(map)), map)
     }
 
     private fun alterGroup() {
@@ -111,41 +107,19 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, XGYG.getInterface(), map)
+        }).postRequest(this, XGYG.getInterface(Gson().toJson(map)), map)
     }
 
     private fun addDevice(id: Int) {
         val addIds = ArrayList<Int>()
-        for (i in myData.indices) {
-            if (checkedData.contains(myData[i]) && oftenData.contains(myData[i])) {
-                addIds.add(myData[i].id)
-            }
+        for (i in checkedData.indices) {
+            addIds.add(checkedData[i].id)
         }
-
-        val delIds = ArrayList<Int>()
-        for (i in myData.indices) {
-            if (!checkedData.contains(myData[i]) && groupData.contains(myData[i])) {
-                delIds.add(myData[i].id)
-            }
-        }
-        if (addIds.size <= 0) {
-            if (delIds.size <= 0) {
-                finish()
-                return
-            } else {
-                deleteDevice(delIds)
-            }
-            return
-        }
+        val map = PostDeviceIds(id, addIds)
         MySimpleRequest(object : MySimpleRequest.RequestCallBack {
             override fun onSuccess(context: Context, result: String) {
-                if (delIds.size <= 0) {
                     toast("编辑成功")
                     finish()
-                    return
-                } else {
-                    deleteDevice(delIds)
-                }
             }
 
             override fun onError(context: Context, error: String) {
@@ -159,29 +133,30 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(id, addIds)))
+        }).postRequest(this, TJSB_DYG.getInterface(Gson().toJson(map)), map)
     }
 
-    private fun deleteDevice(ids: ArrayList<Int>) {
-        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(context: Context, result: String) {
-                toast("编辑成功")
-                finish()
-            }
-
-            override fun onError(context: Context, error: String) {
-                context.toast(error)
-            }
-
-            override fun onLoginErr(context: Context) {
-                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                })
-            }
-
-        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(0, ids)))
-    }
+//    private fun deleteDevice(ids: ArrayList<Int>) {
+//        val map = PostDeviceIds(0, ids)
+//        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+//            override fun onSuccess(context: Context, result: String) {
+//                toast("编辑成功")
+//                finish()
+//            }
+//
+//            override fun onError(context: Context, error: String) {
+//                context.toast(error)
+//            }
+//
+//            override fun onLoginErr(context: Context) {
+//                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+//                    val intent = Intent(context, LoginActivity::class.java)
+//                    startActivity(intent)
+//                })
+//            }
+//
+//        }).postRequest(this, TJSB_DYG.getInterface(Gson().toJson(map)), map)
+//    }
 
     private fun initView() {
         if (isEdit) {
@@ -190,8 +165,6 @@ class AddDeviceActivity : MyBaseActivity() {
         val gridLayoutManager = GridLayoutManager(this, 2)
         deviceList.layoutManager = gridLayoutManager
         deviceList.addItemDecoration(GridDivider(this, dp2px(10f).toInt(), 2))
-        //deviceList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST, dp2px(10f).toInt(), Color.TRANSPARENT))
-        //deviceList.addItemDecoration(GridDivider(this, 10, this.resources.getColor(R.color.white), 2))
         deviceList.itemAnimator = DefaultItemAnimator()
         deviceList.adapter = adapter
         deviceList.isNestedScrollingEnabled = false
@@ -240,10 +213,8 @@ class AddDeviceActivity : MyBaseActivity() {
                 if (id != 0) {
                     checkedData.addAll(myDeviceListRes.retRes)
                     myData.addAll(0, myDeviceListRes.retRes)
-                    groupData.addAll(myDeviceListRes.retRes)
                 } else {
                     myData.addAll(myDeviceListRes.retRes)
-                    oftenData.addAll(myDeviceListRes.retRes)
                 }
                 adapter.notifyDataSetChanged()
             }
@@ -259,6 +230,6 @@ class AddDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, YGSB.getInterface(), map)
+        }).postRequest(this, YGSB.getInterface(Gson().toJson(map)), map)
     }
 }

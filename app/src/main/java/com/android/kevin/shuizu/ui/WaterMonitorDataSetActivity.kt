@@ -258,7 +258,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, PHJZ.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, PHJZ.getInterface(Gson().toJson(map)), map)
     }
 
     private fun saveBaoJinSW() {
@@ -283,7 +283,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJWD.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJWD.getInterface(Gson().toJson(map)), map)
     }
 
     private fun saveBaoJinPH() {
@@ -306,7 +306,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJPH.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJPH.getInterface(Gson().toJson(map)), map)
     }
 
     private fun saveBaoJinTDS() {
@@ -328,7 +328,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJTDS.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJTDS.getInterface(Gson().toJson(map)), map)
     }
 
     private fun saveBaoJinBJ() {
@@ -350,7 +350,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJKG.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, SZ_BJKG.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getBaoJinDataState(type: Int) {
@@ -440,7 +440,7 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                 })
             }
 
-        }, false).postRequest(this@WaterMonitorDataSetActivity, inter.getInterface(), map)
+        }, false).postRequest(this@WaterMonitorDataSetActivity, inter.getInterface(Gson().toJson(map)), map)
     }
 
 }

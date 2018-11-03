@@ -117,6 +117,6 @@ class FishKnowledgeListActivity : MyBaseActivity(), View.OnClickListener {
                 })
             }
 
-        }, false).postRequest(this as Context, YLZS.getInterface(), map)
+        }, false).postRequest(this as Context, YLZS.getInterface(Gson().toJson(map)), map)
     }
 }

@@ -141,7 +141,7 @@ class FishLogListActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this as Context, DEL_YYRZ.getInterface(), map)
+        }, false).postRequest(this as Context, DEL_YYRZ.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getFishLogs(page: Int, isRefresh: Boolean = false) {
@@ -170,6 +170,6 @@ class FishLogListActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this as Context, YYRZ.getInterface(), map)
+        }, false).postRequest(this as Context, YYRZ.getInterface(Gson().toJson(map)), map)
     }
 }

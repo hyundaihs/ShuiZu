@@ -52,6 +52,6 @@ class MsgLogDetailsActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this as Context, NEWS_INFO.getInterface(), map)
+        }, true).postRequest(this as Context, NEWS_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

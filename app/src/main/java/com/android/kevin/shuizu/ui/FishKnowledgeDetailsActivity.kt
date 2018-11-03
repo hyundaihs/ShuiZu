@@ -46,6 +46,6 @@ class FishKnowledgeDetailsActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this as Context, YLZS_INFO.getInterface(), map)
+        }, true).postRequest(this as Context, YLZS_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

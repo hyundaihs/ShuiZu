@@ -33,6 +33,8 @@ import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.android.shuizu.myutillibrary.utils.charToHexStr
 import com.android.shuizu.myutillibrary.utils.makeChecksum
 import com.google.gson.Gson
+import com.uuzuche.lib_zxing.activity.CaptureActivity
+import com.uuzuche.lib_zxing.activity.CodeUtils
 import kotlinx.android.synthetic.main.activity_bind_device.*
 import kotlinx.android.synthetic.main.layout_wifi_list_item.view.*
 import kotlinx.android.synthetic.main.layout_yg_list_item.view.*
@@ -62,7 +64,6 @@ class BindDeviceActivity : MyBaseActivity() {
 
     var socketUtil: SocketUtil? = null
     private var deviceIDS = ""
-    val options1Items = arrayListOf<String>("水质监测器", "加热棒", "水泵", "断电报警器", "水位报警")
     val scanResults = ArrayList<ScanResult>()
     private val mAdapter = MyAdapter(scanResults)
     private var ygId = 0
@@ -73,30 +74,18 @@ class BindDeviceActivity : MyBaseActivity() {
     }
 
     private val receiver = MyBroadCastReceiver()
-    private var isCallEnable = false
-    private var isCallResult = false
-    private var isCallStateChanged = false
 
     inner class MyBroadCastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val action = intent?.action
             when (action) {
                 WifiManager.WIFI_STATE_CHANGED_ACTION -> {
-                    if (isCallEnable) {
-                        return
-                    }
-                    isCallEnable = true
                     val wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0)
                     if (wifiState == WIFI_STATE_ENABLED && state == ConnectState.SEARCHING) {
                         mWifiMangaer.startScan()
                     }
-                    isCallEnable = false
                 }
                 WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> {
-                    if (isCallResult) {
-                        return
-                    }
-                    isCallResult = true
                     scanResults.clear()
                     scanResults.addAll(mWifiMangaer.scanResults)
                     mAdapter.notifyDataSetChanged()
@@ -115,14 +104,9 @@ class BindDeviceActivity : MyBaseActivity() {
                             restartProcess(1)
                         }
                     }
-                    isCallResult = false
                 }
                 WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
                     E("NETWORK_STATE_CHANGED_ACTION")
-                    if (isCallStateChanged) {
-                        return
-                    }
-                    isCallStateChanged = true
                     //拿到NetworkInfo
                     val networkInfo = intent.getParcelableExtra<NetworkInfo>(WifiManager.EXTRA_NETWORK_INFO)
                     when (networkInfo.state) {
@@ -131,23 +115,26 @@ class BindDeviceActivity : MyBaseActivity() {
                             val wifiInfo = intent.getParcelableExtra<WifiInfo>(WifiManager.EXTRA_WIFI_INFO)
                             if (wifiInfo != null && wifiInfo.ssid.replace("\"", "") == WIFI_SSID) {
                                 D("热点连接成功")
-                                state = ConnectState.CONNECTED
-                                doAsync {
-                                    Thread.sleep(15000)
-                                    uiThread {
-                                        connectDevice()
+                                if (state == ConnectState.CONNECT_SUCCESS) {
+                                    state = ConnectState.CONNECTED
+                                    doAsync {
+                                        Thread.sleep(15000)
+                                        uiThread {
+                                            connectDevice()
+                                        }
                                     }
                                 }
                             } else {
-                                E("CONNECTED = ${wifiInfo.ssid.replace("\"", "")}   state = $state")
-                                restartProcess(2)
+                                if (state != ConnectState.SENDING_CLOSE) {
+                                    E("CONNECTED = ${wifiInfo.ssid.replace("\"", "")}   state = $state")
+                                    restartProcess(2)
+                                }
                             }
                         }
                         else -> {
                             E("else")
                         }
                     }
-                    isCallStateChanged = false
                 }
                 WifiManager.SUPPLICANT_STATE_CHANGED_ACTION -> {
                 }
@@ -187,6 +174,8 @@ class BindDeviceActivity : MyBaseActivity() {
         }
     }
 
+    private val REQUEST_CODE = 14
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bind_device)
@@ -214,30 +203,49 @@ class BindDeviceActivity : MyBaseActivity() {
                 builder.show()
             }
         }
-        searchWifi()
+        scanEWM.setOnClickListener {
+            val intent = Intent(this, CaptureActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE)
+        }
+        handleAdd.setOnClickListener {
+            if (!deviceIdEdit.text.isEmpty()) {
+                registerDevice(deviceIdEdit.text.toString())
+            }
+        }
+        autoAdd.setOnClickListener {
+            searchWifi()
+            autoAdd.visibility = View.GONE
+        }
+        changeModel.setOnClickListener {
+            if (changeModel.text == "手动添加") {
+                changeModel.text = "扫描添加"
+                handleLayout.visibility = View.VISIBLE
+                autoLayout.visibility = View.GONE
+                unregisterReceiver(receiver)
+                restartProcess(5)
+            } else {
+                changeModel.text = "手动添加"
+                handleLayout.visibility = View.GONE
+                autoLayout.visibility = View.VISIBLE
+                register()
+            }
+        }
     }
 
-    private fun addDevice(id: Int) {
-        val ids = ArrayList<Int>()
-        ids.add(id)
-        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
-            override fun onSuccess(context: Context, result: String) {
-                toast("添加成功")
-                finish()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                val bundle = data.extras ?: return
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    val result = bundle.getString(CodeUtils.RESULT_STRING)
+                    deviceIdEdit.setText(result)
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    toast("解析二维码失败")
+                }
             }
-
-            override fun onError(context: Context, error: String) {
-                context.toast(error)
-            }
-
-            override fun onLoginErr(context: Context) {
-                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                })
-            }
-
-        }).postRequest(this, TJSB_DYG.getInterface(), Gson().toJson(PostDeviceIds(id, ids)))
+        }
     }
 
     private fun setLoadText(str: String) {
@@ -264,13 +272,16 @@ class BindDeviceActivity : MyBaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        register()
+    }
+
+    private fun register() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION)//是否可用
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)//搜索结果
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION)//连接状态改变
         intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION)//连接中各种状态
         registerReceiver(receiver, intentFilter)
-
     }
 
     override fun onStop() {
@@ -314,8 +325,6 @@ class BindDeviceActivity : MyBaseActivity() {
                         Thread.sleep(10000)
                         uiThread {
                             setLoadText("注册设备信息")
-                        }
-                        uiThread {
                             registerDevice(deviceIDS)
                         }
                     }
@@ -336,15 +345,12 @@ class BindDeviceActivity : MyBaseActivity() {
         return -1
     }
 
-    private var isCallSearchResult = false
-
     private fun connectWifi(SSID: String, type: Int) {
-        if (isCallSearchResult || state != ConnectState.SEARCHED) {
+        if (state != ConnectState.SEARCHED) {
             return
         }
         doAsync {
             D("call connectWifi $type")
-            isCallSearchResult = true
             state = ConnectState.CONNECTING
             uiThread {
                 setLoadText("正在连接设备热点")
@@ -367,7 +373,6 @@ class BindDeviceActivity : MyBaseActivity() {
                 state = ConnectState.CONNECT_SUCCESS
             }
             Thread.sleep(3000)
-            isCallSearchResult = false
         }
     }
 
@@ -402,7 +407,7 @@ class BindDeviceActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this@BindDeviceActivity, BDSB.getInterface(), map)
+        }, false).postRequest(this@BindDeviceActivity, BDSB.getInterface(Gson().toJson(map)), map)
 
     }
 

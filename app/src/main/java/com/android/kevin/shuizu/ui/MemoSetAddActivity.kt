@@ -72,7 +72,7 @@ class MemoSetAddActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, TJBWXX.getInterface(), map)
+        }).postRequest(this, TJBWXX.getInterface(Gson().toJson(map)), map)
     }
 
     private fun check(): Boolean {
@@ -114,7 +114,7 @@ class MemoSetAddActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this, BWXX_INFO.getInterface(), map)
+        }, false).postRequest(this, BWXX_INFO.getInterface(Gson().toJson(map)), map)
     }
 
 }

@@ -85,6 +85,6 @@ class FishLogDetailsActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this as Context, YYRZ_INFO.getInterface(), map)
+        }).postRequest(this as Context, YYRZ_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

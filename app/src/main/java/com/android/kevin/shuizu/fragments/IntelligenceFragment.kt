@@ -210,7 +210,7 @@ class IntelligenceFragment : BaseFragment(), View.OnClickListener {
                 })
             }
 
-        }, false).postRequest(activity as Context, ZNTJ.getInterface(), map)
+        }, false).postRequest(activity as Context, ZNTJ.getInterface(Gson().toJson(map)), map)
     }
 
 }

@@ -105,7 +105,7 @@ class ReservationListFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, WDYYLB.getInterface(), map)
+        }, false).postRequest(activity as Context, WDYYLB.getInterface(Gson().toJson(map)), map)
     }
 
     private inner class InstructionsAdapter(val data: ArrayList<Reservations>) : MyBaseAdapter(R.layout.layout_my_reserations_list_item) {
@@ -208,7 +208,7 @@ class ReservationListFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, QXWDYY.getInterface(), map)
+        }, false).postRequest(activity as Context, QXWDYY.getInterface(Gson().toJson(map)), map)
     }
 
 }

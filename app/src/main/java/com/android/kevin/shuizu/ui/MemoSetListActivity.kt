@@ -114,7 +114,7 @@ class MemoSetListActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this, BWXX.getInterface(), map)
+        }, false).postRequest(this, BWXX.getInterface(Gson().toJson(map)), map)
     }
 
     private fun deleteMemoSet(position: Int) {
@@ -136,6 +136,6 @@ class MemoSetListActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this, BWXX_DEL.getInterface(), map)
+        }, true).postRequest(this, BWXX_DEL.getInterface(Gson().toJson(map)), map)
     }
 }

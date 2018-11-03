@@ -139,6 +139,6 @@ class ChartActivity : MyBaseActivity() {
 //                    })
             }
 
-        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(Gson().toJson(map)), map)
     }
 }

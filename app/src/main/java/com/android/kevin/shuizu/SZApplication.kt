@@ -4,6 +4,7 @@ import android.app.Application
 import cn.jpush.android.api.JPushInterface
 import com.android.kevin.shuizu.entities.UserInfo
 import com.android.kevin.shuizu.utils.SdCardUtil
+import com.uuzuche.lib_zxing.activity.ZXingLibrary
 import kotlin.properties.Delegates
 
 /**
@@ -28,6 +29,7 @@ class SZApplication : Application() {
         SdCardUtil()
         JPushInterface.setDebugMode(true)
         JPushInterface.init(this)
+        ZXingLibrary.initDisplayOpinion(this)
     }
 }
 

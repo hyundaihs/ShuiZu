@@ -116,6 +116,6 @@ class MsgLogListActivity : MyBaseActivity(), View.OnClickListener {
                 })
             }
 
-        }, false).postRequest(this as Context, NEWS.getInterface(), map)
+        }, false).postRequest(this as Context, NEWS.getInterface(Gson().toJson(map)), map)
     }
 }

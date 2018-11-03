@@ -141,7 +141,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, SCSB.getInterface(), map)
+        }, false).postRequest(this, SCSB.getInterface(Gson().toJson(map)), map)
     }
 
     /**
@@ -167,7 +167,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, SZJC_SSSJ.getInterface(), map)
+        }, false).postRequest(this, SZJC_SSSJ.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getWaterTemp(id: Int) {
@@ -196,7 +196,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getWaterPH(id: Int) {
@@ -225,7 +225,7 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getWaterTDS(id: Int) {
@@ -254,6 +254,6 @@ class WaterMonitorActivity : MyBaseActivity(), View.OnClickListener {
 //                    })
             }
 
-        }, false).postRequest(this, SZJC_TJTSJ.getInterface(), map)
+        }, false).postRequest(this, SZJC_TJTSJ.getInterface(Gson().toJson(map)), map)
     }
 }

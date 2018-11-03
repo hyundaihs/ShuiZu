@@ -61,8 +61,8 @@ class DeviceFragment : BaseFragment() {
         getDate()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         isFlag = true
         getYGList()
         getWarnLog()
@@ -70,9 +70,9 @@ class DeviceFragment : BaseFragment() {
     }
 
     override fun onStop() {
-        super.onStop()
         verticalTextview?.stopAutoScroll()
         isFlag = false
+        super.onStop()
     }
 
     private fun initViews() {
@@ -108,6 +108,8 @@ class DeviceFragment : BaseFragment() {
                 } else {
                     val intent = if (myDeviceList[position].card_type == DeviceType.TR) {
                         Intent(activity, WaterMonitorActivity::class.java)
+                    } else if (myDeviceList[position].card_type == DeviceType.WP) {
+                        Intent(activity, WaterPumpSetActivity::class.java)
                     } else {
                         Intent(activity, WaterLevelDataSetActivity::class.java)
                     }
@@ -143,7 +145,7 @@ class DeviceFragment : BaseFragment() {
             startActivity(intent)
         }
         deviceHelp.setOnClickListener {
-            startActivity(Intent(it.context,InstructionsActivity::class.java))
+            startActivity(Intent(it.context, InstructionsActivity::class.java))
         }
     }
 
@@ -257,7 +259,7 @@ class DeviceFragment : BaseFragment() {
             override fun onLoginErr(context: Context) {
             }
 
-        }, false).postRequest(activity as Context, NEW_LOG.getInterface(), map)
+        }, false).postRequest(activity as Context, NEW_LOG.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getDate() {
@@ -279,7 +281,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, INDEX_INFO.getInterface(), map)
+        }, false).postRequest(activity as Context, INDEX_INFO.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getYGList() {
@@ -305,7 +307,7 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, YG_LISTS.getInterface(), map)
+        }, false).postRequest(activity as Context, YG_LISTS.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getMyDeviceList(id: Int) {
@@ -332,6 +334,6 @@ class DeviceFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(this.requireContext(), YGSB.getInterface(), map)
+        }, false).postRequest(activity as Context, YGSB.getInterface(Gson().toJson(map)), map)
     }
 }

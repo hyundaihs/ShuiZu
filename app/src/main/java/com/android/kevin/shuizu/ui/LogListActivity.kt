@@ -139,6 +139,6 @@ class LogListActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this, BJ_LOG.getInterface(), map)
+        }, false).postRequest(this, BJ_LOG.getInterface(Gson().toJson(map)), map)
     }
 }

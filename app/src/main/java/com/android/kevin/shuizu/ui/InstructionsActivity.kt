@@ -78,7 +78,7 @@ class InstructionsActivity : MyBaseActivity() {
                 })
             }
 
-        }, false).postRequest(this as Context, CZSM.getInterface(), map)
+        }, false).postRequest(this as Context, CZSM.getInterface(Gson().toJson(map)), map)
     }
 
     private class InstructionsAdapter(val data: ArrayList<Instructions>) : MyBaseAdapter(R.layout.layout_instructions_item) {

@@ -94,6 +94,6 @@ class ServiceFragment : BaseFragment() {
                 })
             }
 
-        }, false).postRequest(activity as Context, YYZJ.getInterface(), map)
+        }, false).postRequest(activity as Context, YYZJ.getInterface(Gson().toJson(map)), map)
     }
 }

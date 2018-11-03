@@ -106,7 +106,7 @@ class RegistrationActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, SEND_VERF.getInterface(), map)
+        }).postRequest(this, SEND_VERF.getInterface(Gson().toJson(map)), map)
     }
 
     private fun submit() {
@@ -130,6 +130,6 @@ class RegistrationActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, REG.getInterface(), map)
+        }).postRequest(this, REG.getInterface(Gson().toJson(map)), map)
     }
 }

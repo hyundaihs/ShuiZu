@@ -187,7 +187,7 @@ class CallZJActivity : MyBaseActivity() {
                 })
             }
 
-        }, true).postRequest(this as Context, YYZJ_INFO.getInterface(), map)
+        }, true).postRequest(this as Context, YYZJ_INFO.getInterface(Gson().toJson(map)), map)
     }
 
     private fun refreshViews(zjInfo: YYZJInfo) {
@@ -273,7 +273,7 @@ class CallZJActivity : MyBaseActivity() {
                     startActivity(intent)
                 })
             }
-        }).uploadFile(this, UPFILE_LISTS.getInterface(), imageData)
+        }).uploadFile(this, UPFILE_LISTS.getInterface(""), imageData)
     }
 
     private fun uploadVideos() {
@@ -299,7 +299,7 @@ class CallZJActivity : MyBaseActivity() {
                     startActivity(intent)
                 })
             }
-        }).uploadFile(this, UPFILE_LISTS.getInterface(), videoData)
+        }).uploadFile(this, UPFILE_LISTS.getInterface(""), videoData)
     }
 
     private fun submit() {
@@ -329,6 +329,6 @@ class CallZJActivity : MyBaseActivity() {
                 })
             }
 
-        }).postRequest(this, TJYYXX.getInterface(), map)
+        }).postRequest(this, TJYYXX.getInterface(Gson().toJson(map)), map)
     }
 }
