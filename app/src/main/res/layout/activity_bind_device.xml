@@ -42,7 +42,7 @@
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
-            android:src="@mipmap/add_gray" />
+            android:src="@mipmap/sm" />
 
         <TextView
             android:id="@+id/handleAdd"
