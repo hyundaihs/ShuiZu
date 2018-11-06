@@ -23,140 +23,124 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawablePadding="10dp"
+                android:drawableStart="@mipmap/phone_black"
+                android:hint="@string/input_phone"
+                android:imeActionId="6"
+                android:imeOptions="actionUnspecified"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:theme="@style/gray_edit_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line_gray" />
+
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/transparent"
+                android:drawablePadding="10dp"
+                android:drawableStart="@mipmap/password_black"
+                android:hint="@string/input_password"
+                android:imeActionId="6"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:theme="@style/gray_edit_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line_gray" />
+
+
+            <EditText
+                android:id="@+id/verifyPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/transparent"
+                android:drawablePadding="10dp"
+                android:drawableStart="@mipmap/password_black"
+                android:hint="@string/inputPswdAgain"
+                android:imeActionId="6"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:theme="@style/gray_edit_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line_gray" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
                 <EditText
-                    android:id="@+id/phone"
+                    android:id="@+id/verifyCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@mipmap/phone_black"
-                    android:hint="@string/input_phone"
+                    android:drawableStart="@mipmap/yzm"
+                    android:hint="@string/inputVerifyCode"
                     android:imeActionId="6"
                     android:imeOptions="actionUnspecified"
-                    android:background="@android:color/transparent"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:theme="@style/gray_edit_text" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/line_gray"/>
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@mipmap/password_black"
-                    android:hint="@string/input_password"
-                    android:imeActionId="6"
-                    android:background="@android:color/transparent"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:theme="@style/gray_edit_text" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/line_gray"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/verifyPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@mipmap/password_black"
-                    android:hint="@string/inputPswdAgain"
-                    android:imeActionId="6"
-                    android:background="@android:color/transparent"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:theme="@style/gray_edit_text" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/line_gray"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/verifyCodeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/verifyCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="10dp"
-                        android:drawableStart="@mipmap/yzm"
-                        android:hint="@string/inputVerifyCode"
-                        android:imeActionId="6"
-                        android:background="@android:color/transparent"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="phone"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:theme="@style/gray_edit_text" />
-
-                </android.support.design.widget.TextInputLayout>
 
                 <com.android.shuizu.myutillibrary.widget.VerfCodeBtn
                     android:id="@+id/getVerifyCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
                     android:text="@string/getVerifyCode"
                     android:textColor="@android:color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/verifyCodeLayout"
-                    app:layout_constraintRight_toRightOf="@+id/verifyCodeLayout" />
+                    app:layout_constraintBottom_toBottomOf="@+id/verifyCode"
+                    app:layout_constraintRight_toRightOf="@+id/verifyCode" />
 
                 <View
                     android:layout_width="0dp"
-                    app:layout_constraintLeft_toLeftOf="@id/verifyCodeLayout"
-                    app:layout_constraintRight_toRightOf="@id/getVerifyCode"
-                    android:layout_height="1.5dp"
-                    app:layout_constraintTop_toBottomOf="@id/verifyCodeLayout"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/line_gray"/>
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/line_gray"
+                    app:layout_constraintLeft_toLeftOf="@id/verifyCode"
+                    app:layout_constraintRight_toRightOf="@id/verifyCode"
+                    app:layout_constraintTop_toBottomOf="@id/verifyCode" />
             </android.support.constraint.ConstraintLayout>
 
             <LinearLayout
@@ -180,7 +164,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/agree" />
+                    android:text="@string/agree"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/contract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《水族》"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/xieyi"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 

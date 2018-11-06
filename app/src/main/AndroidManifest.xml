@@ -41,7 +41,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".ui.LoginActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -81,7 +82,7 @@
         <activity
             android:name=".ui.WaterLevelDataSetActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.ChangeUserInfoActivity" />
+        <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.ReservationDetailsActivity" />
         <activity android:name=".ui.FishKnowledgeListActivity" />
         <activity android:name=".ui.FishKnowledgeDetailsActivity" />
@@ -98,9 +99,9 @@
         <activity android:name=".ui.InstructionsActivity" />
         <activity android:name=".ui.InstructionsDetailsActivity" />
         <activity android:name=".ui.MyReservationsActivity" />
-        <activity android:name=".ui.CallZjShowActivity" />
         <activity android:name=".ui.GalleryActivity" />
         <activity android:name=".ui.WaterPumpSetActivity" />
+        <activity android:name=".ui.WebActivity" />
 
         <service android:name=".MonitorService" />
     </application>

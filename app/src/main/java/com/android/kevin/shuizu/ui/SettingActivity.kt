@@ -8,18 +8,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.SZApplication
 import com.android.kevin.shuizu.entities.*
-import com.android.kevin.shuizu.utils.SdCardUtil
 import com.android.shuizu.myutillibrary.MyBaseActivity
 import com.android.shuizu.myutillibrary.initActionBar
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
-import com.android.shuizu.myutillibrary.utils.BottomDialog
 import com.android.shuizu.myutillibrary.utils.CustomDialog
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
+import com.android.shuizu.myutillibrary.utils.PreferenceUtil
 import com.google.gson.Gson
 import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureConfig
@@ -28,8 +26,7 @@ import com.luck.picture.lib.config.PictureMimeType
 //import com.jph.takephoto.model.CropOptions
 //import com.jph.takephoto.model.TResult
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_change_user_info.*
-import kotlinx.android.synthetic.main.layout_take_photo.view.*
+import kotlinx.android.synthetic.main.activity_setting.*
 import org.jetbrains.anko.toast
 import java.io.File
 
@@ -37,22 +34,24 @@ import java.io.File
  * ChaYin
  * Created by ${蔡雨峰} on 2018/10/9/009.
  */
-class ChangeUserInfoActivity : MyBaseActivity() {
-
+class SettingActivity : MyBaseActivity() {
+    var login_verf: String by PreferenceUtil(SZApplication.instance, App_Keyword.LOGIN_VERF, "")
     lateinit var userTemp: UserInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_user_info)
+        setContentView(R.layout.activity_setting)
         userTemp = SZApplication.userInfo.copy()
-        initActionBar(this, "修改信息")
+        initActionBar(this, "设置", rightBtn = "保存", rightClick = View.OnClickListener {
+            submit()
+        })
         initViews()
     }
 
     private fun initViews() {
         Picasso.with(this).load(SZApplication.userInfo.file_url.getImageUrl()).into(photo)
         photo.setOnClickListener { itView ->
-            PictureSelector.create(this@ChangeUserInfoActivity)
+            PictureSelector.create(this@SettingActivity)
                     .openGallery(PictureMimeType.ofImage())
                     .enableCrop(true)
                     .compress(true)
@@ -64,6 +63,7 @@ class ChangeUserInfoActivity : MyBaseActivity() {
                     .forResult(PictureConfig.CHOOSE_REQUEST)
         }
         name.setText(SZApplication.userInfo.title)
+        telPhone.text = SZApplication.systemInfo.telphone
         warnMsg.isChecked = SZApplication.userInfo.ts_status == 1
         warnMsg.setOnCheckedChangeListener { buttonView, isChecked ->
             userTemp.ts_status = if (isChecked) 1 else 0
@@ -80,8 +80,8 @@ class ChangeUserInfoActivity : MyBaseActivity() {
             }
 
         })
-        submitUserInfo.setOnClickListener {
-            submit()
+        exit.setOnClickListener {
+            exit()
         }
     }
 
@@ -105,6 +105,14 @@ class ChangeUserInfoActivity : MyBaseActivity() {
 
     private fun isSaved(): Boolean {
         return userTemp == SZApplication.userInfo
+    }
+
+    private fun exit() {
+        CustomDialog("提示", "确定要退出登录吗？", positiveClicked = DialogInterface.OnClickListener { p0, p1 ->
+            login_verf = ""
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }, negative = "取消")
     }
 
 

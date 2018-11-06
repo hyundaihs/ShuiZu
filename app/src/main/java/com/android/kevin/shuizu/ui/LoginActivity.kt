@@ -18,6 +18,7 @@ import android.R.attr.label
 import cn.jpush.android.api.JPushInterface
 import cn.jpush.android.e.a.b.showToast
 import com.android.shuizu.myutillibrary.*
+import com.android.shuizu.myutillibrary.utils.CustomDialog
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 
@@ -36,7 +37,7 @@ class LoginActivity : MyBaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         requestPermission({
-            autoLogin()
+            getSystemInfo()
         }, onDenied = {
             finish()
         })
@@ -51,7 +52,6 @@ class LoginActivity : MyBaseActivity() {
             intent.putExtra(RegistrationActivity.PAGE_KEY, false)
             startActivity(intent)
         }
-
         loginBtn.setOnClickListener {
             if (checkData()) {
                 login()
@@ -133,5 +133,34 @@ class LoginActivity : MyBaseActivity() {
             }
 
         }).postRequest(this, LOGIN.getInterface(Gson().toJson(map)), map)
+    }
+
+    private fun getSystemInfo() {
+        val map = mapOf(Pair("", ""))
+        MySimpleRequest(object : MySimpleRequest.RequestCallBack {
+            override fun onSuccess(context: Context, result: String) {
+                val systemInfoRes = Gson().fromJson(result, SystemInfoRes::class.java)
+                SZApplication.systemInfo = systemInfoRes.retRes
+                autoLogin()
+            }
+
+            override fun onError(context: Context, error: String) {
+                context.toast(error)
+                CustomDialog("错误",error,positiveClicked = object :DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        finish()
+                    }
+                })
+            }
+
+            override fun onLoginErr(context: Context) {
+                context.LoginErrDialog(DialogInterface.OnClickListener { _, _ ->
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                })
+            }
+
+        }).postRequest(this, SYS_INFO.getInterface(Gson().toJson(map)), map)
     }
 }

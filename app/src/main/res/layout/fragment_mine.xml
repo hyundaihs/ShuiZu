@@ -53,6 +53,7 @@
             app:civ_border_color="@color/bg_gray"
             app:civ_border_overlay="true"
             app:civ_border_width="1dp"
+            app:civ_fill_color="@color/white"
             app:layout_constraintLeft_toLeftOf="@id/warnLayout"
             app:layout_constraintTop_toBottomOf="@id/mineSetting" />
 
@@ -83,7 +84,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/changeUserInfo"
+            android:id="@+id/msgCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_boder_btn"
@@ -91,7 +92,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
-            android:text="修改信息"
+            android:text="消息中心"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/mineImage"
@@ -259,6 +260,7 @@
             app:layout_constraintTop_toBottomOf="@id/warnLayout">
 
             <TextView
+                android:id="@+id/qiCai"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -270,6 +272,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/pinPai"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -318,54 +321,58 @@
             app:layout_constraintTop_toBottomOf="@id/navLayout">
 
             <TextView
+                android:id="@+id/lunTan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@mipmap/more"
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/forum"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:text="主力论坛" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray" />
+                android:background="@color/gray_EEEEEE" />
 
             <TextView
+                android:id="@+id/gouWuChe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@mipmap/more"
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/shopping_cart"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:text="购物车" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray" />
+                android:background="@color/gray_EEEEEE" />
 
             <TextView
+                android:id="@+id/dingDan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@mipmap/more"
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/indent"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:text="全部订单" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line_gray" />
+                android:background="@color/gray_EEEEEE" />
 
             <TextView
+                android:id="@+id/shouHuo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@mipmap/more"
                 android:drawablePadding="10dp"
                 android:drawableStart="@mipmap/address"
-                android:padding="10dp"
+                android:padding="15dp"
                 android:text="收货地址" />
 
         </LinearLayout>
@@ -438,20 +445,5 @@
                 android:src="@mipmap/more" />
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/exit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/white_corner"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="退出登录"
-            android:textColor="@color/red"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonsLayout"/>
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

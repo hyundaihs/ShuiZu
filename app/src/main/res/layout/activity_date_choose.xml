@@ -46,7 +46,7 @@
             android:layout_height="1dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="@color/line_gray" />
+            android:background="@color/gray_EEEEEE" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,9 +78,11 @@
         android:id="@+id/submitDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/green_corner"
         android:text="确定"
-        android:textColor="@color/text_gray_dark"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 </LinearLayout>

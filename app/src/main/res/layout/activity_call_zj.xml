@@ -241,7 +241,7 @@
                     android:background="@color/bg_device_item"
                     android:hint="联系姓名"
                     android:lines="1"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
 
                 <EditText
                     android:id="@+id/callZjLinkPhone"
@@ -251,7 +251,7 @@
                     android:lines="1"
                     android:background="@color/bg_device_item"
                     android:hint="联系电话"
-                    android:padding="5dp" />
+                    android:padding="10dp" />
             </LinearLayout>
 
         </LinearLayout>

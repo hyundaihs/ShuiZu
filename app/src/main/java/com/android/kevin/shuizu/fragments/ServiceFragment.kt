@@ -63,7 +63,7 @@ class ServiceFragment : BaseFragment() {
         }
 
         network.setOnClickListener {
-
+            it.context.toast("功能升级中.....")
         }
 
         memoSet.setOnClickListener {

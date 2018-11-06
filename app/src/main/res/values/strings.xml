@@ -7,7 +7,8 @@
     <string name="input_phone">请输入手机号码</string>
     <string name="submit">提 交</string>
     <string name="hasAccount">已有账号?点击登录</string>
-    <string name="agree">我已经阅读并同意《水族》协议</string>
+    <string name="agree">我已经阅读并同意</string>
+    <string name="xieyi">协议</string>
     <string name="getVerifyCode">获取验证码</string>
     <string name="inputVerifyCode">请输入验证码</string>
     <string name="inputPswdAgain">请重复输入密码</string>

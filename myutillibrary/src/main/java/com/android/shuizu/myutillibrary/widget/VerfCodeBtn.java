@@ -47,25 +47,28 @@ public class VerfCodeBtn extends android.support.v7.widget.AppCompatTextView {
             @Override
             public void onClick(View v) {
                 if (!isRun) {
-                    thread.start();
-                    l.onClick(v);
+                    if (l != null){
+                        l.onClick(v);
+                    }
                 }
             }
         });
     }
 
-    Thread thread = new Thread(new Runnable() {
+    public void startCount(){
+        new Thread(new MyRunnable()).start();
+    }
+
+    class MyRunnable implements Runnable {
+
         @Override
         public void run() {
-            isRun = true;
-            while (isRun) {
-                handler.sendEmptyMessage(0);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            handler.sendEmptyMessage(0);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-    });
+    }
 }

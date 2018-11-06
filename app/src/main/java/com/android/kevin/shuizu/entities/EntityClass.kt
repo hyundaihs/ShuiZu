@@ -74,6 +74,17 @@ class ChartDataType {
     }
 }
 
+/*[title] => 系统名称
+[link_man] => 联系电话
+[telphone] => 客服电话
+[address] => 地址
+[company_right] => 版权
+[zc_contents] => 注册协议（html）*/
+data class SystemInfo(val title: String, val link_man: String, val telphone: String, val address: String,
+                      val company_right: String, val zc_contents: String)
+
+data class SystemInfoRes(val retRes: SystemInfo) : RequestResult()
+
 data class DateInfo(val dates: String)
 
 data class DateInfoRes(val retRes: DateInfo) : RequestResult()
@@ -280,7 +291,7 @@ numbers => 预约编号
 
 [status] => 预约状态（1：未处理，2：已处理，3：作废）
 [create_time] => 预约时间（时间戳）*/
-data class Reservations(val id: Int,val numbers:String, val yyzj_id: Int, val yyzj_title: String, val yyzj_file_url: String, val link_man: String, val link_phone: String
+data class Reservations(val id: Int, val numbers: String, val yyzj_id: Int, val yyzj_title: String, val yyzj_file_url: String, val link_man: String, val link_phone: String
                         , val contents: String, val img_file_urls: ArrayList<String>, val video_file_urls: ArrayList<String>
                         , val status: Int, val create_time: Long)
 

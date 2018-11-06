@@ -23,6 +23,7 @@ import com.android.shuizu.myutillibrary.adapter.MyBaseAdapter
 import com.android.shuizu.myutillibrary.dp2px
 import com.android.shuizu.myutillibrary.fragment.BaseFragment
 import com.android.shuizu.myutillibrary.request.MySimpleRequest
+import com.android.shuizu.myutillibrary.utils.DisplayUtils
 import com.android.shuizu.myutillibrary.utils.LoginErrDialog
 import com.google.gson.Gson
 import com.paradoxie.autoscrolltextview.VerticalTextview
@@ -46,10 +47,6 @@ class DeviceFragment : BaseFragment() {
     private val ygAdapter = GroupAdapter(ygInfoList)
     private val deviceAdapter = DeviceAdapter(myDeviceList)
     var isFlag = false
-
-    companion object {
-        var checkedId = 0
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_device, container, false)
@@ -85,9 +82,8 @@ class DeviceFragment : BaseFragment() {
         deviceGroup.isNestedScrollingEnabled = false
         ygAdapter.onCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                checkedId = ygAdapter.getCheck().id
                 groupName.text = ygAdapter.getCheck().title
-                getMyDeviceList(checkedId)
+                getMyDeviceList(ygAdapter.getCheck().id)
             }
         }
 
@@ -99,12 +95,18 @@ class DeviceFragment : BaseFragment() {
         deviceDevices.isNestedScrollingEnabled = false
         deviceAdapter.myOnItemClickListener = object : MyBaseAdapter.MyOnItemClickListener {
             override fun onItemClick(parent: MyBaseAdapter, view: View, position: Int) {
-                if (position == parent.itemCount - 1 && checkedId != 0) {
-                    val intent = Intent(activity, AddDeviceActivity::class.java)
-                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, ygAdapter.getCheck().id)
-                    intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_TITLE, ygAdapter.getCheck().title)
-                    intent.putExtra(KEYWORD, KEYWORD_EDIT_GROUP)
-                    startActivity(intent)
+                if (position == parent.itemCount - 1) {
+                    if (ygAdapter.getCheck().id == 0) {
+                        val intent = Intent(activity, BindDeviceActivity::class.java)
+                        intent.putExtra("id", ygAdapter.getCheck().id)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(activity, AddDeviceActivity::class.java)
+                        intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_ID, ygAdapter.getCheck().id)
+                        intent.putExtra(App_Keyword.KEYWORD_WATER_MONITOR_TITLE, ygAdapter.getCheck().title)
+                        intent.putExtra(KEYWORD, KEYWORD_EDIT_GROUP)
+                        startActivity(intent)
+                    }
                 } else {
                     val intent = if (myDeviceList[position].card_type == DeviceType.TR) {
                         Intent(activity, WaterMonitorActivity::class.java)
@@ -180,8 +182,12 @@ class DeviceFragment : BaseFragment() {
                 val drawable = holder.itemView.context.resources.getDrawable(R.drawable.often)
                 drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
                 holder.itemView.ygListItem.setCompoundDrawables(null, drawable, null, null)
+                val padd = DisplayUtils.dp2px(holder.itemView.context, 5f)
+                holder.itemView.ygListItem.setPadding(0, padd, 0, padd)
             } else {
                 holder.itemView.ygListItem.setCompoundDrawables(null, null, null, null)
+                val padd = DisplayUtils.dp2px(holder.itemView.context, 15f)
+                holder.itemView.ygListItem.setPadding(0, padd, 0, padd)
             }
             holder.itemView.ygListItem.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { view, isChecked ->
                 if (isChecked) {
@@ -202,7 +208,7 @@ class DeviceFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
             val device = data[position]
-            if (position == itemCount - 1 && checkedId != 0) {
+            if (position == itemCount - 1) {
                 holder.itemView.deviceTitle.visibility = View.GONE
                 holder.itemView.deviceImage.setImageResource(R.mipmap.add_device)
             } else {
@@ -317,9 +323,7 @@ class DeviceFragment : BaseFragment() {
                 val myDeviceListRes = Gson().fromJson(result, MyDeviceListRes::class.java)
                 myDeviceList.clear()
                 myDeviceList.addAll(myDeviceListRes.retRes)
-                if (checkedId != 0) {
-                    myDeviceList.add(MyDevice(0, 0, DeviceType.HT, "", 0, 0))
-                }
+                myDeviceList.add(MyDevice(0, 0, DeviceType.HT, "", 0, 0))
                 deviceAdapter.notifyDataSetChanged()
             }
 

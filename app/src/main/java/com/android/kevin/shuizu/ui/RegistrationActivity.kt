@@ -38,8 +38,9 @@ class RegistrationActivity : MyBaseActivity() {
         }
         getVerifyCode.setOnClickListener {
             if (phone.text.isEmpty()) {
-                phone.setError("手机号码不能为空")
+                phone.error = "手机号码不能为空"
             } else {
+                getVerifyCode.startCount()
                 getVerifyCode()
             }
         }
@@ -50,6 +51,9 @@ class RegistrationActivity : MyBaseActivity() {
         }
         goLogin.setOnClickListener {
             finish()
+        }
+        contract.setOnClickListener {
+            startActivity(Intent(it.context, WebActivity::class.java))
         }
     }
 
@@ -67,19 +71,19 @@ class RegistrationActivity : MyBaseActivity() {
 
     private fun checkData(): Boolean {
         if (phone.text.isEmpty()) {
-            phone.setError("手机号码不能为空")
+            phone.error = "手机号码不能为空"
             return false
         } else if (password.text.isEmpty()) {
-            password.setError("密码不能为空")
+            password.error = "密码不能为空"
             return false
         } else if (verifyPassword.text.isEmpty()) {
-            verifyPassword.setError("验证密码不能为空")
+            verifyPassword.error = "验证密码不能为空"
             return false
         } else if (password.text.trim() != verifyPassword.text.trim()) {
-            password.setError("两次输入的密码不一致")
+            password.error = "两次输入的密码不一致"
             return false
         } else if (verifyCode.text.isEmpty()) {
-            verifyCode.setError("验证码不能为空")
+            verifyCode.error = "验证码不能为空"
             return false
         } else if (isRegister and !isAgree.isChecked) {
             toast("请阅读并同意水族协议")

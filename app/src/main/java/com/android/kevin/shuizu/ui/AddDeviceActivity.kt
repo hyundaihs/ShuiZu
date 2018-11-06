@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
+import android.text.InputFilter
 import android.view.View
 import com.android.kevin.shuizu.R
 import com.android.kevin.shuizu.entities.*
@@ -55,6 +56,7 @@ class AddDeviceActivity : MyBaseActivity() {
                 addGroup()
             }
         })
+        group_Name.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(5))
         initView()
     }
 

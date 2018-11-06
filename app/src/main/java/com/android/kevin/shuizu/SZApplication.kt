@@ -2,6 +2,7 @@ package com.android.kevin.shuizu
 
 import android.app.Application
 import cn.jpush.android.api.JPushInterface
+import com.android.kevin.shuizu.entities.SystemInfo
 import com.android.kevin.shuizu.entities.UserInfo
 import com.android.kevin.shuizu.utils.SdCardUtil
 import com.uuzuche.lib_zxing.activity.ZXingLibrary
@@ -21,6 +22,7 @@ class SZApplication : Application() {
         //        var isLogged: Boolean = false //是否登录
         var instance: SZApplication by Delegates.notNull()
         var userInfo: UserInfo by Delegates.notNull()
+        var systemInfo: SystemInfo by Delegates.notNull()
     }
 
     override fun onCreate() {
