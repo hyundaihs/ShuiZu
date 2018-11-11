@@ -166,7 +166,7 @@ class SettingActivity : MyBaseActivity() {
             }
             //
 
-        }, true).uploadFile(this, UPFILE.getInterface(""), list)
+        }, true).uploadFile(this, UPFILE_LISTS.getInterface(""), list)
     }
 
     private fun submitInfo() {
