@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/netWorkBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:background="@drawable/white_corner"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/netWorkSearchText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="请输入搜索关键字"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:inputType="text" />
+
+            <ImageView
+                android:id="@+id/netWorkSearchBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClick"
+                android:src="@mipmap/search"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_back"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <com.android.shuizu.myutillibrary.widget.SwipeRefreshAndLoadLayout
+        android:id="@+id/netWorkSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/netWorkList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.NestedScrollView>
+    </com.android.shuizu.myutillibrary.widget.SwipeRefreshAndLoadLayout>
+
+</LinearLayout>

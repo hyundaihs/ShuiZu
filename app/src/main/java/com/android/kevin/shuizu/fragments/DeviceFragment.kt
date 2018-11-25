@@ -211,13 +211,19 @@ class DeviceFragment : BaseFragment() {
             if (position == itemCount - 1) {
                 holder.itemView.deviceTitle.visibility = View.GONE
                 holder.itemView.deviceImage.setImageResource(R.mipmap.add_device)
+                holder.itemView.isOnline.visibility = View.GONE
             } else {
                 holder.itemView.deviceTitle.text = device.title
                 holder.itemView.deviceTitle.visibility = View.VISIBLE
                 when (device.card_type) {
                     DeviceType.TR -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_monitor)
+                    DeviceType.WP -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
+                    DeviceType.WL -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_level)
+                    DeviceType.PF -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_disconnet)
+                    DeviceType.WF -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_robot)
                     else -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
                 }
+                holder.itemView.isOnline.visibility = if (device.is_online == 0) View.VISIBLE else View.GONE
             }
             holder.itemView.setOnClickListener {
                 myOnItemClickListener?.onItemClick(this@DeviceAdapter, holder.itemView, position)

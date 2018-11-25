@@ -31,16 +31,13 @@ import org.jetbrains.anko.toast
 class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         if(isTouched){
+            isTouched = false
             switchWarn.isEnabled = false
             saveBaoJinBJ()
         }
     }
 
     companion object {
-        const val SEND_DATA = "发送数据"
-        const val VERIFING = "正在校验"
-        const val VERIFY_SUCCESS = "校验通过"
-        const val VERIFY_FAILED = "校验失败"
         const val BAOJIN_SW = 0
         const val BAOJIN_PH = 1
         const val BAOJIN_TDS = 2
@@ -49,8 +46,8 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
         val BAOJIN_REL = arrayOf("未设置", "正在设置", "设置成功", "设置失败")
     }
 
-    override fun onClick(p0: View) {
-        when (p0.id) {
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
             R.id.high_h_valueBtn -> {
                 val intent = Intent(this, CircleSelectorActivity::class.java)
                 intent.putExtra(KEYWORD_CIRCLE_SELECTOR_TITLE, "水温极高值")
@@ -407,7 +404,6 @@ class WaterMonitorDataSetActivity : MyBaseActivity(), View.OnClickListener, Comp
                         if (baoJinInfo.sz_status != 1) {
                             switchWarn.isChecked = baoJinInfo.v_1 == 1f
                             switchWarn.isEnabled = true
-                            isTouched = false
                         }
                     }
                     VERIFY_PH -> {

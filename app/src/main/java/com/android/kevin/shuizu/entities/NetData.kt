@@ -254,4 +254,33 @@ const val CZSM = "czsm" //操作说明列表
 /*id：操作说明id*/
 const val CZSM_INFO = "czsminfo" //操作说明详情
 
+/*id：设备id*/
+const val SBKGJ_INFO = "sbkgjinfo"//水泵开关详情
+
+/*
+id：设备id
+v_1：开关值（0：关，1：开）*/
+const val SBKGJ = "sbkgj"//设置水泵开关机（水泵）
+
+/*id：设备id*/
+const val SBYX_INFO = "sbyxinfo"//水泵运行档位设置详情（水泵）
+
+/*id：设备id
+v_1：档位值（1-100）*/
+const val SBYX = "sbyx"//设置水泵运行档位（水泵）
+
+/*id：设备id*/
+const val SBZL_INFO = "sbzlinfo"//水泵造浪设置详情（水泵）
+
+/*id：设备id
+v_1：档位值（1-100）*/
+const val SBZL = "sbzl"//设置水泵造浪（水泵）
+
+/*id：设备id*/
+const val SBTS_INFO = "sbtsinfo"//水泵投食模式设置详情（水泵）
+
+/*id：设备id
+v_1：定时高位（10-135）
+v_2：定时低位（10-135）*/
+const val SBTS = "sbts"//设置水泵投食模式（水泵）
 

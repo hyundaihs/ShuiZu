@@ -196,6 +196,10 @@ class AddDeviceActivity : MyBaseActivity() {
             holder.itemView.deviceTitle.text = device.title
             when (device.card_type) {
                 DeviceType.TR -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_monitor)
+                DeviceType.WP -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
+                DeviceType.WL -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_level)
+                DeviceType.PF -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_disconnet)
+                DeviceType.WF -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_robot)
                 else -> holder.itemView.deviceImage.setImageResource(R.mipmap.water_pump)
             }
             holder.itemView.checked.setImageResource(if (checkData.contains(device)) R.mipmap.checked else R.mipmap.checkbox)
