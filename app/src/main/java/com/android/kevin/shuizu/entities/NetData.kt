@@ -284,3 +284,12 @@ v_1：定时高位（10-135）
 v_2：定时低位（10-135）*/
 const val SBTS = "sbts"//设置水泵投食模式（水泵）
 
+/*id：设备id*/
+const val SBYXMS_INFO = "sbyxmsinfo" //水泵工作模式详情
+
+/**
+ * id：设备id
+v_1：模式（1：投食，2：运行，3：造浪）
+ */
+const val SBYXMS = "sbyxms" //水泵工作模式设置
+

@@ -108,7 +108,7 @@ class IntelligenceFragment : BaseFragment(), View.OnClickListener {
         val yValues = ArrayList<PieEntry>()  //yVals用来表示封装每个饼块的实际数据
         for (i in 0 until src.size) {
             xValues.add("")  //饼块上显示成PieChart1, PieChart2, PieChart3, PieChart4，PieChart5，PieChart6
-            yValues.add(PieEntry((src[i].nums + 1).toFloat()))
+            yValues.add(PieEntry((src[i].nums).toFloat()))
         }
         //y轴的集合
         val pieDataSet = PieDataSet(yValues, "")

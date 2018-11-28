@@ -96,7 +96,60 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/line_gray" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@mipmap/runing_w"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="当前模式"
+                        android:textColor="@color/text_gray_dark"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/currResult"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:text="正在设置"
+                        android:textColor="@color/text_green"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/line_gray" />
+
+                <TextView
+                    android:id="@+id/currModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/more"
+                    android:drawablePadding="10dp"
+                    android:gravity="right|center_vertical"
+                    android:padding="10dp"
+                    android:text="3"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -313,60 +366,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_weight="1"
-                        android:drawablePadding="10dp"
-                        android:drawableStart="@mipmap/runing_w"
-                        android:gravity="center_vertical"
-                        android:padding="10dp"
-                        android:text="当前模式"
-                        android:textColor="@color/text_gray_dark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/currResult"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical|end"
-                        android:text="正在设置"
-                        android:textColor="@color/text_green"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/line_gray" />
-
-                <TextView
-                    android:id="@+id/currModel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableEnd="@mipmap/more"
-                    android:drawablePadding="10dp"
-                    android:gravity="right|center_vertical"
-                    android:padding="10dp"
-                    android:text="3"
-                    android:textColor="@color/text_gray_light"
-                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView

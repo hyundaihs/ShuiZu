@@ -142,8 +142,8 @@ class CallZJActivity : MyBaseActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (resultCode == Activity.RESULT_OK) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK&& data!=null) {
             val selectList = PictureSelector.obtainMultipleResult(data)
             when (requestCode) {
                 IMAGE_REQUEST -> {

@@ -59,7 +59,7 @@ class SettingActivity : MyBaseActivity() {
                     .minimumCompressSize(100)
                     .freeStyleCropEnabled(true)
                     .maxSelectNum(1)
-                    //.minSelectNum(1)
+//                    .minSelectNum(0)
                     .forResult(PictureConfig.CHOOSE_REQUEST)
         }
         name.setText(SZApplication.userInfo.title)
@@ -116,8 +116,8 @@ class SettingActivity : MyBaseActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (resultCode == Activity.RESULT_OK) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
             val selectList = PictureSelector.obtainMultipleResult(data)
             when (requestCode) {
                 PictureConfig.CHOOSE_REQUEST -> {
