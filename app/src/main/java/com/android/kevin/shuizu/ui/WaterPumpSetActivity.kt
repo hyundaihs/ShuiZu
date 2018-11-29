@@ -284,7 +284,7 @@ class WaterPumpSetActivity : MyBaseActivity(), View.OnClickListener {
                 })
             }
 
-        }, false).postRequest(this@WaterPumpSetActivity, SBTS.getInterface(Gson().toJson(map)), map)
+        }, false).postRequest(this@WaterPumpSetActivity, SBYXMS.getInterface(Gson().toJson(map)), map)
     }
 
     private fun getStatus(type: Int) {

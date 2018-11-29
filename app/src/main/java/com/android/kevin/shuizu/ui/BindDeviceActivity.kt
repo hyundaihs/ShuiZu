@@ -82,7 +82,7 @@ class BindDeviceActivity : MyBaseActivity() {
                 WifiManager.WIFI_STATE_CHANGED_ACTION -> {
                     val wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0)
                     if (wifiState == WIFI_STATE_ENABLED && state == ConnectState.SEARCHING) {
-                        mWifiMangaer.startScan()
+                        //mWifiMangaer.startScan()
                     }
                 }
                 WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> {
@@ -318,6 +318,7 @@ class BindDeviceActivity : MyBaseActivity() {
                     setLoadText("发送关闭热点信息")
                     doAsync {
                         state = ConnectState.SENDING_CLOSE
+                        Thread.sleep(1000)
                         sendData(getCloseWifiMsg())
                         Thread.sleep(1000)
                         socketUtil?.release()
@@ -428,7 +429,19 @@ class BindDeviceActivity : MyBaseActivity() {
         if (!mWifiMangaer.isWifiEnabled) {
             mWifiMangaer.isWifiEnabled = true
         } else {
-            mWifiMangaer.startScan()
+            scanResults.clear()
+            scanResults.addAll(mWifiMangaer.scanResults)
+            mAdapter.notifyDataSetChanged()
+            val rel = isFind(scanResults)
+            if (rel >= 0) {
+                //找到设备热点,并且状态为搜索中,置为已搜索到
+                if (state == ConnectState.SEARCHING) {
+                    state = ConnectState.SEARCHED
+                    D("找到热点")
+                    connectWifi(WIFI_SSID, 1)
+                }
+            }
+//            mWifiMangaer.startScan()
         }
     }
 
