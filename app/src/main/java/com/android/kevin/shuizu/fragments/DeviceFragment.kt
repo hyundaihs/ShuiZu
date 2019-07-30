@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.OrientationHelper
+import android.support.v7.widget.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -160,7 +157,7 @@ class DeviceFragment : BaseFragment() {
         fun cleanCheck() {
             val temp = checkIndex
             checkIndex = 0
-            notifyItemChanged(temp)
+            notifyDataSetChanged()
         }
 
         fun getCheck(): YGInfo {
@@ -189,15 +186,13 @@ class DeviceFragment : BaseFragment() {
                 val padd = DisplayUtils.dp2px(holder.itemView.context, 15f)
                 holder.itemView.ygListItem.setPadding(0, padd, 0, padd)
             }
-            holder.itemView.ygListItem.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { view, isChecked ->
-                if (isChecked) {
-                    val temp = checkIndex
-                    checkIndex = position
-                    checkYGInfo = ygInfo
-                    notifyItemChanged(temp, checkIndex)
-                    onCheckedChangeListener?.onCheckedChanged(view, isChecked)
-                }
-            })
+            holder.itemView.ygListItem.setOnClickListener {
+                val temp = checkIndex
+                checkIndex = position
+                checkYGInfo = ygInfo
+                onCheckedChangeListener?.onCheckedChanged(holder.itemView.ygListItem, true)
+                notifyDataSetChanged()
+            }
         }
 
         override fun getItemCount(): Int = data.size
